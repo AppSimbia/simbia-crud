@@ -1,0 +1,107 @@
+@font-face {
+    font-family: 'Circular Std';
+    src: url('../../fonts/circular-std/CircularStd-Medium.woff2') format('woff2'),
+    url('../../fonts/circular-std/CircularStd-Medium.woff') format('woff');
+    font-weight: 500;
+    font-style: normal;
+    font-display: swap;
+}
+:root{
+    --border-radius: calc(0.6vw + 0.6vh);
+    --border: calc(0.1vw + 0.1vh) solid rgba(255, 255, 255, 0.422);
+    --background-color-error: rgba(196, 38, 38, 0.533);
+    --blur: blur(10px);
+    --background-color-body: rgb(17, 34, 42);
+}
+
+*{
+    padding: 0;
+    margin: 0;
+    font-family: "Circular Std";
+}
+
+#body-login{
+    background-image: url(../../images/background-splash-login.png);
+    background-size: calc(50vw + 50vh);
+    background-position: top right;
+    background-repeat: no-repeat;
+    background-color: var(--background-color-body);
+}
+
+#body-login #div-erro{
+    background-color: var(--background-color-error);
+    position: absolute;
+    backdrop-filter: var(--blur);
+    z-index: 2;
+    right: 1vw;
+    top: 2vh;
+    text-align: center;
+    align-items: center;
+    height: 8vh;
+    width: 26vw;
+    display: flex;
+    border-radius: calc(var(--border-radius) + 10px);
+    border: var(--border);
+}
+
+#body-login #div-erro p{
+    margin: 0 auto;
+    color: white;
+    font-size: calc(0.8vw + 0.8vh);
+}
+#body-login #div-erro img{
+    width: calc(1.5vw + 1.5vh);
+    margin-right: 1vw;
+}
+#body-login main, #body-login form{
+    display: flex;
+    flex-direction: column;
+    margin: 0 auto
+}
+#body-login main{
+    margin-top: 20vh;
+}
+#body-login main > img{
+    height: calc(3.5vw + 3.5vh);
+    margin-bottom: 1.5vh;
+}
+
+#body-login form{
+    backdrop-filter: var(--blur);
+    gap: 3vh;
+    height: 28vh;
+    width: 25vw;
+    border: var(--border);
+    border-radius: var(--border-radius);
+    background-color: rgba(82, 82, 82, 0.11);
+    padding-top: 5vh;
+}
+#body-login form input{
+    color: rgb(255, 255, 255);
+    width: 20vw;
+    margin: 0 auto;
+    border: var(--border);
+    border-radius: var(--border-radius);
+    height: 6vh;
+    background-color: rgba(255, 255, 255, 0.255);
+    padding-left: 1vw;
+    font-size: calc(0.8vw + 0.8vh);
+}
+#body-login form input::placeholder{
+    color: rgba(255, 255, 255, 0.708);
+}
+#body-login form input:focus{
+    outline: none;
+    background-color: rgba(255, 255, 255, 0.441);
+}
+#body-login form button{
+    width: 12.5vw;
+    height: 6vh;
+    border-radius: calc(var(--border-radius) + 10px);
+    border: none;
+    font-size: calc(0.9vw + 0.9vh);
+    margin: 0 auto;
+}
+#body-login form button:hover{
+    background-color: white;
+}
