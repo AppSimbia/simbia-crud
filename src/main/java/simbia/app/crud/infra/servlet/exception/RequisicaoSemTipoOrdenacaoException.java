@@ -3,17 +3,17 @@ package simbia.app.crud.infra.servlet.exception;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
-public class EmailOuSenhaErradosException extends RuntimeException{
-
+public class RequisicaoSemTipoOrdenacaoException extends RuntimeException {
     private String mensagem;
 
-    public EmailOuSenhaErradosException(){
+    public RequisicaoSemTipoOrdenacaoException(){
         this.mensagem = Util.gerarMensagem();
     }
 
     public String toString(){
-        return "EmailOuSenhaIncorretosException: " + mensagem;
+        return "RequisicaoSeTipoOrdenacaoException: " + mensagem;
     }
+
     public String getMensagem() {
         return mensagem;
     }
@@ -21,7 +21,7 @@ public class EmailOuSenhaErradosException extends RuntimeException{
     private static class Util{
         private static String gerarMensagem(){
             String dataHora = "[" + LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss")) + "]";
-            return dataHora + " - Erro de credenciais, email ou senha incorretos.";
+            return dataHora + " - Erro de obrigatoriedade, requisicao nao possui atributo \'tipoOrdenacao\'.";
         }
     }
 }

@@ -28,4 +28,12 @@ public class ValidacoesDeDados {
     public static void validarSeAdministradorEstaAtutenticado(RequisicaoResposta requisicaoResposta) throws UsuarioNaoAutenticadoException {
         if (!requisicaoResposta.existeSessaoDaRequisicao("administradorAutenticado")) throw new UsuarioNaoAutenticadoException();
     }
+
+    public static void validarTipoDeOrdenacao(String tipoOrdenacao) throws RequisicaoSemTipoOrdenacaoException{
+        if(     tipoOrdenacao != "porId"
+                && tipoOrdenacao != "porEmail"
+                && tipoOrdenacao != "porNome"
+                && tipoOrdenacao != "porValor"
+        ) throw new RequisicaoSemTipoOrdenacaoException();
+    }
 }

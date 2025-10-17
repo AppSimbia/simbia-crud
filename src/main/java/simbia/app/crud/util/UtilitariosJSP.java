@@ -1,11 +1,8 @@
 package simbia.app.crud.util;
 
 import simbia.app.crud.infra.servlet.exception.RequisicaoSemRegistrosException;
-import simbia.app.crud.infra.servlet.exception.UsuarioNaoAutenticadoException;
 import simbia.app.crud.model.servlet.RequisicaoResposta;
 
-import javax.print.attribute.HashPrintJobAttributeSet;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 

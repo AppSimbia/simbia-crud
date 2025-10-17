@@ -8,6 +8,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import simbia.app.crud.infra.dao.exception.ConexaoException;
 import simbia.app.crud.infra.dao.exception.DaoException;
 import simbia.app.crud.infra.servlet.exception.ErrosDeDevolucaoParaClient;
+
 import simbia.app.crud.model.servlet.RequisicaoResposta;
 
 import java.io.IOException;
@@ -19,7 +20,7 @@ public abstract class RegistrosServlet<T> extends HttpServlet {
         RequisicaoResposta requisicaoResposta = new RequisicaoResposta(requisicao, resposta);
         try {
             String chave = nomeDaTabela();
-            requisicaoResposta.adicionarAtributoNaRequisicao(chave, recuperarRegistrosDaTabela());
+            requisicaoResposta.adicionarAtributoNaSessaoDaRequisicao(chave, recuperarRegistrosDaTabela());
 
         } catch (DaoException | ConexaoException causa){
             requisicaoResposta.adicionarAtributoNaRequisicao("erro", ErrosDeDevolucaoParaClient.ERRO_DE_COMUNICACAO_COM_O_BANCO_DE_DADOS);
