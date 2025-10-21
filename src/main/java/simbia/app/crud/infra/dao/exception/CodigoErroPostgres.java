@@ -11,7 +11,7 @@ public enum CodigoErroPostgres {
     CONEXAO_CAIU("08006"),
     DRIVER_INADEQUADO("08P01"),
 
-    //erros>dao
+    //erros>credenciais
     VIOLACAO_DE_UNICIDADE("23505"),
     VIOLACAO_DE_OBRIGATORIEDADE("23502"),
     VIOLACAO_DE_TAMANHO("22001"),
