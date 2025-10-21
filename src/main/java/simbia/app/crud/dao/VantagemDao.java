@@ -2,13 +2,14 @@ package simbia.app.crud.dao;
 
 import simbia.app.crud.infra.dao.abstractclasses.DaoGenerica;
 import simbia.app.crud.infra.dao.conection.ManipuladorConexao;
-import simbia.app.crud.infra.dao.exception.DaoException;
 import simbia.app.crud.model.dao.Vantagem;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+
+import static simbia.app.crud.util.UtilitariosException.gerarExceptionEspecializadaPorSQLException;
 
 /**
  * Classe de {@code Data Access Object} da entidade {@link Vantagem}
@@ -38,7 +39,7 @@ public class VantagemDao extends DaoGenerica<Vantagem> {
                 sucesso = true;
             }
         }catch (SQLException causa) {
-            throw new DaoException(causa);
+            throw gerarExceptionEspecializadaPorSQLException(causa);
         }finally {
             ManipuladorConexao.desconectar(conexao);
         }
@@ -58,7 +59,7 @@ public class VantagemDao extends DaoGenerica<Vantagem> {
 
             sucesso = houveAlteracaoNoBanco(comandoAtualizar.executeUpdate());
         }catch (SQLException causa) {
-            throw new DaoException(causa);
+            throw gerarExceptionEspecializadaPorSQLException(causa);
         }finally {
             ManipuladorConexao.desconectar(conexao);
         }
@@ -75,7 +76,7 @@ public class VantagemDao extends DaoGenerica<Vantagem> {
 
             sucesso = houveAlteracaoNoBanco(comandoDeletar.executeUpdate());
         }catch (SQLException causa) {
-            throw new DaoException(causa);
+            throw gerarExceptionEspecializadaPorSQLException(causa);
         }finally {
             ManipuladorConexao.desconectar(conexao);
         }
@@ -92,7 +93,7 @@ public class VantagemDao extends DaoGenerica<Vantagem> {
 
             while (temProximoRegistro(retornoBanco)) listaVantagem.add(new Vantagem(retornoBanco));
         }catch (SQLException causa) {
-            throw new DaoException(causa);
+            throw gerarExceptionEspecializadaPorSQLException(causa);
         }finally {
             ManipuladorConexao.desconectar(conexao);
         }
@@ -110,7 +111,7 @@ public class VantagemDao extends DaoGenerica<Vantagem> {
             ResultSet retornoBanco = consultaRecuperarPeloId.executeQuery();
             if (temProximoRegistro(retornoBanco)) vantagem = new Vantagem(retornoBanco);
         }catch (SQLException causa) {
-            throw new DaoException(causa);
+            throw gerarExceptionEspecializadaPorSQLException(causa);
         }finally {
             ManipuladorConexao.desconectar(conexao);
         }

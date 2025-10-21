@@ -3,13 +3,14 @@ package simbia.app.crud.dao;
 import org.mindrot.jbcrypt.BCrypt;
 import simbia.app.crud.infra.dao.abstractclasses.DaoManipuladorDeSenhasEEmails;
 import simbia.app.crud.infra.dao.conection.ManipuladorConexao;
-import simbia.app.crud.infra.dao.exception.DaoException;
 import simbia.app.crud.model.dao.Administrador;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+
+import static simbia.app.crud.util.UtilitariosException.gerarExceptionEspecializadaPorSQLException;
 
 /**
  * Classe de {@code Data Access Object} da entidade {@link Administrador}
@@ -44,7 +45,7 @@ public class AdministradorDao extends DaoManipuladorDeSenhasEEmails<Administrado
                 }
             }
         } catch (SQLException causa) {
-            throw new DaoException(causa);
+            throw gerarExceptionEspecializadaPorSQLException(causa);
         }finally{
             ManipuladorConexao.desconectar(conexao);
         }
@@ -64,7 +65,7 @@ public class AdministradorDao extends DaoManipuladorDeSenhasEEmails<Administrado
 
             sucessoDaOperacao = houveAlteracaoNoBanco(comandoAtualizar.executeUpdate());
         } catch (SQLException causa) {
-            throw new DaoException(causa);
+            throw gerarExceptionEspecializadaPorSQLException(causa);
         }finally {
             ManipuladorConexao.desconectar(conexao);
         }
@@ -81,7 +82,7 @@ public class AdministradorDao extends DaoManipuladorDeSenhasEEmails<Administrado
 
             sucessoDaOperacao = houveAlteracaoNoBanco(comandoDeletar.executeUpdate());
         }catch (SQLException causa){
-            throw new DaoException(causa);
+            throw gerarExceptionEspecializadaPorSQLException(causa);
         }finally {
             ManipuladorConexao.desconectar(conexao);
         }
@@ -100,7 +101,7 @@ public class AdministradorDao extends DaoManipuladorDeSenhasEEmails<Administrado
                 listaAdministradores.add(new Administrador(retornoBanco));
             }
         } catch (SQLException causa) {
-            throw new DaoException(causa);
+            throw gerarExceptionEspecializadaPorSQLException(causa);
         }finally {
             ManipuladorConexao.desconectar(conexao);
         }
@@ -118,7 +119,7 @@ public class AdministradorDao extends DaoManipuladorDeSenhasEEmails<Administrado
 
             if (temProximoRegistro(retornoDoBanco)) administrador = new Administrador(retornoDoBanco);
         } catch (SQLException causa) {
-            throw new DaoException(causa);
+            throw gerarExceptionEspecializadaPorSQLException(causa);
         }finally {
             ManipuladorConexao.desconectar(conexao);
         }
@@ -140,7 +141,7 @@ public class AdministradorDao extends DaoManipuladorDeSenhasEEmails<Administrado
                 }
             }
         } catch (SQLException causa) {
-            throw new DaoException(causa);
+            throw gerarExceptionEspecializadaPorSQLException(causa);
         }finally {
             ManipuladorConexao.desconectar(conexao);
         }

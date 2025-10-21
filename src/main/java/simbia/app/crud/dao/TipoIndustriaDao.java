@@ -2,13 +2,14 @@ package simbia.app.crud.dao;
 
 import simbia.app.crud.infra.dao.abstractclasses.DaoGenerica;
 import simbia.app.crud.infra.dao.conection.ManipuladorConexao;
-import simbia.app.crud.infra.dao.exception.DaoException;
 import simbia.app.crud.model.dao.TipoIndustria;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+
+import static simbia.app.crud.util.UtilitariosException.gerarExceptionEspecializadaPorSQLException;
 
 /**
  * Classe de {@code Data Access Object} da entidade {@link TipoIndustria}
@@ -40,7 +41,7 @@ public class TipoIndustriaDao extends DaoGenerica<TipoIndustria> {
                 }
             }
         }catch (SQLException causa) {
-            throw new DaoException(causa);
+            throw gerarExceptionEspecializadaPorSQLException(causa);
         }finally {
             ManipuladorConexao.desconectar(conexao);
         }
@@ -59,7 +60,7 @@ public class TipoIndustriaDao extends DaoGenerica<TipoIndustria> {
 
             sucessoDaOperacao = houveAlteracaoNoBanco(comandoAtualizar.executeUpdate());
         }catch (SQLException causa) {
-            throw new DaoException(causa);
+            throw gerarExceptionEspecializadaPorSQLException(causa);
         }finally {
             ManipuladorConexao.desconectar(conexao);
         }
@@ -76,7 +77,7 @@ public class TipoIndustriaDao extends DaoGenerica<TipoIndustria> {
 
             sucesso = houveAlteracaoNoBanco(comandoDeletar.executeUpdate());
         }catch (SQLException causa) {
-            throw new DaoException(causa);
+            throw gerarExceptionEspecializadaPorSQLException(causa);
         }finally {
             ManipuladorConexao.desconectar(conexao);
         }
@@ -93,7 +94,7 @@ public class TipoIndustriaDao extends DaoGenerica<TipoIndustria> {
 
             while (temProximoRegistro(retornoBanco)) listaTipoIndustria.add(new TipoIndustria(retornoBanco));
         }catch (SQLException causa) {
-            throw new DaoException(causa);
+            throw gerarExceptionEspecializadaPorSQLException(causa);
         }finally {
             ManipuladorConexao.desconectar(conexao);
         }
@@ -111,7 +112,7 @@ public class TipoIndustriaDao extends DaoGenerica<TipoIndustria> {
             ResultSet retornoBanco = consultaRecuperarPeloId.executeQuery();
             if (temProximoRegistro(retornoBanco)) tipoIndustria = new TipoIndustria(retornoBanco);
         }catch (SQLException causa) {
-            throw new DaoException(causa);
+            throw gerarExceptionEspecializadaPorSQLException(causa);
         }finally {
             ManipuladorConexao.desconectar(conexao);
         }

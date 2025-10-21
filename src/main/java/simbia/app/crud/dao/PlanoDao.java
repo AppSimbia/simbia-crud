@@ -2,13 +2,14 @@ package simbia.app.crud.dao;
 
 import simbia.app.crud.infra.dao.abstractclasses.DaoGenerica;
 import simbia.app.crud.infra.dao.conection.ManipuladorConexao;
-import simbia.app.crud.infra.dao.exception.DaoException;
 import simbia.app.crud.model.dao.Plano;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+
+import static simbia.app.crud.util.UtilitariosException.gerarExceptionEspecializadaPorSQLException;
 
 /**
  * Classe de {@code Data Access Object} da entidade {@link Plano}
@@ -39,7 +40,7 @@ public class PlanoDao extends DaoGenerica<Plano> {
                 sucessoDaOperacao = true;
             }
         }catch (SQLException causa) {
-            throw new DaoException(causa);
+            throw gerarExceptionEspecializadaPorSQLException(causa);
         }finally{
             ManipuladorConexao.desconectar(conexao);
         }
@@ -59,7 +60,7 @@ public class PlanoDao extends DaoGenerica<Plano> {
 
             sucessoDaOperacao = houveAlteracaoNoBanco(comandoAtualizar.executeUpdate());
         }catch (SQLException causa) {
-            throw new DaoException(causa);
+            throw gerarExceptionEspecializadaPorSQLException(causa);
         }finally {
             ManipuladorConexao.desconectar(conexao);
         }
@@ -76,7 +77,7 @@ public class PlanoDao extends DaoGenerica<Plano> {
 
             sucessoDaOperacao = houveAlteracaoNoBanco(comandoDeletar.executeUpdate());
         }catch (SQLException causa) {
-            throw new DaoException(causa);
+            throw gerarExceptionEspecializadaPorSQLException(causa);
         }finally {
             ManipuladorConexao.desconectar(conexao);
         }
@@ -93,7 +94,7 @@ public class PlanoDao extends DaoGenerica<Plano> {
 
             while (temProximoRegistro(resultadoDaConsulta)) listaPlano.add(new Plano(resultadoDaConsulta));
         }catch (SQLException causa) {
-            throw new DaoException(causa);
+            throw gerarExceptionEspecializadaPorSQLException(causa);
         }finally {
             ManipuladorConexao.desconectar(conexao);
         }
@@ -111,7 +112,7 @@ public class PlanoDao extends DaoGenerica<Plano> {
 
             if (temProximoRegistro(retornoDaConsulta)) plano = new Plano(retornoDaConsulta);
         }catch (SQLException causa) {
-            throw new DaoException(causa);
+            throw gerarExceptionEspecializadaPorSQLException(causa);
         }finally {
             ManipuladorConexao.desconectar(conexao);
         }

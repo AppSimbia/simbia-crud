@@ -2,13 +2,14 @@ package simbia.app.crud.dao;
 
 import simbia.app.crud.infra.dao.abstractclasses.DaoGenerica;
 import simbia.app.crud.infra.dao.conection.ManipuladorConexao;
-import simbia.app.crud.infra.dao.exception.DaoException;
 import simbia.app.crud.model.dao.CategoriaProduto;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+
+import static simbia.app.crud.util.UtilitariosException.gerarExceptionEspecializadaPorSQLException;
 
 /**
  * Classe de {@code Data Access Object} da entidade {@link CategoriaProduto}
@@ -38,7 +39,7 @@ public class CategoriaProdutoDao extends DaoGenerica<CategoriaProduto> {
                 sucessoDaOperacao = true;
             }
         } catch (SQLException causa) {
-            throw new DaoException(causa);
+            throw gerarExceptionEspecializadaPorSQLException(causa);
         }finally{
             ManipuladorConexao.desconectar(conexao);
         }
@@ -57,7 +58,7 @@ public class CategoriaProdutoDao extends DaoGenerica<CategoriaProduto> {
 
             sucessoDaOperacao = houveAlteracaoNoBanco(comandoAtualizar.executeUpdate());
         }catch (SQLException causa) {
-            throw new DaoException(causa);
+            throw gerarExceptionEspecializadaPorSQLException(causa);
         }finally {
             ManipuladorConexao.desconectar(conexao);
         }
@@ -74,7 +75,7 @@ public class CategoriaProdutoDao extends DaoGenerica<CategoriaProduto> {
 
             sucessoDaOperacao = houveAlteracaoNoBanco(comandoDeletar.executeUpdate());
         }catch (SQLException causa) {
-            throw new DaoException(causa);
+            throw gerarExceptionEspecializadaPorSQLException(causa);
         }finally {
             ManipuladorConexao.desconectar(conexao);
         }
@@ -91,7 +92,7 @@ public class CategoriaProdutoDao extends DaoGenerica<CategoriaProduto> {
 
             while (temProximoRegistro(resultadoDaConsulta)) listaCategoriaProduto.add(new CategoriaProduto(resultadoDaConsulta));
         }catch (SQLException causa) {
-            throw new DaoException(causa);
+            throw gerarExceptionEspecializadaPorSQLException(causa);
         }finally {
             ManipuladorConexao.desconectar(conexao);
         }
@@ -109,7 +110,7 @@ public class CategoriaProdutoDao extends DaoGenerica<CategoriaProduto> {
 
             if (temProximoRegistro(retornoDaConsulta)) categoriaProduto = new CategoriaProduto(retornoDaConsulta);
         }catch (SQLException causa) {
-            throw new DaoException(causa);
+            throw gerarExceptionEspecializadaPorSQLException(causa);
         }finally {
             ManipuladorConexao.desconectar(conexao);
         }
