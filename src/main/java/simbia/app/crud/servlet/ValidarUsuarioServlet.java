@@ -10,8 +10,8 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 import simbia.app.crud.dao.AdministradorDao;
-import simbia.app.crud.infra.dao.exception.ConexaoException;
-import simbia.app.crud.infra.dao.exception.DaoException;
+import simbia.app.crud.infra.dao.abstractclasses.DaoException;
+import simbia.app.crud.infra.dao.exception.*;
 import simbia.app.crud.infra.servlet.exception.EmailOuSenhaErradosException;
 import simbia.app.crud.infra.servlet.exception.ErrosDeDevolucaoParaClient;
 import simbia.app.crud.infra.servlet.exception.PadraoEmailErradoException;
@@ -30,30 +30,30 @@ public class ValidarUsuarioServlet extends HttpServlet {
         RequisicaoResposta requisicaoResposta = new RequisicaoResposta(requisicao, resposta);
         try {
             verificarUsuario(requisicaoResposta);
-            requisicaoResposta.redirecionarPara("/administrador/registros");
+            requisicaoResposta.redirecionarPara("/administrador.jsp");
             
         } catch (EmailOuSenhaErradosException | PadraoSenhaErradoException | PadraoEmailErradoException causa) {
             causa.printStackTrace();
             requisicaoResposta.adicionarAtributoNaRequisicao("erro", ErrosDeDevolucaoParaClient.EMAIL_OU_SENHA_INCORRETOS);
             requisicaoResposta.despacharPara("entrar.jsp");
             
-        } catch (DaoException | ConexaoException causa){
+        } catch (DaoException causa){
             causa.printStackTrace();
             requisicaoResposta.adicionarAtributoNaRequisicao("erro", ErrosDeDevolucaoParaClient.ERRO_DE_COMUNICACAO_COM_O_BANCO_DE_DADOS);
             requisicaoResposta.despacharPara("entrar.jsp");
         }
     }
 
-    private static void verificarUsuario(RequisicaoResposta requisicaoResposta) throws EmailOuSenhaErradosException, PadraoEmailErradoException, PadraoSenhaErradoException, DaoException{
+    private static void verificarUsuario(RequisicaoResposta requisicaoResposta) throws EmailOuSenhaErradosException, PadraoEmailErradoException, PadraoSenhaErradoException{
         String email = recuperarAtributoEmailDaRequisicao(requisicaoResposta);
         String senha = recuperarAtributoSenhaDaRequisicao(requisicaoResposta);
 
         Administrador registroCorrespondenteNoBanco = recuperarAdministradorNoBanco(email, senha);
 
-        requisicaoResposta.adicionarAtributoNaSessaoDaRequisicao("administradorVerificado", registroCorrespondenteNoBanco);
+        requisicaoResposta.adicionarAtributoNaSessaoDaRequisicao("administradorAutenticado", registroCorrespondenteNoBanco);
     }
 
-    private static Administrador recuperarAdministradorNoBanco(String email, String senha) throws DaoException, ConexaoException {
+    private static Administrador recuperarAdministradorNoBanco(String email, String senha) {
         AdministradorDao dao = new AdministradorDao();
         Optional<Administrador> retornoBanco = dao.recuperarPeloEmailESenha(email, senha);
 
