@@ -29,6 +29,10 @@ public class ValidacoesDeDados {
         if (!requisicaoResposta.existeSessaoDaRequisicao("administradorAutenticado")) throw new UsuarioNaoAutenticadoException();
     }
 
+    public static void validarFiltro(String filtro) throws RequisicaoSemFiltroException{
+        if (filtro == null || filtro.trim().isEmpty()) throw new RequisicaoSemFiltroException();
+    }
+
     public static void validarTipoDeOrdenacao(String tipoOrdenacao) throws RequisicaoSemTipoOrdenacaoException{
         if(     tipoOrdenacao != "porId"
                 && tipoOrdenacao != "porEmail"
