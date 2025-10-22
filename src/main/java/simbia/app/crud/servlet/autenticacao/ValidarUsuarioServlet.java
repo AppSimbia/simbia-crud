@@ -11,7 +11,6 @@ import jakarta.servlet.http.HttpServletResponse;
 
 import simbia.app.crud.dao.AdministradorDao;
 import simbia.app.crud.infra.dao.abstractclasses.DaoException;
-import simbia.app.crud.infra.dao.exception.*;
 import simbia.app.crud.infra.servlet.exception.EmailOuSenhaErradosException;
 import simbia.app.crud.infra.servlet.exception.ErrosDeDevolucaoParaClient;
 import simbia.app.crud.infra.servlet.exception.PadraoEmailErradoException;
@@ -53,7 +52,7 @@ public class ValidarUsuarioServlet extends HttpServlet {
         requisicaoResposta.adicionarAtributoNaSessaoDaRequisicao("administradorAutenticado", registroCorrespondenteNoBanco);
     }
 
-    private static Administrador recuperarAdministradorNoBanco(String email, String senha) {
+    private static Administrador recuperarAdministradorNoBanco(String email, String senha) throws EmailOuSenhaErradosException {
         AdministradorDao dao = new AdministradorDao();
         Optional<Administrador> retornoBanco = dao.recuperarPeloEmailESenha(email, senha);
 

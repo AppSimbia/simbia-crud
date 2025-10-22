@@ -2,9 +2,9 @@
 <%@ page import="simbia.app.crud.util.ValidacoesDeDados" %>
 <%@ page import="simbia.app.crud.model.servlet.RequisicaoResposta" %>
 <%@ page import="java.util.List" %>
-<%@ page import="simbia.app.crud.model.dao.Administrador" %>
 <%@ page import="simbia.app.crud.infra.servlet.exception.UsuarioNaoAutenticadoException" %>
 <%@ page import="simbia.app.crud.infra.servlet.exception.RequisicaoSemRegistrosException" %>
+<%@ page import="simbia.app.crud.model.dao.Permissao" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%
   RequisicaoResposta requisicaoResposta = new RequisicaoResposta(request, response);
@@ -12,7 +12,7 @@
   try{
     ValidacoesDeDados.validarSeAdministradorEstaAtutenticado(requisicaoResposta);
 
-    List<Administrador> registros = UtilitariosJSP.recuperarRegistrosDaRequisicao(requisicaoResposta, "administrador");
+    List<Permissao> registros = UtilitariosJSP.recuperarRegistrosDaRequisicao(requisicaoResposta, "permissao");
 
 %>
 <!DOCTYPE html>
@@ -24,7 +24,7 @@
         integrity="sha512-DxV+EoADOkOygM4IR9yXP8Sb2qwgidEmeqAEmDKIOfPRQZOWbXCzLC6vjbZyy0vPisbH2SyW27+ddLVCN+OMzQ=="
         crossorigin="anonymous" referrerpolicy="no-referrer"/>
   <link rel="stylesheet" href="assets/style/tabelas/style.css">
-  <title>Simbia - Administrador</title>
+  <title>Simbia - Permissao</title>
 </head>
 <body>
 <!-- MENU LATERAL -->
@@ -35,16 +35,16 @@
   <hr>
   <nav>
     <ul>
-      <li class="ativo">
-        <i class="fa-solid fa-user-shield"></i>
-        <p>Administrador</p>
-      </li>
-      <a href="permissao.jsp">
+      <a href="administrador.jsp">
         <li>
-          <i class="fa-solid fa-key"></i>
-          <p>Permissão</p>
+          <i class="fa-solid fa-user-shield"></i>
+          <p>Administrador</p>
         </li>
       </a>
+      <li class="ativo">
+        <i class="fa-solid fa-key"></i>
+        <p>Permissão</p>
+      </li>
       <a href="vantagem.jsp">
         <li>
           <i class="fa-solid fa-hand-sparkles"></i>
@@ -85,7 +85,7 @@
 <main>
   <!-- TOPO DA PÁGINA -->
   <header>
-    <h1>Administrador</h1>
+    <h1>Permissão</h1>
     <div>
       <a href="" class="atualizar">
         <button name="atualizar">
@@ -100,8 +100,8 @@
 
   <hr>
 
-  <form action="administrador/filtro" class="form-pesquisa" method="POST">
-    <input name="filtro" type="text" placeholder="Pesquisar">
+  <form action="" class="form-pesquisa">
+    <input type="text" placeholder="Pesquisar" name="filtro">
     <button type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
   </form>
 
@@ -129,25 +129,18 @@
       </th>
       <th>
         <div>
-          <p>EMAIL</p>
-          <form action="">
-            <button type="submit" value="porEmail"><i class="fa-solid fa-angle-down"></i></button>
-          </form>
+          <p>DESCRIÇÃO</p>
         </div>
 
-      </th>
-      <th>
-        <p>SENHA</p>
       </th>
     </tr>
     </thead>
     <tbody>
-    <% for (Administrador registro : registros){%>
+    <% for (Permissao registro : registros){%>
     <tr>
-      <td class="id"><%=registro.getIdAdministrador()%></td>
-      <td><%=registro.getNome()%></td>
-      <td><%=registro.getEmail()%></td>
-      <td>[SENHA PROTEGIDA]</td>
+      <td class="id"><%=registro.getIdPermissao()%></td>
+      <td><%=registro.getNomePermissao()%></td>
+      <td><%=registro.getDescricao()%></td>
 
       <td class="acoes">
         <div>
@@ -167,19 +160,19 @@
 </body>
 </html>
 <%
-  } catch (UsuarioNaoAutenticadoException causa){
+} catch (UsuarioNaoAutenticadoException causa){
 %>
 <html>
-  <head>
+<head>
 
-  </head>
-  <body>
-    <h1>Acesso não autenticado</h1>
-    <a href="/crud/entrar.jsp">Autenticar</a>
-  </body>
+</head>
+<body>
+<h1>Acesso não autenticado</h1>
+<a href="/crud/entrar.jsp">Autenticar</a>
+</body>
 </html>
 <%
   } catch (RequisicaoSemRegistrosException causa){
-    requisicaoResposta.despacharPara("/administrador/registros");
+    requisicaoResposta.despacharPara("/permissao/registros");
   }
 %>

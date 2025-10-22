@@ -186,6 +186,7 @@ main hr{
     outline: none;
     font-size: 15px;
     margin-left: 7px;
+    width: 30vw;
 }
 
 .form-pesquisa button{
