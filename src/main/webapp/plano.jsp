@@ -2,9 +2,9 @@
 <%@ page import="simbia.app.crud.util.ValidacoesDeDados" %>
 <%@ page import="simbia.app.crud.model.servlet.RequisicaoResposta" %>
 <%@ page import="java.util.List" %>
-<%@ page import="simbia.app.crud.model.dao.Administrador" %>
 <%@ page import="simbia.app.crud.infra.servlet.exception.UsuarioNaoAutenticadoException" %>
 <%@ page import="simbia.app.crud.infra.servlet.exception.RequisicaoSemRegistrosException" %>
+<%@ page import="simbia.app.crud.model.dao.Plano" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%
   RequisicaoResposta requisicaoResposta = new RequisicaoResposta(request, response);
@@ -12,7 +12,7 @@
   try{
     ValidacoesDeDados.validarSeAdministradorEstaAtutenticado(requisicaoResposta);
 
-    List<Administrador> registros = UtilitariosJSP.recuperarRegistrosDaRequisicao(requisicaoResposta, "administrador");
+    List<Plano> registros = UtilitariosJSP.recuperarRegistrosDaRequisicao(requisicaoResposta, "plano");
 
 %>
 <!DOCTYPE html>
@@ -24,12 +24,9 @@
         integrity="sha512-DxV+EoADOkOygM4IR9yXP8Sb2qwgidEmeqAEmDKIOfPRQZOWbXCzLC6vjbZyy0vPisbH2SyW27+ddLVCN+OMzQ=="
         crossorigin="anonymous" referrerpolicy="no-referrer"/>
   <link rel="stylesheet" href="assets/style/tabelas/style.css">
-  <title>Simbia - Administrador</title>
+  <title>Simbia - Plano</title>
 </head>
 <body>
-<div id="popup-container">
-
-</div>
 <!-- MENU LATERAL -->
 <img src="assets/elements/icon-simbia.svg" alt="logo-simbia">
 <aside>
@@ -38,10 +35,12 @@
   <hr>
   <nav>
     <ul>
-      <li class="ativo">
-        <i class="fa-solid fa-user-shield"></i>
-        <p>Administrador</p>
-      </li>
+      <a href="administrador.jsp">
+        <li>
+          <i class="fa-solid fa-user-shield"></i>
+          <p>Administrador</p>
+        </li>
+      </a>
       <a href="permissao.jsp">
         <li>
           <i class="fa-solid fa-key"></i>
@@ -54,12 +53,10 @@
           <p>Vantagem</p>
         </li>
       </a>
-      <a href="plano.jsp">
-        <li>
-          <i class="fa-solid fa-dollar-sign"></i>
-          <p>Plano</p>
-        </li>
-      </a>
+      <li class="ativo">
+        <i class="fa-solid fa-dollar-sign"></i>
+        <p>Plano</p>
+      </li>
       <a href="vantagem-plano.jsp">
         <li>
           <i class="fa-solid fa-square-check"></i>
@@ -88,7 +85,7 @@
 <main>
   <!-- TOPO DA PÁGINA -->
   <header>
-    <h1>Administrador</h1>
+    <h1>Plano</h1>
     <div>
       <a href="" class="atualizar">
         <button name="atualizar">
@@ -96,15 +93,15 @@
           Atualizar
         </button>
       </a>
-      <button class="btnAdicionar" id="btnAdicionar"><img src="assets/elements/icon-adicionar.svg" alt="icone-adicionar">Adicionar registro</button>
+      <button><img src="assets/elements/icon-adicionar.svg" alt="icone-adicionar">Adicionar registro</button>
     </div>
 
   </header>
 
   <hr>
 
-  <form action="administrador/filtro" class="form-pesquisa" method="POST">
-    <input name="filtro" type="text" placeholder="Pesquisar">
+  <form action="" class="form-pesquisa">
+    <input type="text" placeholder="Pesquisar" name="filtro">
     <button type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
   </form>
 
@@ -132,7 +129,7 @@
       </th>
       <th>
         <div>
-          <p>EMAIL</p>
+          <p>Valor</p>
           <form action="">
             <button type="submit" value="porEmail"><i class="fa-solid fa-angle-down"></i></button>
           </form>
@@ -140,17 +137,17 @@
 
       </th>
       <th>
-        <p>SENHA</p>
+        <p>STATUS</p>
       </th>
     </tr>
     </thead>
     <tbody>
-    <% for (Administrador registro : registros){%>
+    <% for (Plano registro : registros){%>
     <tr>
-      <td class="id"><%=registro.getIdAdministrador()%></td>
-      <td><%=registro.getNome()%></td>
-      <td><%=registro.getEmail()%></td>
-      <td>[SENHA PROTEGIDA]</td>
+      <td class="id"><%=registro.getIdPlano()%></td>
+      <td><%=registro.getNomePlano()%></td>
+      <td><%=registro.getValor()%></td>
+      <td><%=(registro.isAtivo() ? "[ATIVO]" : "[INATIVO]")%></td>
 
       <td class="acoes">
         <div>
@@ -168,25 +165,21 @@
   </table>
 </main>
 </body>
-<script src="assets/js/script.js"></script>
-<script>
-  chamarPopUpDeAdd("/crud/assets/modals/popUpAddAdm.html")
-</script>
 </html>
 <%
-  } catch (UsuarioNaoAutenticadoException causa){
+} catch (UsuarioNaoAutenticadoException causa){
 %>
 <html>
-  <head>
+<head>
 
-  </head>
-  <body>
-    <h1>Acesso não autenticado</h1>
-    <a href="/crud/entrar.jsp">Autenticar</a>
-  </body>
+</head>
+<body>
+<h1>Acesso não autenticado</h1>
+<a href="/crud/entrar.jsp">Autenticar</a>
+</body>
 </html>
 <%
   } catch (RequisicaoSemRegistrosException causa){
-    requisicaoResposta.despacharPara("/administrador/registros");
+    requisicaoResposta.despacharPara("/plano/registros");
   }
 %>
