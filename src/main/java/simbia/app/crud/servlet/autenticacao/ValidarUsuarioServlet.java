@@ -1,4 +1,4 @@
-package simbia.app.crud.servlet;
+package simbia.app.crud.servlet.autenticacao;
 
 import java.io.IOException;
 import java.util.Optional;

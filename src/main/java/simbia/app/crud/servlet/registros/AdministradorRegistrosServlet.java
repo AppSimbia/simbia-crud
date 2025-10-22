@@ -1,4 +1,4 @@
-package simbia.app.crud.servlet;
+package simbia.app.crud.servlet.registros;
 
 import jakarta.servlet.annotation.WebServlet;
 import simbia.app.crud.dao.AdministradorDao;
