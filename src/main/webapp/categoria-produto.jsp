@@ -27,6 +27,7 @@
   <title>Simbia - Categoria Produto</title>
 </head>
 <body>
+<div id="popup-container"></div>
 <!-- MENU LATERAL -->
 <img src="assets/elements/icon-simbia.svg" alt="logo-simbia">
 <aside>
@@ -93,7 +94,7 @@
           Atualizar
         </button>
       </a>
-      <button><img src="assets/elements/icon-adicionar.svg" alt="icone-adicionar">Adicionar registro</button>
+      <button class="btnAdicionar" id="btnAdicionar"><img src="assets/elements/icon-adicionar.svg" alt="icone-adicionar">Adicionar registro</button>
     </div>
 
   </header>
@@ -158,6 +159,10 @@
   </table>
 </main>
 </body>
+<script src="assets/js/script.js"></script>
+<script>
+  chamarPopUpDeAdd("/crud/assets/modals/popUpAddProduto.html")
+</script>
 </html>
 <%
 } catch (UsuarioNaoAutenticadoException causa){
