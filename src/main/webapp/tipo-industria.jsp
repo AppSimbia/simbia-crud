@@ -91,7 +91,7 @@
     <header>
         <h1>Tipo Indústria</h1>
         <div>
-            <a href="" class="atualizar">
+            <a href="<%=request.getContextPath()%>/tipo-industria/atualizar" class="atualizar">
                 <button name="atualizar">
                     <img src="${pageContext.request.contextPath}/assets/elements/icon-atualizar.svg" alt="icon-atualizar">
                     Atualizar
