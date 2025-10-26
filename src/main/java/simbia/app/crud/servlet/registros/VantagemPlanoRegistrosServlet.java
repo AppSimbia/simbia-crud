@@ -2,14 +2,16 @@ package simbia.app.crud.servlet.registros;
 
 import jakarta.servlet.annotation.WebServlet;
 import simbia.app.crud.dao.VantagemPlanoDao;
+import simbia.app.crud.infra.dao.abstractclasses.DaoException;
 import simbia.app.crud.infra.servlet.abstractclasses.RegistrosServlet;
+import simbia.app.crud.model.dao.VantagemPlano;
 
 import java.util.List;
 
 @WebServlet("/vantagem-plano/registros")
-public class VantagemPlanoRegistrosServlet extends RegistrosServlet {
+public class VantagemPlanoRegistrosServlet extends RegistrosServlet<VantagemPlano> {
     @Override
-    public List recuperarRegistrosDaTabela() {
+    public List recuperarRegistrosDaTabela() throws DaoException {
         VantagemPlanoDao dao = new VantagemPlanoDao();
 
         return dao.recuperarTudo();
