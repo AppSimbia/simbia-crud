@@ -12,6 +12,6 @@ public class AdministradorAtualizarServlet extends AtualizarServlet {
 
     @Override
     public String enderecoDeRedirecionamento() {
-        return "../administrador.jsp";
+        return "/administrador.jsp";
     }
 }

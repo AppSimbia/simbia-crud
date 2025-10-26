@@ -12,6 +12,6 @@ public class TipoIndustriaAtualizarServlet extends AtualizarServlet {
 
     @Override
     public String enderecoDeRedirecionamento() {
-        return "../tipo-industria.jsp";
+        return "/tipo-industria.jsp";
     }
 }

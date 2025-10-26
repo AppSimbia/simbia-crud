@@ -12,6 +12,6 @@ public class CategoriaProdutoAtualizarServlet extends AtualizarServlet {
 
     @Override
     public String enderecoDeRedirecionamento() {
-        return "../categoria-produto.jsp";
+        return "/categoria-produto.jsp";
     }
 }

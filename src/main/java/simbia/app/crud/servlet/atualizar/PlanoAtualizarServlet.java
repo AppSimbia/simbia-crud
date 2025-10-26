@@ -12,6 +12,6 @@ public class PlanoAtualizarServlet extends AtualizarServlet {
 
     @Override
     public String enderecoDeRedirecionamento() {
-        return "../plano.jsp";
+        return "/plano.jsp";
     }
 }

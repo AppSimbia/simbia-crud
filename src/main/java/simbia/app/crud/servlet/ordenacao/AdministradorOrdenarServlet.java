@@ -24,11 +24,10 @@ public class AdministradorOrdenarServlet extends HttpServlet {
             throws ServletException, IOException {
 
         RequisicaoResposta requisicaoResposta = new RequisicaoResposta(requisicao, resposta);
-        String chaveRegistros = "administradorRegistros";
+        String chaveRegistros = "administrador" + (requisicaoResposta.existeAtributoNaRequisicao("administradorFormatados") ? "Formatados" : "Registros");
 
         try {
-            List<Administrador> registros = (List<Administrador>)
-                    requisicaoResposta.recuperarAtributoDaRequisicao("administradorRegistros");
+            List<Administrador> registros = (List<Administrador>) requisicaoResposta.recuperarAtributoDaRequisicao("administradorRegistros");
 
             ValidacoesDeDados.validarRegistros(registros);
 

@@ -10,6 +10,6 @@ public class VantagemAtualizarServlet extends AtualizarServlet {
 
     @Override
     public String enderecoDeRedirecionamento() {
-        return "../vantagem.jsp";
+        return "/vantagem.jsp";
     }
 }

@@ -12,6 +12,6 @@ public class PermissaoAtualizarServlet extends AtualizarServlet {
 
     @Override
     public String enderecoDeRedirecionamento() {
-        return "../permissao.jsp";
+        return "/permissao.jsp";
     }
 }
