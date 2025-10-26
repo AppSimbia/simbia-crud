@@ -1,8 +1,11 @@
 package simbia.app.crud.dao;
 
+import simbia.app.crud.infra.dao.abstractclasses.DaoException;
 import simbia.app.crud.infra.dao.abstractclasses.DaoGenerica;
 import simbia.app.crud.infra.dao.conection.ManipuladorConexao;
+import simbia.app.crud.infra.dao.exception.errosDeOperacao.NaoHouveAlteracaoNoBancoDeDadosException;
 import simbia.app.crud.model.dao.Permissao;
+import simbia.app.crud.util.ValidacoesDeDados;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -25,7 +28,7 @@ public class PermissaoDao extends DaoGenerica<Permissao> {
 
 //operacoes>gerais
     @Override
-    public boolean inserir(Permissao permissao) {
+    public void inserir(Permissao permissao) throws NaoHouveAlteracaoNoBancoDeDadosException, DaoException {
         boolean sucessoDaOperacao = false;
         Connection conexao = ManipuladorConexao.conectar();
         try{
@@ -35,19 +38,25 @@ public class PermissaoDao extends DaoGenerica<Permissao> {
 
             if (houveAlteracaoNoBanco(comandoInserir.executeUpdate())){
                 ResultSet retornoBanco = comandoInserir.getGeneratedKeys();
-                if(temProximoRegistro(retornoBanco)) permissao.setIdPermissao(retornoBanco.getLong("idpermissao"));
-                sucessoDaOperacao = true;
+
+                if(temProximoRegistro(retornoBanco)) {
+                    permissao.setIdPermissao(retornoBanco.getLong("idpermissao"));
+                    sucessoDaOperacao = true;
+                }
+
             }
+
+            ValidacoesDeDados.validarSucessoDeOperacao(sucessoDaOperacao);
+
         }catch (SQLException causa) {
             throw gerarExceptionEspecializadaPorSQLException(causa);
         }finally{
             ManipuladorConexao.desconectar(conexao);
         }
-        return sucessoDaOperacao;
     }
 
     @Override
-    public boolean atualizar(Permissao permissao) {
+    public void atualizar(Permissao permissao) throws NaoHouveAlteracaoNoBancoDeDadosException, DaoException {
         boolean sucessoDaOperacao = false;
         Connection conexao = ManipuladorConexao.conectar();
         try{
@@ -57,16 +66,18 @@ public class PermissaoDao extends DaoGenerica<Permissao> {
             comandoAtualizar.setLong(3, permissao.getIdPermissao());
 
             sucessoDaOperacao = houveAlteracaoNoBanco(comandoAtualizar.executeUpdate());
+
+            ValidacoesDeDados.validarSucessoDeOperacao(sucessoDaOperacao);
+
         }catch (SQLException causa) {
             throw gerarExceptionEspecializadaPorSQLException(causa);
         }finally {
             ManipuladorConexao.desconectar(conexao);
         }
-        return sucessoDaOperacao;
     }
 
     @Override
-    public boolean deletar(long id) {
+    public void deletar(long id) throws NaoHouveAlteracaoNoBancoDeDadosException, DaoException {
         boolean sucessoDaOperacao = false;
         Connection conexao = ManipuladorConexao.conectar();
         try{
@@ -74,16 +85,18 @@ public class PermissaoDao extends DaoGenerica<Permissao> {
             comandoDeletar.setLong(1, id);
 
             sucessoDaOperacao = houveAlteracaoNoBanco(comandoDeletar.executeUpdate());
+
+            ValidacoesDeDados.validarSucessoDeOperacao(sucessoDaOperacao);
+
         }catch (SQLException causa) {
             throw gerarExceptionEspecializadaPorSQLException(causa);
         }finally {
             ManipuladorConexao.desconectar(conexao);
         }
-        return sucessoDaOperacao;
     }
 
     @Override
-    public List<Permissao> recuperarTudo() {
+    public List<Permissao> recuperarTudo() throws DaoException {
         List<Permissao> listaPermissao = new ArrayList<>();
         Connection conexao = ManipuladorConexao.conectar();
         try{
@@ -100,7 +113,7 @@ public class PermissaoDao extends DaoGenerica<Permissao> {
     }
 
     @Override
-    public Optional<Permissao> recuperarPeloId(long id) {
+    public Optional<Permissao> recuperarPeloId(long id) throws DaoException {
         Permissao permissao = null;
         Connection conexao = ManipuladorConexao.conectar();
         try{

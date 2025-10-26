@@ -1,9 +1,12 @@
 package simbia.app.crud.dao;
 
 import org.mindrot.jbcrypt.BCrypt;
-import simbia.app.crud.infra.dao.abstractclasses.DaoManipuladorDeSenhasEEmails;
+import simbia.app.crud.infra.dao.abstractclasses.DaoException;
+import simbia.app.crud.infra.dao.abstractclasses.DaoManipuladorDeSenhasEmails;
 import simbia.app.crud.infra.dao.conection.ManipuladorConexao;
+import simbia.app.crud.infra.dao.exception.errosDeOperacao.NaoHouveAlteracaoNoBancoDeDadosException;
 import simbia.app.crud.model.dao.Administrador;
+import simbia.app.crud.util.ValidacoesDeDados;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -15,7 +18,7 @@ import static simbia.app.crud.util.UtilitariosException.gerarExceptionEspecializ
 /**
  * Classe de {@code Data Access Object} da entidade {@link Administrador}
  */
-public class AdministradorDao extends DaoManipuladorDeSenhasEEmails<Administrador> {
+public class AdministradorDao extends DaoManipuladorDeSenhasEmails<Administrador> {
 
 //atributos>constantes>comandos-sql
     private static final String COMANDO_INSERIR = "INSERT INTO administrador(cemail, csenha, cnome) VALUES (?, ?, ?)";
@@ -27,7 +30,7 @@ public class AdministradorDao extends DaoManipuladorDeSenhasEEmails<Administrado
 
 //operacoes>gerais
     @Override
-    public boolean inserir(Administrador administrador) {
+    public void inserir(Administrador administrador) throws NaoHouveAlteracaoNoBancoDeDadosException, DaoException {
         boolean sucessoDaOperacao = false;
         Connection conexao = ManipuladorConexao.conectar();
         try{
@@ -39,21 +42,24 @@ public class AdministradorDao extends DaoManipuladorDeSenhasEEmails<Administrado
 
             if (houveAlteracaoNoBanco(comandoInserir.executeUpdate())){
                 ResultSet retornoBanco = comandoInserir.getGeneratedKeys();
+
                 if (temProximoRegistro(retornoBanco)){
                     administrador.setIdAdministrador(retornoBanco.getLong("idadministrador"));
                     sucessoDaOperacao = true;
                 }
             }
+
+            ValidacoesDeDados.validarSucessoDeOperacao(sucessoDaOperacao);
+
         } catch (SQLException causa) {
             throw gerarExceptionEspecializadaPorSQLException(causa);
         }finally{
             ManipuladorConexao.desconectar(conexao);
         }
-        return sucessoDaOperacao;
     }
 
     @Override
-    public boolean atualizar(Administrador administrador) {
+    public void atualizar(Administrador administrador) throws NaoHouveAlteracaoNoBancoDeDadosException, DaoException {
         boolean sucessoDaOperacao = false;
         Connection conexao = ManipuladorConexao.conectar();
         try {
@@ -64,16 +70,18 @@ public class AdministradorDao extends DaoManipuladorDeSenhasEEmails<Administrado
             comandoAtualizar.setLong(4, administrador.getIdAdministrador());
 
             sucessoDaOperacao = houveAlteracaoNoBanco(comandoAtualizar.executeUpdate());
+
+            ValidacoesDeDados.validarSucessoDeOperacao(sucessoDaOperacao);
+
         } catch (SQLException causa) {
             throw gerarExceptionEspecializadaPorSQLException(causa);
         }finally {
             ManipuladorConexao.desconectar(conexao);
         }
-        return sucessoDaOperacao;
     }
 
     @Override
-    public boolean deletar(long id) {
+    public void deletar(long id) throws NaoHouveAlteracaoNoBancoDeDadosException, DaoException{
         boolean sucessoDaOperacao = false;
         Connection conexao = ManipuladorConexao.conectar();
         try{
@@ -81,16 +89,18 @@ public class AdministradorDao extends DaoManipuladorDeSenhasEEmails<Administrado
             comandoDeletar.setLong(1, id);
 
             sucessoDaOperacao = houveAlteracaoNoBanco(comandoDeletar.executeUpdate());
+
+            ValidacoesDeDados.validarSucessoDeOperacao(sucessoDaOperacao);
+
         }catch (SQLException causa){
             throw gerarExceptionEspecializadaPorSQLException(causa);
         }finally {
             ManipuladorConexao.desconectar(conexao);
         }
-        return sucessoDaOperacao;
     }
 
     @Override
-    public List<Administrador> recuperarTudo() {
+    public List<Administrador> recuperarTudo() throws DaoException{
         List<Administrador> listaAdministradores = new ArrayList<>();
         Connection conexao = ManipuladorConexao.conectar();
         try{
@@ -109,7 +119,7 @@ public class AdministradorDao extends DaoManipuladorDeSenhasEEmails<Administrado
     }
 
     @Override
-    public Optional<Administrador> recuperarPeloId(long id) {
+    public Optional<Administrador> recuperarPeloId(long id) throws DaoException{
         Administrador administrador = null;
         Connection conexao = ManipuladorConexao.conectar();
         try{
@@ -127,7 +137,7 @@ public class AdministradorDao extends DaoManipuladorDeSenhasEEmails<Administrado
     }
 //operacoes>especificas
     @Override
-    public Optional<Administrador> recuperarPeloEmailESenha(String email, String senhaPura){
+    public Optional<Administrador> recuperarPeloEmailESenha(String email, String senhaPura) throws DaoException{
         Connection conexao = ManipuladorConexao.conectar();
         Administrador registroCorrepondente = null;
         try{

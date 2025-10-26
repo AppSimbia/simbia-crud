@@ -1,8 +1,11 @@
 package simbia.app.crud.dao;
 
+import simbia.app.crud.infra.dao.abstractclasses.DaoException;
 import simbia.app.crud.infra.dao.abstractclasses.DaoGenerica;
 import simbia.app.crud.infra.dao.conection.ManipuladorConexao;
+import simbia.app.crud.infra.dao.exception.errosDeOperacao.NaoHouveAlteracaoNoBancoDeDadosException;
 import simbia.app.crud.model.dao.TipoIndustria;
+import simbia.app.crud.util.ValidacoesDeDados;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -24,7 +27,7 @@ public class TipoIndustriaDao extends DaoGenerica<TipoIndustria> {
 
 //operacoes>gerais
     @Override
-    public boolean inserir(TipoIndustria tipoIndustria) {
+    public void inserir(TipoIndustria tipoIndustria) throws NaoHouveAlteracaoNoBancoDeDadosException, DaoException {
         boolean sucessoDaOperacao = false;
         Connection conexao = ManipuladorConexao.conectar();
         try{
@@ -40,16 +43,18 @@ public class TipoIndustriaDao extends DaoGenerica<TipoIndustria> {
                     sucessoDaOperacao = true;
                 }
             }
+
+            ValidacoesDeDados.validarSucessoDeOperacao(sucessoDaOperacao);
+
         }catch (SQLException causa) {
             throw gerarExceptionEspecializadaPorSQLException(causa);
         }finally {
             ManipuladorConexao.desconectar(conexao);
         }
-        return sucessoDaOperacao;
     }
 
     @Override
-    public boolean atualizar(TipoIndustria tipoIndustria) {
+    public void atualizar(TipoIndustria tipoIndustria) throws NaoHouveAlteracaoNoBancoDeDadosException, DaoException{
         boolean sucessoDaOperacao = false;
         Connection conexao = ManipuladorConexao.conectar();
         try{
@@ -59,33 +64,37 @@ public class TipoIndustriaDao extends DaoGenerica<TipoIndustria> {
             comandoAtualizar.setLong(3, tipoIndustria.getIdTipoIndustria());
 
             sucessoDaOperacao = houveAlteracaoNoBanco(comandoAtualizar.executeUpdate());
+
+            ValidacoesDeDados.validarSucessoDeOperacao(sucessoDaOperacao);
+
         }catch (SQLException causa) {
             throw gerarExceptionEspecializadaPorSQLException(causa);
         }finally {
             ManipuladorConexao.desconectar(conexao);
         }
-        return sucessoDaOperacao;
     }
 
     @Override
-    public boolean deletar(long id) {
-        boolean sucesso = false;
+    public void deletar(long id) throws NaoHouveAlteracaoNoBancoDeDadosException, DaoException {
+        boolean sucessoDaOperacao = false;
         Connection conexao = ManipuladorConexao.conectar();
         try{
             PreparedStatement comandoDeletar = conexao.prepareStatement(COMANDO_DELETAR);
             comandoDeletar.setLong(1, id);
 
-            sucesso = houveAlteracaoNoBanco(comandoDeletar.executeUpdate());
+            sucessoDaOperacao = houveAlteracaoNoBanco(comandoDeletar.executeUpdate());
+
+            ValidacoesDeDados.validarSucessoDeOperacao(sucessoDaOperacao);
+
         }catch (SQLException causa) {
             throw gerarExceptionEspecializadaPorSQLException(causa);
         }finally {
             ManipuladorConexao.desconectar(conexao);
         }
-        return sucesso;
     }
 
     @Override
-    public List<TipoIndustria> recuperarTudo() {
+    public List<TipoIndustria> recuperarTudo() throws DaoException {
         List<TipoIndustria> listaTipoIndustria = new ArrayList<>();
         Connection conexao = ManipuladorConexao.conectar();
         try{
@@ -102,7 +111,7 @@ public class TipoIndustriaDao extends DaoGenerica<TipoIndustria> {
     }
 
     @Override
-    public Optional<TipoIndustria> recuperarPeloId(long id) {
+    public Optional<TipoIndustria> recuperarPeloId(long id) throws DaoException {
         TipoIndustria tipoIndustria = null;
         Connection conexao = ManipuladorConexao.conectar();
         try{

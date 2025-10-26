@@ -1,8 +1,11 @@
 package simbia.app.crud.dao;
 
+import simbia.app.crud.infra.dao.abstractclasses.DaoException;
 import simbia.app.crud.infra.dao.abstractclasses.DaoGenerica;
 import simbia.app.crud.infra.dao.conection.ManipuladorConexao;
+import simbia.app.crud.infra.dao.exception.errosDeOperacao.NaoHouveAlteracaoNoBancoDeDadosException;
 import simbia.app.crud.model.dao.Vantagem;
+import simbia.app.crud.util.ValidacoesDeDados;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -24,8 +27,8 @@ public class VantagemDao extends DaoGenerica<Vantagem> {
 
 //operacoes>gerais
     @Override
-    public boolean inserir(Vantagem vantagem) {
-        boolean sucesso = false;
+    public void inserir(Vantagem vantagem) throws NaoHouveAlteracaoNoBancoDeDadosException, DaoException {
+        boolean sucessoDaOperacao = false;
         Connection conexao = ManipuladorConexao.conectar();
         try{
             PreparedStatement comandoInserir = conexao.prepareStatement(COMANDO_INSERIR, Statement.RETURN_GENERATED_KEYS);
@@ -35,20 +38,25 @@ public class VantagemDao extends DaoGenerica<Vantagem> {
             if (houveAlteracaoNoBanco(comandoInserir.executeUpdate())){
                 ResultSet retornoBanco = comandoInserir.getGeneratedKeys();
 
-                if(temProximoRegistro(retornoBanco)) vantagem.setIdVantagem(retornoBanco.getLong("idvantagem"));
-                sucesso = true;
+                if(temProximoRegistro(retornoBanco)){
+                    vantagem.setIdVantagem(retornoBanco.getLong("idvantagem"));
+                    sucessoDaOperacao = true;
+                }
+
             }
+
+            ValidacoesDeDados.validarSucessoDeOperacao(sucessoDaOperacao);
+
         }catch (SQLException causa) {
             throw gerarExceptionEspecializadaPorSQLException(causa);
         }finally {
             ManipuladorConexao.desconectar(conexao);
         }
-        return sucesso;
     }
 
     @Override
-    public boolean atualizar(Vantagem vantagem) {
-        boolean sucesso = false;
+    public void atualizar(Vantagem vantagem) throws NaoHouveAlteracaoNoBancoDeDadosException, DaoException {
+        boolean sucessoDaOperacao = false;
         Connection conexao = ManipuladorConexao.conectar();
         try{
             PreparedStatement comandoAtualizar = conexao.prepareStatement(COMANDO_ATUALIZAR);
@@ -57,34 +65,38 @@ public class VantagemDao extends DaoGenerica<Vantagem> {
             comandoAtualizar.setString(2, vantagem.getDescricao());
             comandoAtualizar.setLong(3, vantagem.getIdVantagem());
 
-            sucesso = houveAlteracaoNoBanco(comandoAtualizar.executeUpdate());
+            sucessoDaOperacao = houveAlteracaoNoBanco(comandoAtualizar.executeUpdate());
+
+            ValidacoesDeDados.validarSucessoDeOperacao(sucessoDaOperacao);
+
         }catch (SQLException causa) {
             throw gerarExceptionEspecializadaPorSQLException(causa);
         }finally {
             ManipuladorConexao.desconectar(conexao);
         }
-        return sucesso;
     }
 
     @Override
-    public boolean deletar(long id) {
-        boolean sucesso = false;
+    public void deletar(long id) throws NaoHouveAlteracaoNoBancoDeDadosException, DaoException{
+        boolean sucessoDaOperacao = false;
         Connection conexao = ManipuladorConexao.conectar();
         try{
             PreparedStatement comandoDeletar = conexao.prepareStatement(COMANDO_DELETAR);
             comandoDeletar.setLong(1, id);
 
-            sucesso = houveAlteracaoNoBanco(comandoDeletar.executeUpdate());
+            sucessoDaOperacao = houveAlteracaoNoBanco(comandoDeletar.executeUpdate());
+
+            ValidacoesDeDados.validarSucessoDeOperacao(sucessoDaOperacao);
+
         }catch (SQLException causa) {
             throw gerarExceptionEspecializadaPorSQLException(causa);
         }finally {
             ManipuladorConexao.desconectar(conexao);
         }
-        return sucesso;
     }
 
     @Override
-    public List<Vantagem> recuperarTudo() {
+    public List<Vantagem> recuperarTudo() throws DaoException {
         List<Vantagem> listaVantagem = new ArrayList<>();
         Connection conexao = ManipuladorConexao.conectar();
         try{
@@ -101,7 +113,7 @@ public class VantagemDao extends DaoGenerica<Vantagem> {
     }
 
     @Override
-    public Optional<Vantagem> recuperarPeloId(long id) {
+    public Optional<Vantagem> recuperarPeloId(long id) throws DaoException {
         Vantagem vantagem = null;
         Connection conexao = ManipuladorConexao.conectar();
         try{

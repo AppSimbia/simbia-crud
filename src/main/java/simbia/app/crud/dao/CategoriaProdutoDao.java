@@ -1,8 +1,11 @@
 package simbia.app.crud.dao;
 
+import simbia.app.crud.infra.dao.abstractclasses.DaoException;
 import simbia.app.crud.infra.dao.abstractclasses.DaoGenerica;
 import simbia.app.crud.infra.dao.conection.ManipuladorConexao;
+import simbia.app.crud.infra.dao.exception.errosDeOperacao.NaoHouveAlteracaoNoBancoDeDadosException;
 import simbia.app.crud.model.dao.CategoriaProduto;
+import simbia.app.crud.util.ValidacoesDeDados;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -25,7 +28,7 @@ public class CategoriaProdutoDao extends DaoGenerica<CategoriaProduto> {
 
 //operacoes>gerais
     @Override
-    public boolean inserir(CategoriaProduto categoriaProduto) {
+    public void inserir(CategoriaProduto categoriaProduto) throws NaoHouveAlteracaoNoBancoDeDadosException, DaoException {
         boolean sucessoDaOperacao = false;
         Connection conexao = ManipuladorConexao.conectar();
         try{
@@ -35,19 +38,25 @@ public class CategoriaProdutoDao extends DaoGenerica<CategoriaProduto> {
 
             if (houveAlteracaoNoBanco(comandoInserir.executeUpdate())){
                 ResultSet retornoBanco = comandoInserir.getGeneratedKeys();
-                if(temProximoRegistro(retornoBanco)) categoriaProduto.setIdCategoriaProduto(retornoBanco.getLong("idcategoriaproduto"));
-                sucessoDaOperacao = true;
+
+                if(temProximoRegistro(retornoBanco)){
+                    categoriaProduto.setIdCategoriaProduto(retornoBanco.getLong("idcategoriaproduto"));
+                    sucessoDaOperacao = true;
+                }
+
             }
+
+            ValidacoesDeDados.validarSucessoDeOperacao(sucessoDaOperacao);
+
         } catch (SQLException causa) {
             throw gerarExceptionEspecializadaPorSQLException(causa);
         }finally{
             ManipuladorConexao.desconectar(conexao);
         }
-        return sucessoDaOperacao;
     }
 
     @Override
-    public boolean atualizar(CategoriaProduto categoriaProduto) {
+    public void atualizar(CategoriaProduto categoriaProduto) throws NaoHouveAlteracaoNoBancoDeDadosException, DaoException {
         boolean sucessoDaOperacao = false;
         Connection conexao = ManipuladorConexao.conectar();
         try{
@@ -57,16 +66,18 @@ public class CategoriaProdutoDao extends DaoGenerica<CategoriaProduto> {
             comandoAtualizar.setLong(3, categoriaProduto.getIdCategoriaProduto());
 
             sucessoDaOperacao = houveAlteracaoNoBanco(comandoAtualizar.executeUpdate());
+
+            ValidacoesDeDados.validarSucessoDeOperacao(sucessoDaOperacao);
+
         }catch (SQLException causa) {
             throw gerarExceptionEspecializadaPorSQLException(causa);
         }finally {
             ManipuladorConexao.desconectar(conexao);
         }
-        return sucessoDaOperacao;
     }
 
     @Override
-    public boolean deletar(long id) {
+    public void deletar(long id) throws NaoHouveAlteracaoNoBancoDeDadosException, DaoException {
         boolean sucessoDaOperacao = false;
         Connection conexao = ManipuladorConexao.conectar();
         try{
@@ -74,16 +85,18 @@ public class CategoriaProdutoDao extends DaoGenerica<CategoriaProduto> {
             comandoDeletar.setLong(1, id);
 
             sucessoDaOperacao = houveAlteracaoNoBanco(comandoDeletar.executeUpdate());
+
+            ValidacoesDeDados.validarSucessoDeOperacao(sucessoDaOperacao);
+
         }catch (SQLException causa) {
             throw gerarExceptionEspecializadaPorSQLException(causa);
         }finally {
             ManipuladorConexao.desconectar(conexao);
         }
-        return sucessoDaOperacao;
     }
 
     @Override
-    public List<CategoriaProduto> recuperarTudo() {
+    public List<CategoriaProduto> recuperarTudo() throws DaoException {
         List<CategoriaProduto> listaCategoriaProduto = new ArrayList<>();
         Connection conexao = ManipuladorConexao.conectar();
         try{
@@ -100,7 +113,7 @@ public class CategoriaProdutoDao extends DaoGenerica<CategoriaProduto> {
     }
 
     @Override
-    public Optional<CategoriaProduto> recuperarPeloId(long id) {
+    public Optional<CategoriaProduto> recuperarPeloId(long id) throws DaoException {
         CategoriaProduto categoriaProduto = null;
         Connection conexao = ManipuladorConexao.conectar();
         try{
