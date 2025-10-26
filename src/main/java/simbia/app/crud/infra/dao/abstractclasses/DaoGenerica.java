@@ -1,5 +1,7 @@
 package simbia.app.crud.infra.dao.abstractclasses;
 
+import simbia.app.crud.infra.dao.exception.errosDeOperacao.NaoHouveAlteracaoNoBancoDeDadosException;
+
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
@@ -21,7 +23,7 @@ public abstract class DaoGenerica<T> {
      *          mas sem a {@code primary key}.
      * @return um booleano que é {@code true} caso tenha dado certo, ou {@code false} caso tenha dado errado.
      */
-    public abstract boolean inserir(T t);
+    public abstract void inserir(T t) throws NaoHouveAlteracaoNoBancoDeDadosException, DaoException;
 
     /**
      * Atualiza uma entidade existente no banco de dados.
@@ -30,7 +32,7 @@ public abstract class DaoGenerica<T> {
      *          A {@code primary key} deve estar preenchida para identificar o registro.
      * @return um booleano que é {@code true} caso tenha dado certo, ou {@code false} caso tenha dado errado.
      */
-    public abstract boolean atualizar(T t);
+    public abstract void atualizar(T t) throws NaoHouveAlteracaoNoBancoDeDadosException, DaoException;
 
     /**
      * Deleta um registro da entidade {@code T} no banco de dados com base no seu ID.
@@ -39,7 +41,7 @@ public abstract class DaoGenerica<T> {
      *
      * @return um booleano que é {@code true} caso tenha dado certo, ou {@code false} caso tenha dado errado.
      */
-    public abstract boolean deletar(long id);
+    public abstract void deletar(long id) throws NaoHouveAlteracaoNoBancoDeDadosException, DaoException;
 
     /**
      * Recupera todos os registros da entidade {@code T} do banco de dados.
@@ -47,7 +49,7 @@ public abstract class DaoGenerica<T> {
      * @return uma {@link List} contendo todas as entidades encontradas.
      *         A lista pode estar vazia caso não haja registros.
      */
-    public abstract List<T> recuperarTudo();
+    public abstract List<T> recuperarTudo() throws DaoException;
 
     /**
      * Busca e retorna uma entidade {@code T} específica com base no seu ID.
@@ -56,7 +58,7 @@ public abstract class DaoGenerica<T> {
      * @return um {@link Optional} contendo a entidade se ela foi encontrada,
      *         ou {@link Optional#empty()} caso o contrário.
      */
-    public abstract Optional<T> recuperarPeloId(long id);
+    public abstract Optional<T> recuperarPeloId(long id) throws DaoException;
 
     //métodos utilitários
     protected boolean houveAlteracaoNoBanco(int linhasAfetadas){

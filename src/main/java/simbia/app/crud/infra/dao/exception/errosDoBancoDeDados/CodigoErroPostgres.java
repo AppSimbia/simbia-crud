@@ -1,4 +1,4 @@
-package simbia.app.crud.infra.dao.exception;
+package simbia.app.crud.infra.dao.exception.errosDoBancoDeDados;
 
 /**
  * Enumeração de códigos de erro do PostgreSQL.

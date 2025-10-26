@@ -1,6 +1,6 @@
 package simbia.app.crud.util;
 
-import simbia.app.crud.infra.dao.exception.*;
+import simbia.app.crud.infra.dao.exception.errosDoBancoDeDados.*;
 
 import java.sql.SQLException;
 import java.time.LocalDateTime;

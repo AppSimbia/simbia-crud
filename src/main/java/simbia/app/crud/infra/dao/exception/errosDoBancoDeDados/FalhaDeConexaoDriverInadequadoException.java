@@ -1,4 +1,4 @@
-package simbia.app.crud.infra.dao.exception;
+package simbia.app.crud.infra.dao.exception.errosDoBancoDeDados;
 
 import simbia.app.crud.infra.dao.abstractclasses.DaoException;
 

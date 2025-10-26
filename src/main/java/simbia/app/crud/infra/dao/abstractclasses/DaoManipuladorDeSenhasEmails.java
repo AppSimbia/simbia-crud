@@ -12,7 +12,7 @@ import java.util.Optional;
  *
  * @param <T> Classe entidade da tabela do banco
  */
-public abstract class DaoManipuladorDeSenhasEEmails<T> extends DaoGenerica<Administrador>{
+public abstract class DaoManipuladorDeSenhasEmails<T> extends DaoGenerica<Administrador> {
     /**
      * Método que retona um registro do banco de dados por email e senha.
      *
@@ -20,7 +20,7 @@ public abstract class DaoManipuladorDeSenhasEEmails<T> extends DaoGenerica<Admin
      * @param senhaPura Senha da Entidade sem qualquer serializacao
      * @return Um objeto {@code Optional} contendo, caso haja, o registro do banco de dados com o email da Entidade
      */
-    public abstract Optional<T> recuperarPeloEmailESenha(String email, String senhaPura);
+    public abstract Optional<T> recuperarPeloEmailESenha(String email, String senhaPura) ;
 
     //métodos utilitários
     protected static String gerarHashBCrypt(String senhaPura){
