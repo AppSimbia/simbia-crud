@@ -4,6 +4,7 @@ import simbia.app.crud.infra.dao.exception.errosDeOperacao.NaoHouveAlteracaoNoBa
 import simbia.app.crud.infra.servlet.exception.*;
 import simbia.app.crud.model.servlet.RequisicaoResposta;
 
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -31,8 +32,8 @@ public class ValidacoesDeDados {
         if (!requisicaoResposta.existeSessaoDaRequisicao("administradorAutenticado")) throw new UsuarioNaoAutenticadoException();
     }
 
-    public static void validarFiltro(String filtro) throws RequisicaoSemFiltroException{
-        if (filtro == null || filtro.trim().isEmpty()) throw new RequisicaoSemFiltroException();
+    public static <T> void validarRegistros(List<T> registros) throws RequisicaoSemRegistrosException{
+        if (registros == null) throw new RequisicaoSemRegistrosException();
     }
 
     public static void validarTipoDeOrdenacao(String tipoOrdenacao) throws RequisicaoSemTipoOrdenacaoException{
