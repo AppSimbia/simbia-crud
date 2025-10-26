@@ -32,10 +32,10 @@ public abstract class FiltroServlet<T> extends HttpServlet {
 
         ValidacoesDeDados.validarRegistros(registros);
 
-        String filtro = gerarRegexDeFiltroDaRequisicao(requisicaoResposta);
+        String regexFiltro = gerarRegexDeFiltroDaRequisicao(requisicaoResposta);
 
         for (T entidade : registros){
-            if (entidadeCorrepondeAoFiltro(filtro, entidade)){
+            if (entidadeCorrepondeAoFiltro(regexFiltro, entidade)){
                 registrosFiltrados.add(entidade);
             }
         }
@@ -48,13 +48,13 @@ public abstract class FiltroServlet<T> extends HttpServlet {
         String regexDeFiltro = ".*";
 
         if ((filtro != null && !filtro.trim().isEmpty())) {
-            regexDeFiltro = "(?=.*" + filtro.toLowerCase() + ")";
+            regexDeFiltro = ".*" + filtro.toLowerCase() + ".*";
         }
 
         return regexDeFiltro;
     }
 
-    public abstract boolean entidadeCorrepondeAoFiltro(String filtro, T entidade);
+    public abstract boolean entidadeCorrepondeAoFiltro(String regexFiltro, T entidade);
 
     public abstract String nomeDaTabela();
 

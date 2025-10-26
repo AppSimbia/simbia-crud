@@ -31,14 +31,14 @@
 
 </div>
 <!-- MENU LATERAL -->
-<img src="assets/elements/icon-simbia.svg" alt="logo-simbia">
+<img src="${pageContext.request.contextPath}/assets/elements/icon-simbia.svg" alt="logo-simbia">
 <aside>
   <h1>Tabelas</h1>
 
   <hr>
   <nav>
     <ul>
-      <a href="administrador.jsp">
+      <a href="${pageContext.request.contextPath}/administrador.jsp">
         <li>
           <i class="fa-solid fa-user-shield"></i>
           <p>Administrador</p>
@@ -48,31 +48,31 @@
         <i class="fa-solid fa-key"></i>
         <p>Permissão</p>
       </li>
-      <a href="vantagem.jsp">
+      <a href="${pageContext.request.contextPath}/vantagem.jsp">
         <li>
           <i class="fa-solid fa-hand-sparkles"></i>
           <p>Vantagem</p>
         </li>
       </a>
-      <a href="plano.jsp">
+      <a href="${pageContext.request.contextPath}/plano.jsp">
         <li>
           <i class="fa-solid fa-dollar-sign"></i>
           <p>Plano</p>
         </li>
       </a>
-      <a href="vantagem-plano.jsp">
+      <a href="${pageContext.request.contextPath}/vantagem-plano.jsp">
         <li>
           <i class="fa-solid fa-square-check"></i>
           <p>Vantagem plano</p>
         </li>
       </a>
-      <a href="tipo-industria.jsp">
+      <a href="${pageContext.request.contextPath}/tipo-industria.jsp">
         <li>
           <i class="fa-solid fa-layer-group"></i>
           <p>Tipo Indústria</p>
         </li>
       </a>
-      <a href="categoria-produto.jsp">
+      <a href="${pageContext.request.contextPath}/categoria-produto.jsp">
         <li>
           <i class="fa-solid fa-box-archive"></i>
           <p>Categoria Produto</p>
@@ -92,18 +92,18 @@
     <div>
       <a href="" class="atualizar">
         <button name="atualizar">
-          <img src="assets/elements/icon-atualizar.svg" alt="icon-atualizar">
+          <img src="${pageContext.request.contextPath}/assets/elements/icon-atualizar.svg" alt="icon-atualizar">
           Atualizar
         </button>
       </a>
-      <button class="btnAdicionar" id="btnAdicionar"><img src="assets/elements/icon-adicionar.svg" alt="icone-adicionar">Adicionar registro</button>
+      <button class="btnAdicionar" id="btnAdicionar"><img src="${pageContext.request.contextPath}/assets/elements/icon-adicionar.svg" alt="icone-adicionar">Adicionar registro</button>
     </div>
 
   </header>
 
   <hr>
 
-  <form action="" class="form-pesquisa">
+  <form action="<%=request.getContextPath()%>/permissao/filtro" class="form-pesquisa">
     <input type="text" placeholder="Pesquisar" name="filtro">
     <button type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
   </form>
@@ -148,10 +148,10 @@
       <td class="acoes">
         <div>
           <button name="editar">
-            <img src="assets/elements/editar.svg" alt="">
+            <img src="${pageContext.request.contextPath}/assets/elements/editar.svg" alt="">
           </button>
           <button type="submit" name="apagar">
-            <img src="assets/elements/apagar.svg" alt="">
+            <img src="${pageContext.request.contextPath}/assets/elements/apagar.svg" alt="">
           </button>
         </div>
       </td>
@@ -161,7 +161,7 @@
   </table>
 </main>
 </body>
-<script src="assets/js/script.js"></script>
+<script src="${pageContext.request.contextPath}/assets/js/script.js"></script>
 <script>
   chamarPopUpDeAdd("/crud/assets/modals/popUpAddPermissao.html")
 </script>
