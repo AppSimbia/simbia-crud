@@ -24,6 +24,7 @@
         integrity="sha512-DxV+EoADOkOygM4IR9yXP8Sb2qwgidEmeqAEmDKIOfPRQZOWbXCzLC6vjbZyy0vPisbH2SyW27+ddLVCN+OMzQ=="
         crossorigin="anonymous" referrerpolicy="no-referrer"/>
   <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/style/tabelas/style.css">
+  <link rel="icon" href="${pageContext.request.contextPath}/assets/elements/logo-bolinha.svg">
   <title>Simbia - Plano</title>
 </head>
 <body>

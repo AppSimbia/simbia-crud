@@ -6,6 +6,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/style/entrar/style.css">
+  <link rel="icon" href="${pageContext.request.contextPath}/assets/elements/logo-bolinha.svg">
   <title>Bem-vindo ao Crud Simbia</title>
 </head>
 <body id="body-login">
