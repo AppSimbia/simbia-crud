@@ -33,6 +33,7 @@
 
 body{
     background-color: var(--branco-secundario);
+    overflow-x: hidden;
 }
 
 /* estilizações do menu lateral */
@@ -211,9 +212,10 @@ main hr{
 }
 
 table{
-    width: clamp(220px, 100%, 100%);
+    width: 100%;
     border-collapse: separate;
     border-spacing:  0 9px;
+    overflow-x: auto;
 }
 
 th{
@@ -287,6 +289,7 @@ tbody tr{
     background-color: var(--branco-primario);
     box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.101);
     border-radius: 7px;
+    overflow-x: auto;
 }
 
 tbody tr td{
