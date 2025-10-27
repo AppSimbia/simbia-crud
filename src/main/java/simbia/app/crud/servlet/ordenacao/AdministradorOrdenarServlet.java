@@ -6,6 +6,8 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
+import simbia.app.crud.dao.AdministradorDao;
+import simbia.app.crud.infra.dao.abstractclasses.DaoException;
 import simbia.app.crud.infra.servlet.abstractclasses.OrdenarServlet;
 import simbia.app.crud.infra.servlet.exception.RequisicaoSemRegistrosException;
 import simbia.app.crud.infra.servlet.exception.RequisicaoSemTipoOrdenacaoException;
@@ -27,12 +29,26 @@ public class AdministradorOrdenarServlet extends HttpServlet {
         String chaveRegistros = "administradorRegistros";
 
         try {
+            @SuppressWarnings("unchecked")
             List<Administrador> registros = (List<Administrador>)
                     requisicaoResposta.recuperarAtributoDaRequisicao("administradorRegistros");
 
+            if (registros == null || registros.isEmpty()) {
+                // recarrega diretamente do banco
+                AdministradorDao dao = new AdministradorDao();
+                try {
+                    registros = dao.recuperarTudo();
+                } catch (DaoException e) {
+                    e.printStackTrace();
+                    requisicaoResposta.redirecionarPara("/administrador/erroEmRegistros.jsp");
+                    return;
+                }
+            }
+
             ValidacoesDeDados.validarRegistros(registros);
 
-            String tipoOrdenacao = requisicaoResposta.recuperarParametroDaRequisicao("criterio");
+            // CORRIGIDO: Alterado de "criterio" para "tipoOrdenacao"
+            String tipoOrdenacao = requisicaoResposta.recuperarParametroDaRequisicao("tipoOrdenacao");
             String ordem = requisicaoResposta.recuperarParametroDaRequisicao("ordem");
 
             ValidacoesDeDados.validarTipoDeOrdenacao(tipoOrdenacao);
@@ -52,7 +68,7 @@ public class AdministradorOrdenarServlet extends HttpServlet {
 
         } catch (RequisicaoSemRegistrosException | RequisicaoSemTipoOrdenacaoException causa) {
             causa.printStackTrace();
-            requisicaoResposta.redirecionarPara("../administrador/registros");
+            requisicaoResposta.redirecionarPara("/administrador/registros");
         }
     }
 }

@@ -37,11 +37,18 @@ public class ValidacoesDeDados {
     }
 
     public static void validarTipoDeOrdenacao(String tipoOrdenacao) throws RequisicaoSemTipoOrdenacaoException{
-        if(     tipoOrdenacao != "porId"
-                && tipoOrdenacao != "porEmail"
-                && tipoOrdenacao != "porNome"
-                && tipoOrdenacao != "porValor"
-        ) throw new RequisicaoSemTipoOrdenacaoException();
+        // Verifica se é nulo ou vazio primeiro
+        if (tipoOrdenacao == null || tipoOrdenacao.trim().isEmpty()) {
+            throw new RequisicaoSemTipoOrdenacaoException();
+        }
+
+        // Usa equals() para comparar Strings e valida contra os valores corretos
+        if (!tipoOrdenacao.equals("idAdministrador")
+                && !tipoOrdenacao.equals("porEmail")
+                && !tipoOrdenacao.equals("porNome")
+                && !tipoOrdenacao.equals("porValor")) {
+            throw new RequisicaoSemTipoOrdenacaoException();
+        }
     }
 
     public static void validarSucessoDeOperacao(boolean sucesso){
