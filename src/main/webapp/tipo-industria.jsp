@@ -162,10 +162,6 @@
     </table>
 </main>
 </body>
-<script src="${pageContext.request.contextPath}/assets/js/script.js"></script>
-<script>
-    chamarPopUpDeAdd("/crud/assets/modals/popUpAddIndustria.html")
-</script>
 </html>
 <%
 } catch (UsuarioNaoAutenticadoException causa){
