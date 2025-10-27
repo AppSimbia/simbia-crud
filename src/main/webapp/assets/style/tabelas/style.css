@@ -311,3 +311,11 @@ table tbody tr td:last-child {
     border-bottom-right-radius: 8px;
     border-right: none;
 }
+th button i {
+    color: gray;
+    transition: color 0.3s;
+}
+
+th button i.icone-ativo {
+    color: var(--ciano-escuro);
+}
