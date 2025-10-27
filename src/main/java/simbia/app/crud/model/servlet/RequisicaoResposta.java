@@ -131,6 +131,14 @@ public class RequisicaoResposta {
     }
 
     /**
+     * Remove um atributo do escopo da sessao HTTP.
+     * @param chave Nome do atributo a ser removido
+     */
+    public void removerAtributoNaSessao(String chave){
+        requisicao.getSession().removeAttribute(chave);
+    }
+
+    /**
      * Verifica se existe um atributo especifico na requisicao.
      *
      * @param nome Nome do atributo a ser verificado
