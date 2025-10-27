@@ -47,7 +47,6 @@ public class AdministradorOrdenarServlet extends HttpServlet {
 
             ValidacoesDeDados.validarRegistros(registros);
 
-            // CORRIGIDO: Alterado de "criterio" para "tipoOrdenacao"
             String tipoOrdenacao = requisicaoResposta.recuperarParametroDaRequisicao("tipoOrdenacao");
             String ordem = requisicaoResposta.recuperarParametroDaRequisicao("ordem");
 
