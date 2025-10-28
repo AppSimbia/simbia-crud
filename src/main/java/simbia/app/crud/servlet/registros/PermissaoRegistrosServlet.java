@@ -8,6 +8,9 @@ import simbia.app.crud.model.dao.Permissao;
 
 import java.util.List;
 
+/**
+ * Classe de servlet de registros para exibição.
+ */
 @WebServlet("/permissao/registros")
 public class PermissaoRegistrosServlet extends RegistrosServlet<Permissao> {
     @Override

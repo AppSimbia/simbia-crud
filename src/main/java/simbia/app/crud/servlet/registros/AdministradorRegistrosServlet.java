@@ -8,6 +8,9 @@ import simbia.app.crud.model.dao.Administrador;
 
 import java.util.List;
 
+/**
+ * Classe de servlet de registros para exibição.
+ */
 @WebServlet("/administrador/registros")
 public class AdministradorRegistrosServlet extends RegistrosServlet<Administrador> {
     @Override
