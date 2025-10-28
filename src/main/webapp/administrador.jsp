@@ -110,7 +110,6 @@
   </form>
 
   <!-- TABELA -->
-  <!-- TABELA -->
   <table>
     <thead>
     <tr>
@@ -151,9 +150,6 @@
         <p>SENHA</p>
       </th>
 
-      <th>
-        <p>AÇÕES</p>
-      </th>
     </tr>
     </thead>
     <tbody>
