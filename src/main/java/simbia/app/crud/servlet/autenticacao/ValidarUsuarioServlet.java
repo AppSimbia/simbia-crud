@@ -20,30 +20,49 @@ import simbia.app.crud.model.servlet.RequisicaoResposta;
 import simbia.app.crud.util.ValidacoesDeDados;
 
 /**
- * Servlet de validação de usuario do sintema de CRUD.
+ * Servlet de validação de usuário do sistema de CRUD.
+ *
+ * Fluxo: recupera email e senha da requisição → valida formato dos dados → busca
+ * administrador no banco → armazena usuário autenticado na sessão → redireciona
+ * para página de administração (ou despacha para página de login com erro).
+ *
+ * Mapeado na URL "/entrar", processa requisições POST do formulário de login.
  */
 @WebServlet("/entrar")
 public class ValidarUsuarioServlet extends HttpServlet {
+
+    /**
+     * Processa a requisição POST: valida credenciais e autentica o usuário.
+     * Em caso de sucesso, redireciona para a página de administração.
+     * Em caso de erro, despacha de volta para a página de login com mensagem de erro.
+     */
     @Override
-    protected void doPost(HttpServletRequest requisicao, HttpServletResponse resposta) throws ServletException, IOException {
+    protected void doPost(HttpServletRequest requisicao, HttpServletResponse resposta)
+            throws ServletException, IOException {
         RequisicaoResposta requisicaoResposta = new RequisicaoResposta(requisicao, resposta);
+
         try {
             verificarUsuario(requisicaoResposta);
             requisicaoResposta.redirecionarPara("/administrador.jsp");
-            
+
         } catch (EmailOuSenhaErradosException | PadraoSenhaErradoException | PadraoEmailErradoException causa) {
             causa.printStackTrace();
             requisicaoResposta.adicionarAtributoNaRequisicao("erro", ErrosDeDevolucaoParaClient.EMAIL_OU_SENHA_INCORRETOS);
             requisicaoResposta.despacharPara("entrar.jsp");
-            
-        } catch (DaoException causa){
+
+        } catch (DaoException causa) {
             causa.printStackTrace();
             requisicaoResposta.adicionarAtributoNaRequisicao("erro", ErrosDeDevolucaoParaClient.ERRO_DE_COMUNICACAO_COM_O_BANCO_DE_DADOS);
             requisicaoResposta.despacharPara("entrar.jsp");
         }
     }
 
-    private static void verificarUsuario(RequisicaoResposta requisicaoResposta) throws EmailOuSenhaErradosException, PadraoEmailErradoException, PadraoSenhaErradoException{
+    /**
+     * Verifica as credenciais do usuário e armazena o administrador autenticado na sessão.
+     * Recupera email e senha, busca no banco e salva na sessão como "administradorAutenticado".
+     */
+    private static void verificarUsuario(RequisicaoResposta requisicaoResposta)
+            throws EmailOuSenhaErradosException, PadraoEmailErradoException, PadraoSenhaErradoException {
         String email = recuperarAtributoEmailDaRequisicao(requisicaoResposta);
         String senha = recuperarAtributoSenhaDaRequisicao(requisicaoResposta);
 
@@ -52,7 +71,12 @@ public class ValidarUsuarioServlet extends HttpServlet {
         requisicaoResposta.adicionarAtributoNaSessaoDaRequisicao("administradorAutenticado", registroCorrespondenteNoBanco);
     }
 
-    private static Administrador recuperarAdministradorNoBanco(String email, String senha) throws EmailOuSenhaErradosException {
+    /**
+     * Recupera o administrador do banco de dados com base no email e senha fornecidos.
+     * Valida se existe um registro correspondente às credenciais.
+     */
+    private static Administrador recuperarAdministradorNoBanco(String email, String senha)
+            throws EmailOuSenhaErradosException {
         AdministradorDao dao = new AdministradorDao();
         Optional<Administrador> retornoBanco = dao.recuperarPeloEmailESenha(email, senha);
 
@@ -61,7 +85,12 @@ public class ValidarUsuarioServlet extends HttpServlet {
         return retornoBanco.get();
     }
 
-    private static String recuperarAtributoEmailDaRequisicao(RequisicaoResposta requisicaoResposta) throws PadraoEmailErradoException{
+    /**
+     * Recupera e valida o email da requisição.
+     * Verifica se o email está no formato correto antes de retorná-lo.
+     */
+    private static String recuperarAtributoEmailDaRequisicao(RequisicaoResposta requisicaoResposta)
+            throws PadraoEmailErradoException {
         String email = requisicaoResposta.recuperarParametroDaRequisicao("email");
 
         ValidacoesDeDados.validarEmail(email);
@@ -69,7 +98,12 @@ public class ValidarUsuarioServlet extends HttpServlet {
         return email;
     }
 
-    private static String recuperarAtributoSenhaDaRequisicao(RequisicaoResposta requisicaoResposta) throws PadraoSenhaErradoException{
+    /**
+     * Recupera e valida a senha da requisição.
+     * Verifica se a senha está no formato correto antes de retorná-la.
+     */
+    private static String recuperarAtributoSenhaDaRequisicao(RequisicaoResposta requisicaoResposta)
+            throws PadraoSenhaErradoException {
         String senha = requisicaoResposta.recuperarParametroDaRequisicao("senha");
 
         ValidacoesDeDados.validarSenha(senha);

@@ -8,6 +8,9 @@ import simbia.app.crud.model.dao.TipoIndustria;
 
 import java.util.List;
 
+/**
+ * Classe de servlet de registros para exibição.
+ */
 @WebServlet("/tipo-industria/registros")
 public class TipoIndustriaRegistrosServlet extends RegistrosServlet<TipoIndustria> {
     @Override

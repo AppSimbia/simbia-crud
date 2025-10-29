@@ -19,6 +19,9 @@ import simbia.app.crud.util.ValidacoesDeDados;
 import java.io.IOException;
 import java.util.List;
 
+/**
+ * Classe de servlet de ordenação dos registros em exibição.
+ */
 @WebServlet("/administrador/ordenar")
 public class AdministradorOrdenarServlet extends HttpServlet {
 

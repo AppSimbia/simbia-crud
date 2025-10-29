@@ -184,10 +184,13 @@
         <p>SENHA</p>
       </th>
 
+<<<<<<< HEAD
       <!-- AÇÕES -->
       <th>
         <p>AÇÕES</p>
       </th>
+=======
+>>>>>>> 155b4875063c8f55d850e1ac409f1fbfa5304d5b
     </tr>
     </thead>
 
@@ -215,10 +218,6 @@
 
 </main>
 </body>
-<script src="${pageContext.request.contextPath}/assets/js/script.js"></script>
-<script>
-  chamarPopUpDeAdd("/crud/assets/modals/popUpAddAdm.html")
-</script>
 </html>
 <%
   } catch (UsuarioNaoAutenticadoException causa){

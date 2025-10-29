@@ -4,6 +4,9 @@ import jakarta.servlet.annotation.WebServlet;
 import simbia.app.crud.infra.servlet.abstractclasses.FiltroServlet;
 import simbia.app.crud.model.dao.Plano;
 
+/**
+ * Classe de servlet de atualização dos registros em exibição.
+ */
 @WebServlet("/plano/filtro")
 public class PlanoFiltroServlet extends FiltroServlet<Plano> {
     @Override

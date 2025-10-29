@@ -162,10 +162,6 @@
   </table>
 </main>
 </body>
-<script src="assets/js/script.js"></script>
-<script>
-  chamarPopUpDeAdd("/crud/assets/modals/popUpAddPermissao.html")
-</script>
 </html>
 <%
 } catch (UsuarioNaoAutenticadoException causa){

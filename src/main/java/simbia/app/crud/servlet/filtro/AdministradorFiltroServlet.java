@@ -4,6 +4,9 @@
     import simbia.app.crud.infra.servlet.abstractclasses.FiltroServlet;
     import simbia.app.crud.model.dao.Administrador;
 
+    /**
+     * Classe de servlet de atualização dos registros em exibição.
+     */
     @WebServlet("/administrador/filtro")
     public class AdministradorFiltroServlet extends FiltroServlet<Administrador> {
 

@@ -8,6 +8,9 @@ import simbia.app.crud.model.dao.Vantagem;
 
 import java.util.List;
 
+/**
+ * Classe de servlet de registros para exibição.
+ */
 @WebServlet("/vantagem/registros")
 public class VantagemRegistrosServlet extends RegistrosServlet<Vantagem> {
     @Override
