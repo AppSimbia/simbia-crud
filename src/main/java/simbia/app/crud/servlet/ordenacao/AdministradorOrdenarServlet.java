@@ -32,7 +32,6 @@ public class AdministradorOrdenarServlet extends HttpServlet {
         String chaveRegistros = "administradorRegistros";
 
         try {
-            @SuppressWarnings("unchecked")
             List<Administrador> registros = (List<Administrador>)
                     requisicaoResposta.recuperarAtributoDaRequisicao("administradorRegistros");
 

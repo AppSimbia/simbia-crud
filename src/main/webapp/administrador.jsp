@@ -13,7 +13,6 @@
     ValidacoesDeDados.validarSeAdministradorEstaAtutenticado(requisicaoResposta);
 
     List<Administrador> registros = UtilitariosJSP.recuperarRegistrosDaRequisicao(requisicaoResposta, "administrador");
-
 %>
 <!DOCTYPE html>
 <html lang="pt-br">
@@ -28,14 +27,60 @@
   <title>Simbia - Administrador</title>
 </head>
 <body>
-<div id="popup-container">
+<%
+  if (requisicaoResposta.existeSessaoDaRequisicao("administradorPopup")){
+    if (requisicaoResposta.recuperarAtributoDaSessao("administradorPopup").equals("adicionar")){
+%>
+<section id="container-geral-popup">
+  <div id="content-popup-geral">
+    <div id="vertical-line"></div>
+    <div>
+      <div>
+        <h2>Adicionar administrador</h2>
+        <a href="${pageContext.request.contextPath}/administrador/popup/adicionar">
+          <button type="submit" name="btnFechar" id="close">
+            <img src="${pageContext.request.contextPath}/assets/elements/btnFechar.svg" alt="fechar" >
+          </button>
+        </a>
+      </div>
+      <form action="">
+        <div class="display-input-input">
+          <div>
+            <label for="nome">Nome</label>
+            <input type="text" name="nome" placeholder="Fulano Silva">
+          </div>
 
-</div>
+          <div>
+            <label for="email">E-mail</label>
+            <input type="email" name="email" placeholder="usuario@email.com">
+          </div>
+        </div>
+
+        <div class="display-input-input">
+          <div>
+            <label for="senha">Senha</label>
+            <input type="password" name="senha" id="senha">
+          </div>
+          <div>
+            <label for="repetir-senha">Repetir senha</label>
+            <input type="password" name="repetir-senha" >
+          </div>
+        </div>
+
+        <button type="submit" name="btnAdicionar" id="btnAdd">Adicionar</button>
+      </form>
+    </div>
+  </div>
+</section>
+<%
+    }
+  }
+%>
+
 <!-- MENU LATERAL -->
 <img src="${pageContext.request.contextPath}/assets/elements/icon-simbia.svg" alt="logo-simbia">
 <aside>
   <h1>Tabelas</h1>
-
   <hr>
   <nav>
     <ul>
@@ -91,13 +136,19 @@
   <header>
     <h1>Administrador</h1>
     <div>
-      <a href="<%=request.getContextPath()%>/administrador/atualizar" class="atualizar">
-        <button name="atualizar">
+      <a href="${pageContext.request.contextPath}/administrador/atualizar">
+        <button name="atualizar" type="submit">
           <img src="${pageContext.request.contextPath}/assets/elements/icon-atualizar.svg" alt="icon-atualizar">
           Atualizar
         </button>
       </a>
-      <button class="btnAdicionar" id="btnAdicionar"><img src="${pageContext.request.contextPath}/assets/elements/icon-adicionar.svg" alt="icone-adicionar">Adicionar registro</button>
+
+        <a href="${pageContext.request.contextPath}/administrador/popup/adicionar">
+          <button class="btnAdicionar" id="btnAdicionar">
+            <img src="${pageContext.request.contextPath}/assets/elements/icon-adicionar.svg" alt="icone-adicionar">
+            Adicionar registro
+          </button>
+        </a>
     </div>
 
   </header>
