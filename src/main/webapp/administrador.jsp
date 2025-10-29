@@ -118,15 +118,15 @@
         <div>
           <p>ID</p>
           <form action="${pageContext.request.contextPath}/administrador/ordenar" method="GET">
-            <input type="hidden" name="tipoOrdenacao" value="idAdministrador">
+          <input type="hidden" name="tipoOrdenacao" value="porId">
             <input type="hidden" name="ordem" value="<%=
-              (request.getAttribute("criterioOrdenacao") != null && request.getAttribute("criterioOrdenacao").equals("idAdministrador")
+              (request.getAttribute("criterioOrdenacao") != null && request.getAttribute("criterioOrdenacao").equals("porId")
                 && request.getAttribute("ordemAtual") != null && request.getAttribute("ordemAtual").equals("asc"))
               ? "desc" : "asc"
             %>">
             <button type="submit">
               <i class="fa-solid <%=
-                (request.getAttribute("criterioOrdenacao") != null && request.getAttribute("criterioOrdenacao").equals("idAdministrador"))
+                (request.getAttribute("criterioOrdenacao") != null && request.getAttribute("criterioOrdenacao").equals("porId"))
                   ? (request.getAttribute("ordemAtual").equals("asc") ? "fa-angle-up icone-ativo" : "fa-angle-down icone-ativo")
                   : "fa-angle-down"
               %>"></i>

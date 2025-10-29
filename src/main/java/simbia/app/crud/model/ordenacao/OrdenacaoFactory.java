@@ -32,4 +32,24 @@ public class OrdenacaoFactory {
                 return criarParaAdministrador("porId", true);
         }
     }
+    public static OrdenarServlet<Permissao> criarParaPermissao(String tipoOrdenacao, boolean crescente) {
+        switch (tipoOrdenacao) {
+            case "porId":
+                return new OrdenacaoGenerica<>(
+                        permisao -> permisao.getIdPermissao(),
+                        crescente,
+                        "porId"
+                );
+
+            case "porNome":
+                return new OrdenacaoGenerica<>(
+                        permissao -> permissao.getNomePermissao().toLowerCase(),
+                        crescente,
+                        "porNome"
+                );
+
+            default:
+                return criarParaPermissao("porId", true);
+        }
+    }
 }
