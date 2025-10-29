@@ -4,6 +4,9 @@ import simbia.app.crud.infra.dao.abstractclasses.DaoException;
 
 import java.sql.SQLException;
 
+/**
+ * Classe de falha de conexao de queda com banco de dados postgresql.
+ */
 public class FalhaDeConexaoQuedaRepentina extends DaoException {
 
     public FalhaDeConexaoQuedaRepentina(SQLException causa) {

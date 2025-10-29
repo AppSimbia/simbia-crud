@@ -8,6 +8,9 @@ import simbia.app.crud.model.dao.Plano;
 
 import java.util.List;
 
+/**
+ * Classe de servlet de registros para exibição.
+ */
 @WebServlet("/plano/registros")
 public class PlanoRegistrosServlet extends RegistrosServlet<Plano> {
     @Override

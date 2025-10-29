@@ -13,11 +13,11 @@ import java.io.IOException;
  */
 public class RequisicaoResposta {
 
-    //atributos
+//atributos
     private final HttpServletResponse resposta;
     private final HttpServletRequest requisicao;
 
-    //construtor
+//construtor
     /**
      * Construtor que inicializa a classe com os objetos de requisição e resposta HTTP.
      * @param requisicao Objeto {@link HttpServletRequest} contendo os dados da requisição HTTP
@@ -27,7 +27,6 @@ public class RequisicaoResposta {
         this.resposta = resposta;
         this.requisicao = requisicao;
     }
-
     //métodos
     /**
      * Obtém o valor de um parâmetro da requisição HTTP.
@@ -39,7 +38,7 @@ public class RequisicaoResposta {
     }
 
     /**
-     * Obtém o valor de um atributo da sessao HTTP.
+     * Obtém o valor de um atributo da sessão HTTP.
      * @param nome Nome do atributo a ser recuperado
      * @return Valor do atributo como {@code Object}, ou {@code null} se o atributo não existir
      */
@@ -48,7 +47,7 @@ public class RequisicaoResposta {
     }
 
     /**
-     * Obtém o valor de um atributo da requisicao HTTP.
+     * Obtém o valor de um atributo da requisição HTTP.
      * @param nome Nome do atributo a ser recuperado
      * @return Valor do atributo como {@code Object}, ou {@code null} se o atributo não existir
      */
@@ -131,7 +130,15 @@ public class RequisicaoResposta {
     }
 
     /**
-     * Verifica se existe um atributo especifico na requisicao.
+     * Remove um atributo do escopo da sessão HTTP.
+     * @param chave Nome do atributo a ser removido
+     */
+    public void removerAtributoNaSessao(String chave){
+        requisicao.getSession().removeAttribute(chave);
+    }
+
+    /**
+     * Verifica se existe um atributo especifico na requisicão.
      *
      * @param nome Nome do atributo a ser verificado
      * @return {@code true} caso exista, {@code false} caso o contrario
@@ -141,10 +148,10 @@ public class RequisicaoResposta {
     }
 
     /**
-     * Verifica se existe um atributo especifico na sessao da requisicao.
+     * Verifica se existe um atributo especifico na sessão da requisição.
      *
      * @param nome Nome do atributo a ser verificado
-     * @return {@code true} caso exista, {@code false} caso o contrario
+     * @return {@code true} caso exista, {@code false} caso o contrário
      */
     public boolean existeSessaoDaRequisicao(String nome){
         return requisicao.getSession().getAttribute(nome) != null;

@@ -91,7 +91,7 @@
   <header>
     <h1>Vantagem</h1>
     <div>
-      <a href="" class="atualizar">
+      <a href="<%=request.getContextPath()%>/vantagem/atualizar" class="atualizar">
         <button name="atualizar">
           <img src="${pageContext.request.contextPath}/assets/elements/icon-atualizar.svg" alt="icon-atualizar">
           Atualizar
@@ -162,10 +162,6 @@
   </table>
 </main>
 </body>
-<script src="assets/js/script.js"></script>
-<script>
-  chamarPopUpDeAdd("/crud/assets/modals/popUpAddPermissao.html")
-</script>
 </html>
 <%
 } catch (UsuarioNaoAutenticadoException causa){

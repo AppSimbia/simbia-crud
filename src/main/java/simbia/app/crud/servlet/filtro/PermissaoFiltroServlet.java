@@ -4,6 +4,9 @@ import jakarta.servlet.annotation.WebServlet;
 import simbia.app.crud.infra.servlet.abstractclasses.FiltroServlet;
 import simbia.app.crud.model.dao.Permissao;
 
+/**
+ * Classe de servlet de atualização dos registros em exibição.
+ */
 @WebServlet("/permissao/filtro")
 public class PermissaoFiltroServlet extends FiltroServlet<Permissao> {
     @Override

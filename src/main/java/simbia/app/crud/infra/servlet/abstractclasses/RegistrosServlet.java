@@ -14,8 +14,7 @@ import java.util.List;
 /**
  * Servlet abstrato para carregar registros de uma tabela e armazená-los na sessão.
  *
- * Fluxo: recupera registros do banco → salva na sessão com chave "
- * nomeDaTabela + Registros"
+ * Fluxo: recupera registros do banco → salva na sessão com chave "nomeDaTabela + Registros"
  * → despacha para página de sucesso (ou redireciona para erro caso falhe).
  *
  * As subclasses devem implementar os métodos abstratos para definir qual tabela carregar

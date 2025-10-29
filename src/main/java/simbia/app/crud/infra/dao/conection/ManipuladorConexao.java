@@ -6,8 +6,17 @@ import java.sql.SQLException;
 
 import static simbia.app.crud.util.UtilitariosException.gerarExceptionEspecializadaPorSQLException;
 
-
+/**
+ * Classe que manipula a conexao com o banco de dados Postegresql
+ **/
 public class ManipuladorConexao {
+
+    /**
+     * método que estabelece conexao atravez das variaveis de ambiente recuperadas do {@code System}
+     * e com o Driver Postgresql de JDBC.
+     *
+     * @return Um objeto {@code Connection} manipulavel
+     */
     public static Connection conectar(){
         try{
             Class.forName("org.postgresql.Driver");
@@ -18,10 +27,16 @@ public class ManipuladorConexao {
             throw gerarExceptionEspecializadaPorSQLException(causa);
         }
     }
-    public static void desconectar(Connection con){
+
+    /**
+     * Metodo que fecha um objeto de conexao Postgresql.
+     *
+     * @param conexao O obejeto {@code Connection} a ser fechado.
+     */
+    public static void desconectar(Connection conexao){
         try{
-            if (con != null && !con.isClosed()){
-                con.close();
+            if (conexao != null && !conexao.isClosed()){
+                conexao.close();
             }
         } catch (SQLException causa) {
             throw gerarExceptionEspecializadaPorSQLException(causa);

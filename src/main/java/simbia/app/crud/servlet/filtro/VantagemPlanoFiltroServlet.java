@@ -4,6 +4,9 @@ import jakarta.servlet.annotation.WebServlet;
 import simbia.app.crud.infra.servlet.abstractclasses.FiltroServlet;
 import simbia.app.crud.model.dao.VantagemPlano;
 
+/**
+ * Classe de servlet de atualização dos registros em exibição.
+ */
 @WebServlet("/vantagem-plano/filtro")
 public class VantagemPlanoFiltroServlet extends FiltroServlet<VantagemPlano> {
     @Override
