@@ -149,9 +149,16 @@
           <button name="editar">
             <img src="${pageContext.request.contextPath}/assets/elements/editar.svg" alt="">
           </button>
-          <button type="submit" name="apagar">
-            <img src="${pageContext.request.contextPath}/assets/elements/apagar.svg" alt="">
-          </button>
+            <form action="${pageContext.request.contextPath}/categoria-produto/deletar" method="POST" style="display: inline;">
+
+                <input type="hidden" name="id" value="<%=registro.getIdCategoriaProduto()%>">
+
+                <button type="submit" name="apagar" class="botao-transparente"
+                        onclick="return confirm('Tem certeza que deseja deletar esta categoria de produto?');">
+                    <img src="${pageContext.request.contextPath}/assets/elements/apagar.svg" alt="Apagar">
+                </button>
+
+            </form>
         </div>
       </td>
     </tr>
