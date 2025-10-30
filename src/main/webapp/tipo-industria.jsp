@@ -28,10 +28,7 @@
     <title>Simbia - Tipo Indústria</title>
 </head>
 <body>
-<%
-    if (requisicaoResposta.existeSessaoDaRequisicao("tipoindustriaPopup")){
-        if (requisicaoResposta.recuperarAtributoDaSessao("tipoindustriaPopup").equals("adicionar")){
-%>
+<div id="popup-container"></div>
 <section id="container-geral-popup">
     <div id="content-popup-geral">
         <div id="vertical-line"></div>
