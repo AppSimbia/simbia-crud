@@ -1,10 +1,10 @@
 <%@ page import="simbia.app.crud.util.UtilitariosJSP" %>
 <%@ page import="simbia.app.crud.util.ValidacoesDeDados" %>
 <%@ page import="simbia.app.crud.model.servlet.RequisicaoResposta" %>
-<%@ page import="java.util.List" %>
 <%@ page import="simbia.app.crud.model.dao.Administrador" %>
 <%@ page import="simbia.app.crud.infra.servlet.exception.UsuarioNaoAutenticadoException" %>
 <%@ page import="simbia.app.crud.infra.servlet.exception.RequisicaoSemRegistrosException" %>
+<%@ page import="java.util.List" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%
   RequisicaoResposta requisicaoResposta = new RequisicaoResposta(request, response);
@@ -27,56 +27,7 @@
   <title>Simbia - Administrador</title>
 </head>
 <body>
-<%
-  if (requisicaoResposta.existeSessaoDaRequisicao("administradorPopup")){
-    if (requisicaoResposta.recuperarAtributoDaSessao("administradorPopup").equals("adicionar")){
-%>
-<section id="container-geral-popup">
-  <div id="content-popup-geral">
-    <div id="vertical-line"></div>
-    <div>
-      <div>
-        <h2>Adicionar administrador</h2>
-        <a href="${pageContext.request.contextPath}/administrador/popup/adicionar">
-          <button type="submit" name="btnFechar" id="close">
-            <img src="${pageContext.request.contextPath}/assets/elements/btnFechar.svg" alt="fechar" >
-          </button>
-        </a>
-      </div>
-      <form action="">
-        <div class="display-input-input">
-          <div>
-            <label for="nome">Nome</label>
-            <input type="text" name="nome" placeholder="Fulano Silva">
-          </div>
-
-          <div>
-            <label for="email">E-mail</label>
-            <input type="email" name="email" placeholder="usuario@email.com">
-          </div>
-        </div>
-
-        <div class="display-input-input">
-          <div>
-            <label for="senha">Senha</label>
-            <input type="password" name="senha" id="senha">
-          </div>
-          <div>
-            <label for="repetir-senha">Repetir senha</label>
-            <input type="password" name="repetir-senha" >
-          </div>
-        </div>
-
-        <button type="submit" name="btnAdicionar" id="btnAdd">Adicionar</button>
-      </form>
-    </div>
-  </div>
-</section>
-<%
-    }
-  }
-%>
-
+<div id="popup-container"></div>
 <!-- MENU LATERAL -->
 <img src="${pageContext.request.contextPath}/assets/elements/icon-simbia.svg" alt="logo-simbia">
 <aside>
@@ -142,13 +93,10 @@
           Atualizar
         </button>
       </a>
-
-        <a href="${pageContext.request.contextPath}/administrador/popup/adicionar">
-          <button class="btnAdicionar" id="btnAdicionar">
+       <button class="btnAdicionar" id="btnAdicionar">
             <img src="${pageContext.request.contextPath}/assets/elements/icon-adicionar.svg" alt="icone-adicionar">
             Adicionar registro
-          </button>
-        </a>
+       </button>
     </div>
 
   </header>
@@ -239,6 +187,11 @@
     <h1>Acesso não autenticado</h1>
     <a href="/crud/entrar.jsp">Autenticar</a>
   </body>
+  <script src="${pageContext.request.contextPath}/assets/js/script.js">
+    btnAdicionar = document.getElementById('btnAdicionar')
+
+    btnAdicionar.addEventListener('onclick', abrirPopUp('${pageContext.request.contextPath}/assets/modal/popup-adicionar-adm.html'))
+  </script>
 </html>
 <%
   } catch (RequisicaoSemRegistrosException causa){

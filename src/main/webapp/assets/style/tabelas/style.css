@@ -509,6 +509,7 @@ table tbody tr td:last-child {
 
 #container-geral-popup .checkbox-group input[type="radio"] {
     appearance: none;
+
     /* tira a estilização padrão do radio */
     -webkit-appearance: none;
     -moz-appearance: none;

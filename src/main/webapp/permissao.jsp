@@ -28,41 +28,7 @@
   <title>Simbia - Permissao</title>
 </head>
 <body>
-<%
-  if (requisicaoResposta.existeSessaoDaRequisicao("permissaoPopup")){
-    if (requisicaoResposta.recuperarAtributoDaSessao("permissaoPopup").equals("adicionar")){
-%>
-<section id="container-geral-popup">
-  <div id="content-popup-geral">
-    <div id="vertical-line"></div>
-    <div>
-      <div>
-        <h2>Adicionar permissão</h2>
-        <a href="${pageContext.request.contextPath}/permissao/popup/adicionar">
-          <button name="btnFechar" id="close"><img src="${pageContext.request.contextPath}/assets/elements/btnFechar.svg" alt="fechar" ></button>
-        </a>
-      </div>
-
-      <form action="" >
-        <div>
-          <label for="nome-categoria">Nome permissão</label>
-          <input type="text" name="nome-categoria" placeholder="Geral">
-        </div>
-
-        <div>
-          <label for="descricao">Descrição</label>
-          <textarea name="descricao" id="input-descricao"> </textarea>
-        </div>
-
-        <button type="submit" name="btnAdicionar" id="btnAdd">Adicionar</button>
-      </form>
-    </div>
-  </div>
-</section>
-<%
-    }
-  }
-%>
+<div id="popup-container"></div>
 <!-- MENU LATERAL -->
 <img src="${pageContext.request.contextPath}/assets/elements/icon-simbia.svg" alt="logo-simbia">
 <aside>
