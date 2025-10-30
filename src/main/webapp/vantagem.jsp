@@ -116,20 +116,42 @@
       <th class="id">
         <div>
           <p>ID</p>
-          <form action="">
-            <button type="submit" value="porId"><i class="fa-solid fa-angle-down"></i></button>
+          <form action="${pageContext.request.contextPath}/vantagem/ordenar" method="GET">
+            <input type="hidden" name="tipoOrdenacao" value="porId">
+            <input type="hidden" name="ordem" value="<%=
+              (request.getAttribute("criterioOrdenacao") != null && request.getAttribute("criterioOrdenacao").equals("porId")
+                && request.getAttribute("ordemAtual") != null && request.getAttribute("ordemAtual").equals("asc"))
+              ? "desc" : "asc"
+            %>">
+            <button type="submit">
+              <i class="fa-solid <%=
+                (request.getAttribute("criterioOrdenacao") != null && request.getAttribute("criterioOrdenacao").equals("porId"))
+                  ? (request.getAttribute("ordemAtual").equals("asc") ? "fa-angle-up icone-ativo" : "fa-angle-down icone-ativo")
+                  : "fa-angle-down"
+              %>"></i>
+            </button>
           </form>
         </div>
-
       </th>
       <th>
         <div>
           <p>NOME</p>
-          <form action="">
-            <button type="submit" value="porNome"><i class="fa-solid fa-angle-down"></i></button>
+          <form action="${pageContext.request.contextPath}/vantagem/ordenar" method="GET">
+            <input type="hidden" name="tipoOrdenacao" value="porNome">
+            <input type="hidden" name="ordem" value="<%=
+              (request.getAttribute("criterioOrdenacao") != null && request.getAttribute("criterioOrdenacao").equals("porNome")
+                && request.getAttribute("ordemAtual") != null && request.getAttribute("ordemAtual").equals("asc"))
+              ? "desc" : "asc"
+            %>">
+            <button type="submit">
+              <i class="fa-solid <%=
+                (request.getAttribute("criterioOrdenacao") != null && request.getAttribute("criterioOrdenacao").equals("porNome"))
+                  ? (request.getAttribute("ordemAtual").equals("asc") ? "fa-angle-up icone-ativo" : "fa-angle-down icone-ativo")
+                  : "fa-angle-down"
+              %>"></i>
+            </button>
           </form>
         </div>
-
       </th>
       <th>
         <div>
