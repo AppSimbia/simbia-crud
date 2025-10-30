@@ -27,8 +27,17 @@
     --shadow: rgba(0, 0, 0, 0.05);
     --super-light-gray: #F5F5F7;
     --light-gray: #B9B8BF;
+    --aqua-blue: hsl(181, 51%, 40%);
+    --misty-blue: #D8E8EC;
+    --black-blue: #11222A;
+    --aqua-blue-translucid: hsla(181, 51%, 40%, 0.448);
+    --shadow: rgba(0, 0, 0, 0.05);
+    --super-light-gray: #F5F5F7;
+    --light-gray: #B9B8BF;
+    --darker-gray: #a7a6ad;
+    --darker-aqua-blue: hsl(181, 45%, 33%);
 
-    --dm-sans: 'DM Sans', sans-serif;
+    --dm-sans: 'DM Sans', sans-serif; 
 }
 
 /* estilizações globais */
@@ -628,4 +637,6 @@ table tbody tr td:last-child {
 
     }
 }
+
+
 
