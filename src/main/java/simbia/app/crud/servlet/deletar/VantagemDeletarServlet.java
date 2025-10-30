@@ -31,7 +31,7 @@ public class VantagemDeletarServlet extends DeletarServlet {
      * Isso força o recarregamento da lista de administradores.
      */
     @Override
-    public String enderecoDeRedirecionamentoPosDelecao() {
+    public String enderecoDeDespache() {
         return "/vantagem/registros";
     }
 

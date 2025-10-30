@@ -16,7 +16,7 @@ import java.io.IOException;
  * Esta servlet responde APENAS a requisições POST para garantir que a deleção
  * seja uma ação intencional e não acionada por links ou crawlers.
  *
- * Fluxo: (POST) recupera "id" → chama DAO → redireciona para servlet de registros (PRG)
+ * Fluxo: (POST) recupera "id" → chama DAO → redireciona para servlet de registros
  */
 public abstract class DeletarServlet extends HttpServlet {
 
@@ -28,7 +28,6 @@ public abstract class DeletarServlet extends HttpServlet {
             throws ServletException, IOException {
 
         RequisicaoResposta requisicaoResposta = new RequisicaoResposta(requisicao, resposta);
-        // Padrão: Recupera o endereço de erro uma vez
         String paginaDeErro = enderecoDeDespacheCasoErro();
 
         try {
@@ -38,10 +37,10 @@ public abstract class DeletarServlet extends HttpServlet {
             long id = Long.parseLong(idParametro);
 
             // 2. Chamar a implementação do DAO para deletar
-            chamarDaoParaDeletar(id); // Agora lança as exceções esperadas
+            chamarDaoParaDeletar(id);
 
             // 3. Sucesso: Redireciona para a servlet de registros
-            requisicaoResposta.redirecionarPara(enderecoDeRedirecionamentoPosDelecao());
+            requisicaoResposta.redirecionarPara(enderecoDeDespache());
 
         } catch (NaoHouveAlteracaoNoBancoDeDadosException causa) {
             requisicaoResposta.adicionarAtributoNaRequisicao("erro", ErrosDeDevolucaoParaClient.NAO_HOUVE_ALTERACAO_NO_BANCO);
@@ -57,18 +56,17 @@ public abstract class DeletarServlet extends HttpServlet {
 
     /**
      * Contrato para a subclasse. Deve chamar o método deletar(id) do DAO específico.
-     * Ex: new AdministradorDao().deletar(id);
      */
     public abstract void chamarDaoParaDeletar(long id) throws NaoHouveAlteracaoNoBancoDeDadosException, DaoException;
 
     /**
-     * Retorna a URL da servlet de *registros* (ex: "/administrador/registros")
+     * Retorna a URL da servlet de registros
      * para onde o usuário será redirecionado após a deleção bem-sucedida.
      */
-    public abstract String enderecoDeRedirecionamentoPosDelecao();
+    public abstract String enderecoDeDespache();
 
     /**
-     * Retorna o caminho da página de erro (ex: "/erro.jsp").
+     * Retorna o caminho da página de erro
      */
     public abstract String enderecoDeDespacheCasoErro();
 }

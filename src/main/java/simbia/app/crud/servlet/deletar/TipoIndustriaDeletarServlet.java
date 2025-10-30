@@ -26,22 +26,14 @@ public class TipoIndustriaDeletarServlet extends DeletarServlet {
         this.tipoIndustriaDao.deletar(id);
     }
 
-    /**
-     * Após deletar com sucesso, redireciona de volta para a servlet de registros.
-     * Isso força o recarregamento da lista de administradores.
-     */
     @Override
-    public String enderecoDeRedirecionamentoPosDelecao() {
-        return "/tipo-industria/registros";
+    public String enderecoDeDespache() {
+        return "../tipo-industria.jsp";
     }
 
-    /**
-     * Página JSP para onde o usuário é despachado
-     * caso ocorra qualquer erro no processo.
-     */
     @Override
     public String enderecoDeDespacheCasoErro() {
-        return "/erro.jsp";
+        return "../tipo-industria/registros";
     }
 }
 
