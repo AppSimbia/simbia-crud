@@ -20,6 +20,15 @@
     --cor-cabecalho-tabelas: #EBF2F4;
     --black-shadow: #00000010;
     --white-shadow: #FFFFFF50;
+    --aqua-blue: hsl(181, 51%, 40%);
+    --misty-blue: #D8E8EC;
+    --black-blue: #11222A;
+    --aqua-blue-translucid: hsla(181, 51%, 40%, 0.448);
+    --shadow: rgba(0, 0, 0, 0.05);
+    --super-light-gray: #F5F5F7;
+    --light-gray: #B9B8BF;
+
+    --dm-sans: 'DM Sans', sans-serif;
 }
 
 /* estilizações globais */
@@ -29,6 +38,11 @@
     font-family: 'DM Sans', sans-serif;
     list-style: none;
     text-decoration: none;
+
+}
+
+#container-geral-popup *{
+    box-sizing: border-box;
 }
 
 body{
@@ -311,11 +325,307 @@ table tbody tr td:last-child {
     border-bottom-right-radius: 8px;
     border-right: none;
 }
-th button i {
-    color: gray;
-    transition: color 0.3s;
+
+/** estilização popups **/
+#container-geral-popup{
+    width: 100vw;
+    height: 100vh;
+
+    background-color: rgba(0, 0, 0, 0.408);
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 4;
+    position: fixed;
+
+    top: 0;
+    right: 0;
+
+    color: var(--black-blue);
+    font-family: var(--dm-sans);
 }
 
-th button i.icone-ativo {
-    color: var(--ciano-escuro);
+#container-geral-popup #content-popup-geral{
+    background-color: white;
+
+    border-radius: 40px;
+
+    width: 50vw;
+    min-height: 70vh;
+
+    position: relative;
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-start;
+
+    box-shadow: 0px 0px 0px var(--shadow);
+
+    padding: 50px;
+    max-width: 750px;
+
+    flex-wrap: wrap;
 }
+
+#container-geral-popup button{
+    cursor: pointer;
+}
+
+#container-geral-popup #vertical-line{
+    border-left: 2.5px dashed var(--misty-blue);
+
+    height: 400px;
+
+    margin-right: 50px;
+    margin-left: 30px;
+}
+
+#container-geral-popup #close {
+    position: absolute;
+
+    background: none;
+
+    border: none;
+
+    top: 20px;
+    right: 10px;
+
+    width: 60px;
+    height: 60px;
+
+    transition: 0.2s;
+}
+
+#container-geral-popup #close:hover{
+    transform: scale(1.5);
+}
+
+#container-geral-popup h2{
+    margin-top: 30px;
+    margin-bottom: 20px;
+
+    letter-spacing: 2px;
+    font-size: 32px;
+
+    color: var(--black-blue);
+}
+
+#container-geral-popup .display-input-input{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 30px;
+}
+
+#container-geral-popup label{
+    font-weight: 500;
+
+    display: block;
+
+    margin-top: 25px;
+    margin-left: 5px;
+    margin-bottom: 5px;
+}
+
+#container-geral-popup input, textarea{
+    border: none;
+    border-radius: 10px;
+
+    padding: 15px;
+    width: 100%;
+
+    background-color: var(--super-light-gray);
+}
+
+#container-geral-popup input::placeholder{
+    color: var(--light-gray);
+    font-weight: 500;
+}
+
+#container-geral-popup input:focus, textarea:focus{
+    outline: 3px solid var(--aqua-blue);
+}
+
+#container-geral-popup textarea{
+    max-height: 200px;
+    min-height: 100px;
+
+    resize: vertical;
+}
+
+#container-geral-popup #btnAdd{
+    border: none;
+    border-radius: 10px;
+
+    width: 100%;
+    max-width: 300px;
+    padding: 16px;
+
+    font-family: var(--dm-sans);
+    font-size: 16px;
+    color: white;
+
+    box-shadow: 0px 0px 70px var(--aqua-blue-translucid);
+    background-color: var(--aqua-blue);
+
+    margin-left: 90px;
+    margin-top: 50px;
+
+    cursor: pointer;
+
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+#container-geral-popup #btnAdd:hover{
+    background-color: hsl(181, 51%, 35%);
+
+    transform: scale(1.02);
+}
+
+#container-geral-popup p{
+    color: #B9B8BF;
+
+    font-size: small;
+
+    margin-top: -15px;
+    margin-left: 0px;
+}
+
+#container-geral-popup .checkbox-group {
+    display: flex;
+    gap: 25px;
+    align-items: center;
+
+    margin-top: 8px;
+}
+
+#container-geral-popup .checkbox-group input[type="radio"] {
+    appearance: none;
+    /* tira a estilização padrão do radio */
+    -webkit-appearance: none;
+    -moz-appearance: none;
+
+    width: 5px;
+    height: 5px;
+
+    border: 2px solid var(--misty-blue);
+    border-radius: 6px;
+
+    background-color: white;
+
+    cursor: pointer;
+
+    transition: all 0.2s ease;
+}
+
+#container-geral-popup .checkbox-group input[type="radio"]:checked {
+    background-color: var(--aqua-blue);
+
+}
+
+#container-geral-popup .checkbox-group input[type="radio"]:hover {
+    transform: scale(1.1);
+}
+
+#container-geral-popup .checkbox-group label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    font-weight: 500;
+
+    margin: 0;
+}
+
+
+@media (max-width: 1500px) {
+    #container-geral-popup #content-popup-geral{
+        width: 70vw;
+        min-height: 70vh;
+        padding: 60px;
+
+        flex-direction: column;
+        align-items: center;
+        justify-content: flex-start;
+    }
+
+    #container-geral-popup #vertical-line{
+        display: none;
+    }
+
+    #container-geral-popup #btnAdd {
+        display: block;
+
+        margin: 40px auto 0 auto;
+        width: 400px;
+        padding: 15px 24px;
+    }
+}
+
+@media(max-width: 770px) {
+    #container-geral-popup #content-popup-geral {
+        margin-left: ma;
+    }
+}
+
+@media (max-width: 1024px) {
+    #container-geral-popup #content-popup-geral {
+        width: 80vw;
+        min-height: 60vh;
+
+        padding: 50px;
+        align-items: center;
+    }
+
+    #container-geral-popup #btnAdd {
+        display: block;
+        margin: 40px auto 0 auto;
+
+        width: 100%;
+        padding: 14px 0;
+    }
+}
+
+@media (max-width: 768px) {
+    #container-geral-popup #content-popup-geral {
+        width: 90vw;
+        min-height: 70vh;
+        padding: 20px;
+
+        flex-direction: column;
+        align-items: center;
+        justify-content: flex-start;
+    }
+
+    #container-geral-popup h2 {
+        font-size: 24px;
+        letter-spacing: 1px;
+        text-align: center;
+
+        margin-bottom: 20px;
+    }
+
+    #container-geral-popup #vertical-line {
+        display: none;
+    }
+
+    #container-geral-popup .display-input-input {
+        flex-direction: column;
+        gap: 15px;
+        width: 100%;
+    }
+
+    #container-geral-popup input, textarea{
+        width: 90%;
+    }
+
+    #container-geral-popup #btnAdd {
+        width: 100%;
+        padding: 14px;
+
+        font-size: 14px;
+
+        margin: 30px 0 40px 0;
+
+    }
+}
+

@@ -28,9 +28,59 @@
   <title>Simbia - Plano</title>
 </head>
 <body>
-<div id="popup-container">
+<%
+  if (requisicaoResposta.existeSessaoDaRequisicao("planoPopup")){
+    if (requisicaoResposta.recuperarAtributoDaSessao("planoPopup").equals("adicionar")){
+%>
+<section id="container-geral-popup">
+  <div id="content-popup-geral">
+    <div id="vertical-line"></div>
+    <div>
+      <div id="display-fechar-add-admin">
+        <h2>Adicionar plano</h2>
+        <a href="${pageContext.request.contextPath}/plano/popup/adicionar">
+          <button name="btnFechar" id="close"><img src="${pageContext.request.contextPath}/assets/elements/btnFechar.svg" alt="fechar" ></button>
+        </a>
 
-</div>
+      </div>
+
+      <form action="">
+        <div class="display-input-input">
+          <div>
+            <label for="nome">Nome plano</label>
+            <input type="text" name="nome" placeholder="Pro">
+          </div>
+
+          <div>
+            <label for="valor">Valor</label>
+            <input type="number" name="valor" placeholder="R$ 100,00">
+          </div>
+        </div>
+
+        <div class="status-container">
+          <label>Status</label>
+          <div class="checkbox-group">
+            <label>
+              <input type="radio" name="status" value="ativo">
+              Ativo
+            </label>
+
+            <label>
+              <input type="radio" name="status" value="inativo">
+              Inativo
+            </label>
+          </div>
+        </div>
+        <button type="submit" name="btnAdicionar" id="btnAdd">Adicionar</button>
+      </form>
+    </div>
+  </div>
+</section>
+
+<%
+    }
+  }
+%>
 <!-- MENU LATERAL -->
 <img src="${pageContext.request.contextPath}/assets/elements/icon-simbia.svg" alt="logo-simbia">
 <aside>
@@ -97,7 +147,9 @@
           Atualizar
         </button>
       </a>
-      <button class="btnAdicionar" id="btnAdicionar"><img src="${pageContext.request.contextPath}/assets/elements/icon-adicionar.svg" alt="icone-adicionar">Adicionar registro</button>
+      <a href="${pageContext.request.contextPath}/plano/popup/adicionar">
+        <button class="btnAdicionar" id="btnAdicionar"><img src="${pageContext.request.contextPath}/assets/elements/icon-adicionar.svg" alt="icone-adicionar">Adicionar registro</button>
+      </a>
     </div>
 
   </header>

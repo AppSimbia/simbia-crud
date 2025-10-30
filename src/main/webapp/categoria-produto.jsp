@@ -28,9 +28,46 @@
   <title>Simbia - Categoria Produto</title>
 </head>
 <body>
+<%
+  if (requisicaoResposta.existeSessaoDaRequisicao("categoriaprodutoPopup")){
+    if (requisicaoResposta.recuperarAtributoDaSessao("categoriaprodutoPopup").equals("adicionar")){
+%>
+<section id="container-geral-popup">
+  <div id="content-popup-geral">
+    <div id="vertical-line"></div>
+    <div>
+      <div>
+        <h2>Adicionar categoria produto</h2>
+        <a href="${pageContext.request.contextPath}/categoria-produto/popup/adicionar">
+          <button name="btnFechar" id="close">
+            <img src="${pageContext.request.contextPath}/assets/elements/btnFechar.svg" alt="fechar">
+          </button>
+        </a>
+      </div>
+
+      <form action="">
+        <div>
+          <label for="nome-categoria">Nome categoria</label>
+          <input type="text" name="nome" placeholder="Eletrônico">
+        </div>
+
+        <div>
+          <label for="descricao">Descrição</label>
+          <textarea name="descricao" id="input-descricao"> </textarea>
+        </div>
+
+        <button type="submit" name="btnAdicionar" id="btnAdd">Adicionar</button>
+      </form>
+    </div>
+  </div>
+</section>
+<%
+    }
+  }
+%>
 <div id="popup-container"></div>
 <!-- MENU LATERAL -->
-<img src="assets/elements/icon-simbia.svg" alt="logo-simbia">
+<img src="${pageContext.request.contextPath}/assets/elements/icon-simbia.svg" alt="logo-simbia">
 <aside>
   <h1>Tabelas</h1>
 
@@ -95,7 +132,10 @@
           Atualizar
         </button>
       </a>
-      <button class="btnAdicionar" id="btnAdicionar"><img src="${pageContext.request.contextPath}/assets/elements/icon-adicionar.svg" alt="icone-adicionar">Adicionar registro</button>
+      <a href="${pageContext.request.contextPath}/categoria-produto/popup/adicionar">
+        <button class="btnAdicionar" id="btnAdicionar"><img src="${pageContext.request.contextPath}/assets/elements/icon-adicionar.svg" alt="icone-adicionar">Adicionar registro</button>
+      </a>
+
     </div>
 
   </header>
@@ -149,9 +189,16 @@
           <button name="editar">
             <img src="${pageContext.request.contextPath}/assets/elements/editar.svg" alt="">
           </button>
-          <button type="submit" name="apagar">
-            <img src="${pageContext.request.contextPath}/assets/elements/apagar.svg" alt="">
-          </button>
+            <form action="${pageContext.request.contextPath}/categoria-produto/deletar" method="POST" style="display: inline;">
+
+                <input type="hidden" name="id" value="<%=registro.getIdCategoriaProduto()%>">
+
+                <button type="submit" name="apagar" class="botao-transparente"
+                        onclick="return confirm('Tem certeza que deseja deletar esta categoria de produto?');">
+                    <img src="${pageContext.request.contextPath}/assets/elements/apagar.svg" alt="Apagar">
+                </button>
+
+            </form>
         </div>
       </td>
     </tr>

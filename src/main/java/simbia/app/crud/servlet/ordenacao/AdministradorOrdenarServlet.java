@@ -24,72 +24,52 @@ import java.util.List;
  */
 @WebServlet("/administrador/ordenar")
 public class AdministradorOrdenarServlet extends HttpServlet {
-
-    private static final String CHAVE_REGISTROS = "administradorRegistros";
-
     @Override
     protected void service(HttpServletRequest requisicao, HttpServletResponse resposta)
             throws ServletException, IOException {
 
         RequisicaoResposta requisicaoResposta = new RequisicaoResposta(requisicao, resposta);
+        String chaveRegistros = "administradorRegistros";
 
         try {
-            List<Administrador> registros = recuperarRegistros(requisicaoResposta);
+            List<Administrador> registros = (List<Administrador>)
+                    requisicaoResposta.recuperarAtributoDaRequisicao("administradorRegistros");
+
+            if (registros == null || registros.isEmpty()) {
+                // recarrega diretamente do banco
+                AdministradorDao dao = new AdministradorDao();
+                try {
+                    registros = dao.recuperarTudo();
+                } catch (DaoException e) {
+                    e.printStackTrace();
+                    requisicaoResposta.redirecionarPara("/administrador/erroEmRegistros.jsp");
+                    return;
+                }
+            }
+
+            ValidacoesDeDados.validarRegistros(registros);
+
             String tipoOrdenacao = requisicaoResposta.recuperarParametroDaRequisicao("tipoOrdenacao");
             String ordem = requisicaoResposta.recuperarParametroDaRequisicao("ordem");
-            System.out.println(">>> tipoOrdenacao: " + requisicaoResposta.recuperarParametroDaRequisicao("tipoOrdenacao"));
-            System.out.println(">>> ordem: " + requisicaoResposta.recuperarParametroDaRequisicao("ordem"));
+
             ValidacoesDeDados.validarTipoDeOrdenacao(tipoOrdenacao);
 
-            boolean crescente = isOrdemCrescente(ordem);
-            ordenarRegistros(registros, tipoOrdenacao, crescente);
+            boolean crescente = ordem == null || !ordem.equals("desc");
 
-            salvarEstadoOrdenacao(requisicaoResposta, registros, tipoOrdenacao, crescente);
+            OrdenarServlet<Administrador> ordenador =
+                    OrdenacaoFactory.criarParaAdministrador(tipoOrdenacao, crescente);
+
+            ordenador.ordenarComLog(registros);
+
+            requisicaoResposta.adicionarAtributoNaSessaoDaRequisicao(chaveRegistros, registros);
+            requisicaoResposta.adicionarAtributoNaRequisicao("criterioOrdenacao", tipoOrdenacao);
+            requisicaoResposta.adicionarAtributoNaRequisicao("ordemAtual", crescente ? "asc" : "desc");
+
             requisicaoResposta.despacharPara("../administrador.jsp");
 
-        } catch (RequisicaoSemRegistrosException | RequisicaoSemTipoOrdenacaoException e) {
-            e.printStackTrace();
+        } catch (RequisicaoSemRegistrosException | RequisicaoSemTipoOrdenacaoException causa) {
+            causa.printStackTrace();
             requisicaoResposta.redirecionarPara("/administrador/registros");
-        } catch (DaoException e) {
-            e.printStackTrace();
-            requisicaoResposta.redirecionarPara("/administrador/erroEmRegistros.jsp");
         }
-    }
-
-
-     private List<Administrador> recuperarRegistros(RequisicaoResposta requisicaoResposta)
-            throws DaoException, RequisicaoSemRegistrosException {
-
-        List<Administrador> registros =
-                (List<Administrador>) requisicaoResposta.recuperarAtributoDaRequisicao(CHAVE_REGISTROS);
-
-        if (registros == null || registros.isEmpty()) {
-            registros = new AdministradorDao().recuperarTudo();
-        }
-
-        ValidacoesDeDados.validarRegistros(registros);
-        return registros;
-    }
-
-
-    private boolean isOrdemCrescente(String ordem) {
-        return ordem == null || !ordem.equalsIgnoreCase("desc");
-    }
-
-    private void ordenarRegistros(List<Administrador> registros, String tipoOrdenacao, boolean crescente)
-            throws RequisicaoSemTipoOrdenacaoException {
-
-        OrdenarServlet<Administrador> ordenador =
-                OrdenacaoFactory.criarParaAdministrador(tipoOrdenacao, crescente);
-
-        ordenador.ordenarComLog(registros);
-    }
-
-    private void salvarEstadoOrdenacao(RequisicaoResposta requisicaoResposta, List<Administrador> registros,
-                                       String tipoOrdenacao, boolean crescente) {
-
-        requisicaoResposta.adicionarAtributoNaSessaoDaRequisicao(CHAVE_REGISTROS, registros);
-        requisicaoResposta.adicionarAtributoNaRequisicao("criterioOrdenacao", tipoOrdenacao);
-        requisicaoResposta.adicionarAtributoNaRequisicao("ordemAtual", crescente ? "asc" : "desc");
     }
 }
