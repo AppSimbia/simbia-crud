@@ -25,21 +25,13 @@ public class CategoriaProdutoDeletarServlet extends DeletarServlet {
         this.categoriaProdutoDao.deletar(id);
     }
 
-    /**
-     * Após deletar com sucesso, redireciona de volta para a servlet de registros.
-     * Isso força o recarregamento da lista de administradores.
-     */
     @Override
-    public String enderecoDeRedirecionamentoPosDelecao() {
-        return "/categoria-produto/registros";
+    public String enderecoDeDespache() {
+        return "../categoria-produto.jsp";
     }
 
-    /**
-     * Página JSP para onde o usuário é despachado
-     * caso ocorra qualquer erro no processo.
-     */
     @Override
     public String enderecoDeDespacheCasoErro() {
-        return "/erro.jsp";
+        return "../categoria-produto/registros";
     }
 }

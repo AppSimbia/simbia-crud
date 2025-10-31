@@ -25,21 +25,14 @@ public class AdministradorDeletarServlet extends DeletarServlet {
         this.administradorDao.deletar(id);
     }
 
-    /**
-     * Após deletar com sucesso, redireciona de volta para a servlet de registros.
-     * Isso força o recarregamento da lista de administradores.
-     */
+
     @Override
-    public String enderecoDeRedirecionamentoPosDelecao() {
-        return "/administrador/registros";
+    public String enderecoDeDespache() {
+        return "../administrador.jsp";
     }
 
-    /**
-     * Página JSP para onde o usuário é despachado
-     * caso ocorra qualquer erro no processo.
-     */
     @Override
     public String enderecoDeDespacheCasoErro() {
-        return "/erro.jsp";
+        return "../administrador/registros";
     }
 }

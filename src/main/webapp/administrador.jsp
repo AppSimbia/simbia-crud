@@ -13,6 +13,7 @@
     ValidacoesDeDados.validarSeAdministradorEstaAtutenticado(requisicaoResposta);
 
     List<Administrador> registros = UtilitariosJSP.recuperarRegistrosDaRequisicao(requisicaoResposta, "administrador");
+
 %>
 <!DOCTYPE html>
 <html lang="pt-br">
@@ -27,60 +28,14 @@
   <title>Simbia - Administrador</title>
 </head>
 <body>
-<%
-  if (requisicaoResposta.existeSessaoDaRequisicao("administradorPopup")){
-    if (requisicaoResposta.recuperarAtributoDaSessao("administradorPopup").equals("adicionar")){
-%>
-<section id="container-geral-popup">
-  <div id="content-popup-geral">
-    <div id="vertical-line"></div>
-    <div>
-      <div>
-        <h2>Adicionar administrador</h2>
-        <a href="${pageContext.request.contextPath}/administrador/popup/adicionar">
-          <button type="submit" name="btnFechar" id="close">
-            <img src="${pageContext.request.contextPath}/assets/elements/btnFechar.svg" alt="fechar" >
-          </button>
-        </a>
-      </div>
-      <form action="">
-        <div class="display-input-input">
-          <div>
-            <label for="nome">Nome</label>
-            <input type="text" name="nome" placeholder="Fulano Silva">
-          </div>
+<div id="popup-container">
 
-          <div>
-            <label for="email">E-mail</label>
-            <input type="email" name="email" placeholder="usuario@email.com">
-          </div>
-        </div>
-
-        <div class="display-input-input">
-          <div>
-            <label for="senha">Senha</label>
-            <input type="password" name="senha" id="senha">
-          </div>
-          <div>
-            <label for="repetir-senha">Repetir senha</label>
-            <input type="password" name="repetir-senha" >
-          </div>
-        </div>
-
-        <button type="submit" name="btnAdicionar" id="btnAdd">Adicionar</button>
-      </form>
-    </div>
-  </div>
-</section>
-<%
-    }
-  }
-%>
-
+</div>
 <!-- MENU LATERAL -->
 <img src="${pageContext.request.contextPath}/assets/elements/icon-simbia.svg" alt="logo-simbia">
 <aside>
   <h1>Tabelas</h1>
+
   <hr>
   <nav>
     <ul>
@@ -136,19 +91,13 @@
   <header>
     <h1>Administrador</h1>
     <div>
-      <a href="${pageContext.request.contextPath}/administrador/atualizar">
-        <button name="atualizar" type="submit">
+      <a href="<%=request.getContextPath()%>/administrador/atualizar" class="atualizar">
+        <button name="atualizar">
           <img src="${pageContext.request.contextPath}/assets/elements/icon-atualizar.svg" alt="icon-atualizar">
           Atualizar
         </button>
       </a>
-
-        <a href="${pageContext.request.contextPath}/administrador/popup/adicionar">
-          <button class="btnAdicionar" id="btnAdicionar">
-            <img src="${pageContext.request.contextPath}/assets/elements/icon-adicionar.svg" alt="icone-adicionar">
-            Adicionar registro
-          </button>
-        </a>
+      <button class="btnAdicionar" id="btnAdicionar"><img src="${pageContext.request.contextPath}/assets/elements/icon-adicionar.svg" alt="icone-adicionar">Adicionar registro</button>
     </div>
 
   </header>
@@ -164,53 +113,91 @@
   <table>
     <thead>
     <tr>
+      <!-- ID -->
       <th class="id">
         <div>
           <p>ID</p>
           <form action="${pageContext.request.contextPath}/administrador/ordenar" method="GET">
-            <input type="hidden" name="tipoOrdenacao" value="idAdministrador">
-            <input type="hidden" name="ordem" value="<%= request.getAttribute("ordemAtual") != null && request.getAttribute("ordemAtual").equals("asc") ? "desc" : "asc" %>">
-            <button type="submit"><i class="fa-solid fa-angle-down"></i></button>
+          <input type="hidden" name="tipoOrdenacao" value="porId">
+            <input type="hidden" name="ordem" value="<%=
+              (request.getAttribute("criterioOrdenacao") != null && request.getAttribute("criterioOrdenacao").equals("porId")
+                && request.getAttribute("ordemAtual") != null && request.getAttribute("ordemAtual").equals("asc"))
+              ? "desc" : "asc"
+            %>">
+            <button type="submit">
+              <i class="fa-solid <%=
+                (request.getAttribute("criterioOrdenacao") != null && request.getAttribute("criterioOrdenacao").equals("porId"))
+                  ? (request.getAttribute("ordemAtual").equals("asc") ? "fa-angle-up icone-ativo" : "fa-angle-down icone-ativo")
+                  : "fa-angle-down"
+              %>"></i>
+            </button>
           </form>
         </div>
       </th>
 
+      <!-- NOME -->
       <th>
         <div>
           <p>NOME</p>
           <form action="${pageContext.request.contextPath}/administrador/ordenar" method="GET">
             <input type="hidden" name="tipoOrdenacao" value="porNome">
-            <input type="hidden" name="ordem" value="<%= request.getAttribute("ordemAtual") != null && request.getAttribute("ordemAtual").equals("asc") ? "desc" : "asc" %>">
-            <button type="submit"><i class="fa-solid fa-angle-down"></i></button>
+            <input type="hidden" name="ordem" value="<%=
+              (request.getAttribute("criterioOrdenacao") != null && request.getAttribute("criterioOrdenacao").equals("porNome")
+                && request.getAttribute("ordemAtual") != null && request.getAttribute("ordemAtual").equals("asc"))
+              ? "desc" : "asc"
+            %>">
+            <button type="submit">
+              <i class="fa-solid <%=
+                (request.getAttribute("criterioOrdenacao") != null && request.getAttribute("criterioOrdenacao").equals("porNome"))
+                  ? (request.getAttribute("ordemAtual").equals("asc") ? "fa-angle-up icone-ativo" : "fa-angle-down icone-ativo")
+                  : "fa-angle-down"
+              %>"></i>
+            </button>
           </form>
         </div>
       </th>
 
+      <!-- EMAIL -->
       <th>
         <div>
           <p>EMAIL</p>
           <form action="${pageContext.request.contextPath}/administrador/ordenar" method="GET">
             <input type="hidden" name="tipoOrdenacao" value="porEmail">
-            <input type="hidden" name="ordem" value="<%= request.getAttribute("ordemAtual") != null && request.getAttribute("ordemAtual").equals("asc") ? "desc" : "asc" %>">
-            <button type="submit"><i class="fa-solid fa-angle-down"></i></button>
+            <input type="hidden" name="ordem" value="<%=
+              (request.getAttribute("criterioOrdenacao") != null && request.getAttribute("criterioOrdenacao").equals("porEmail")
+                && request.getAttribute("ordemAtual") != null && request.getAttribute("ordemAtual").equals("asc"))
+              ? "desc" : "asc"
+            %>">
+            <button type="submit">
+              <i class="fa-solid <%=
+                (request.getAttribute("criterioOrdenacao") != null && request.getAttribute("criterioOrdenacao").equals("porEmail"))
+                  ? (request.getAttribute("ordemAtual").equals("asc") ? "fa-angle-up icone-ativo" : "fa-angle-down icone-ativo")
+                  : "fa-angle-down"
+              %>"></i>
+            </button>
           </form>
         </div>
       </th>
 
+      <!-- SENHA -->
       <th>
         <p>SENHA</p>
       </th>
 
+      <!-- AÇÕES -->
+      <th>
+        <p>AÇÕES</p>
+      </th>
     </tr>
     </thead>
-    <tbody>
-    <% for (Administrador registro : registros){%>
-    <tr>
-      <td class="id"><%=registro.getIdAdministrador()%></td>
-      <td><%=registro.getNome()%></td>
-      <td><%=registro.getEmail()%></td>
-      <td>[SENHA PROTEGIDA]</td>
 
+    <tbody>
+    <% for (Administrador registro : registros){ %>
+    <tr>
+      <td class="id"><%= registro.getIdAdministrador() %></td>
+      <td><%= registro.getNome() %></td>
+      <td><%= registro.getEmail() %></td>
+      <td>[SENHA PROTEGIDA]</td>
       <td class="acoes">
         <div>
           <button name="editar">
@@ -225,6 +212,7 @@
     <% } %>
     </tbody>
   </table>
+
 </main>
 </body>
 </html>
