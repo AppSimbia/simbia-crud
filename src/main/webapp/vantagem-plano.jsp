@@ -186,7 +186,7 @@
 
             <td class="acoes">
                 <div>
-                    <button name="editar">
+                    <button name="editar" value="<%=registro.getIdVantagemPlano()%>;<%=registro.getIdVantagem()%>;<%=registro.getIdPlano()%>">
                         <img src="${pageContext.request.contextPath}/assets/elements/editar.svg">
                     </button>
                     <button type="submit" name="apagar">

@@ -28,7 +28,7 @@
   <title>Simbia - Administrador</title>
 </head>
 <body>
-<div id="popup-container">
+<div id="container-geral-popup">
 
 </div>
 <!-- MENU LATERAL -->
@@ -200,14 +200,19 @@
       <td>[SENHA PROTEGIDA]</td>
       <td class="acoes">
         <div>
-          <button name="editar" value="<%=registro.getIdAdministrador()%>;<%=registro.getEmail()%>;<%=registro.getNome()%>">
+          <!-- editar: NÃO submete formulário -->
+          <button type="button" name="editar"
+                  value="<%=registro.getIdAdministrador()%>;<%=registro.getEmail()%>;<%=registro.getNome()%>">
             <img src="${pageContext.request.contextPath}/assets/elements/editar.svg">
           </button>
-          <button type="submit" name="apagar">
+
+          <!-- apagar: usar name="deletar" e type="button" para combinar com o JS -->
+          <button type="button" name="deletar" value="<%=registro.getIdAdministrador()%>">
             <img src="${pageContext.request.contextPath}/assets/elements/apagar.svg">
           </button>
         </div>
       </td>
+
     </tr>
     <% } %>
     </tbody>
@@ -215,10 +220,15 @@
 
 </main>
 </body>
-<script src="${pageContext.request.contextPath}/assets/js/script.js">
-</script>
+<script defer src="${pageContext.request.contextPath}/assets/js/script.js"></script>
 <script>
-  adicionarListenerPopUps('${pageContext.request.contextPath}/assets/modals/popup-adicionar-admin.html', '${pageContext.request.contextPath}/assets/modals/popup-alterar-admin.html', 'administrador')
+  document.addEventListener('DOMContentLoaded', () => {
+    adicionarListenerPopUps(
+            '${pageContext.request.contextPath}/assets/modals/popup-adicionar-admin.html',
+            '${pageContext.request.contextPath}/assets/modals/popup-alterar-admin.html',
+            'administrador'
+    );
+  });
 </script>
 </html>
 <%

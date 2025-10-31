@@ -856,3 +856,13 @@ table tbody tr td:last-child {
         margin-bottom: -20px;
     }
 }
+
+#container-geral-popup,
+#container-geral-popup-confirmacao {
+    display: none;
+}
+
+#container-geral-popup.active,
+#container-geral-popup-confirmacao.active {
+    display: flex;
+}
