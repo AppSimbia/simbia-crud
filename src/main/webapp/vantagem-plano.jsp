@@ -187,10 +187,10 @@
             <td class="acoes">
                 <div>
                     <button name="editar">
-                        <img src="${pageContext.request.contextPath}/assets/elements/editar.svg" alt="">
+                        <img src="${pageContext.request.contextPath}/assets/elements/editar.svg">
                     </button>
                     <button type="submit" name="apagar">
-                        <img src="${pageContext.request.contextPath}/assets/elements/apagar.svg" alt="">
+                        <img src="${pageContext.request.contextPath}/assets/elements/apagar.svg">
                     </button>
                 </div>
             </td>
