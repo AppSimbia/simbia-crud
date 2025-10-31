@@ -89,15 +89,11 @@
   <header>
     <h1>Permissão</h1>
     <div>
-      <a href="<%=request.getContextPath()%>/permissao/atualizar" class="atualizar">
-        <button name="atualizar">
+      <button name="atualizar">
           <img src="${pageContext.request.contextPath}/assets/elements/icon-atualizar.svg" alt="icon-atualizar">
           Atualizar
-        </button>
-      </a>
-      <a href="${pageContext.request.contextPath}/permissao/popup/adicionar">
-        <button class="btnAdicionar" id="btnAdicionar"><img src="${pageContext.request.contextPath}/assets/elements/icon-adicionar.svg" alt="icone-adicionar">Adicionar registro</button>
-      </a>
+      </button>
+      <button class="btnAdicionar" id="btnAdicionar"><img src="${pageContext.request.contextPath}/assets/elements/icon-adicionar.svg" alt="icone-adicionar">Adicionar registro</button>
     </div>
 
   </header>
@@ -148,7 +144,7 @@
 
       <td class="acoes">
         <div>
-          <button name="editar">
+          <button name="editar" value="<%=registro.getIdPermissao()%>;<%=registro.getNomePermissao()%>;<%=registro.getDescricao()%>">
             <img src="${pageContext.request.contextPath}/assets/elements/editar.svg" alt="">
           </button>
           <button type="submit" name="apagar">
@@ -162,6 +158,11 @@
   </table>
 </main>
 </body>
+<script src="assets/js/script.js">
+</script>
+<script>
+  adicionarListenerPopUps('assets/modals/popup-adicionar-permissao.html', 'assets/modals/popup-alterar-permissao.html')
+</script>
 </html>
 <%
 } catch (UsuarioNaoAutenticadoException causa){

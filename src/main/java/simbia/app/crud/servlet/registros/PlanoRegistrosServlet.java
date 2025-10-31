@@ -32,6 +32,6 @@ public class PlanoRegistrosServlet extends RegistrosServlet<Plano> {
 
     @Override
     public String enderecoDeDespacheCasoErro() {
-        return "erro.jsp";
+        return "erroDeConexao.html";
     }
 }

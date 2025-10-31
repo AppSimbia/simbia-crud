@@ -32,6 +32,6 @@ public class PermissaoRegistrosServlet extends RegistrosServlet<Permissao> {
 
     @Override
     public String enderecoDeDespacheCasoErro() {
-        return "erro.jsp";
+        return "erroDeConexao.html";
     }
 }

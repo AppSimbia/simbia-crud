@@ -95,9 +95,7 @@
           Atualizar
         </button>
       </a>
-      <a href="${pageContext.request.contextPath}/vantagem/popup/adicionar">
-        <button class="btnAdicionar" id="btnAdicionar"><img src="${pageContext.request.contextPath}/assets/elements/icon-adicionar.svg" alt="icone-adicionar">Adicionar registro</button>
-      </a>
+      <button class="btnAdicionar" id="btnAdicionar"><img src="${pageContext.request.contextPath}/assets/elements/icon-adicionar.svg" alt="icone-adicionar">Adicionar registro</button>
     </div>
   </header>
 
@@ -147,11 +145,11 @@
 
       <td class="acoes">
         <div>
-          <button name="editar">
-            <img src="assets/elements/editar.svg" alt="">
+          <button name="editar" value="<%=registro.getIdVantagem()%>;<%=registro.getNomeVantagem()%>;<%=registro.getDescricao()%>">
+            <img src="assets/elements/editar.svg">
           </button>
           <button type="submit" name="apagar">
-            <img src="assets/elements/apagar.svg" alt="">
+            <img src="assets/elements/apagar.svg">
           </button>
         </div>
       </td>
@@ -161,6 +159,11 @@
   </table>
 </main>
 </body>
+<script src="assets/js/script.js">
+</script>
+<script>
+  adicionarListenerPopUps('assets/modals/popup-adicionar-vantagem.html', 'assets/modals/popup-alterar-vantagem.html')
+</script>
 </html>
 <%
 } catch (UsuarioNaoAutenticadoException causa){

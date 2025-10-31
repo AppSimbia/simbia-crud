@@ -32,6 +32,6 @@ public class VantagemPlanoRegistrosServlet extends RegistrosServlet<VantagemPlan
 
     @Override
     public String enderecoDeDespacheCasoErro() {
-        return "erro.jsp";
+        return "erroDeConexao.html";
     }
 }

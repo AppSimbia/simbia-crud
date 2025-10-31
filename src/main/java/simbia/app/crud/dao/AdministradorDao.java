@@ -65,6 +65,28 @@ public class AdministradorDao extends DaoManipuladorDeSenhasEmails<Administrador
         try {
             PreparedStatement comandoAtualizar = conexao.prepareStatement(COMANDO_ATUALIZAR);
             comandoAtualizar.setString(1, administrador.getEmail());
+            comandoAtualizar.setString(2, administrador.getSenha());
+            comandoAtualizar.setString(3, administrador.getNome());
+            comandoAtualizar.setLong(4, administrador.getIdAdministrador());
+
+            sucessoDaOperacao = houveAlteracaoNoBanco(comandoAtualizar.executeUpdate());
+
+            ValidacoesDeDados.validarSucessoDeOperacao(sucessoDaOperacao);
+
+        } catch (SQLException causa) {
+            throw gerarExceptionEspecializadaPorSQLException(causa);
+        }finally {
+            ManipuladorConexao.desconectar(conexao);
+        }
+    }
+
+    @Override
+    public void AtualizarSerializandoSenha(Administrador administrador) {
+        boolean sucessoDaOperacao = false;
+        Connection conexao = ManipuladorConexao.conectar();
+        try {
+            PreparedStatement comandoAtualizar = conexao.prepareStatement(COMANDO_ATUALIZAR);
+            comandoAtualizar.setString(1, administrador.getEmail());
             comandoAtualizar.setString(2, gerarHashBCrypt(administrador.getSenha()));
             comandoAtualizar.setString(3, administrador.getNome());
             comandoAtualizar.setLong(4, administrador.getIdAdministrador());

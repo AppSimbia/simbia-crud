@@ -164,6 +164,11 @@
     </table>
 </main>
 </body>
+<script src="assets/js/script.js">
+</script>
+<script>
+    adicionarListenerPopUps('assets/modals/popup-adicionar-vantagemPlano.html', 'assets/modals/popup-alterar-vantagemPlano.html')
+</script>
 </html>
 <%
 } catch (UsuarioNaoAutenticadoException causa){

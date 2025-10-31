@@ -161,7 +161,7 @@
 
       <td class="acoes">
         <div>
-          <button name="editar">
+          <button name="editar" value="<%=registro.getIdAdministrador()%>;<%=registro.getEmail()%>;<%=registro.getNome()%>">
             <img src="${pageContext.request.contextPath}/assets/elements/editar.svg" alt="">
           </button>
           <button type="submit" name="apagar">
@@ -175,6 +175,11 @@
   </table>
 </main>
 </body>
+<script src="assets/js/script.js">
+</script>
+<script>
+  adicionarListenerPopUps('assets/modals/popup-adicionar-adm.html', 'assets/modals/popup-alterar-admin.html', 'administrador')
+</script>
 </html>
 <%
   } catch (UsuarioNaoAutenticadoException causa){
@@ -187,11 +192,6 @@
     <h1>Acesso não autenticado</h1>
     <a href="/crud/entrar.jsp">Autenticar</a>
   </body>
-  <script src="${pageContext.request.contextPath}/assets/js/script.js">
-    btnAdicionar = document.getElementById('btnAdicionar')
-
-    btnAdicionar.addEventListener('onclick', abrirPopUp('${pageContext.request.contextPath}/assets/modal/popup-adicionar-adm.html'))
-  </script>
 </html>
 <%
   } catch (RequisicaoSemRegistrosException causa){

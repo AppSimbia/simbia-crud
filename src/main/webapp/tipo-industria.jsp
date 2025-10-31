@@ -29,38 +29,6 @@
 </head>
 <body>
 <div id="popup-container"></div>
-<section id="container-geral-popup">
-    <div id="content-popup-geral">
-        <div id="vertical-line"></div>
-        <div>
-            <div id="display-fechar-add-admin">
-                <h2>Adicionar tipo indústria</h2>
-                <a href="${pageContext.request.contextPath}/tipo-industria/popup/adicionar">
-                    <button name="btnFechar" id="close"><img src="${pageContext.request.contextPath}/assets/elements/btnFechar.svg" alt="fechar" ></button>
-                </a>
-            </div>
-
-            <form action="">
-                <div>
-                    <label for="nome">Nome tipo indústria</label>
-                    <input type="text" name="nome" placeholder="Sucroalcoleira">
-                </div>
-
-                <div>
-                    <label for="descricao">Descrição</label>
-                    <textarea name="descricao" id="input-descricao"> </textarea>
-                </div>
-
-                <button type="submit" name="btnAdicionar" id="btnAdd">Adicionar</button>
-            </form>
-        </div>
-    </div>
-</section>
-
-<%
-        }
-    }
-%>
 <!-- MENU LATERAL -->
 <img src="${pageContext.request.contextPath}/assets/elements/icon-simbia.svg" alt="logo-simbia">
 <aside>
@@ -127,9 +95,7 @@
                     Atualizar
                 </button>
             </a>
-            <a href="${pageContext.request.contextPath}/tipo-industria/popup/adicionar">
-                <button class="btnAdicionar" id="btnAdicionar"><img src="${pageContext.request.contextPath}/assets/elements/icon-adicionar.svg" alt="icone-adicionar">Adicionar registro</button>
-            </a>
+            <button class="btnAdicionar" id="btnAdicionar"><img src="${pageContext.request.contextPath}/assets/elements/icon-adicionar.svg" alt="icone-adicionar">Adicionar registro</button>
         </div>
 
     </header>
@@ -180,7 +146,7 @@
 
             <td class="acoes">
                 <div>
-                    <button name="editar">
+                    <button name="editar" value="<%=registro.getIdTipoIndustria()%>;<%=registro.getNomeTipoIndustria()%>;<%=registro.getDescricao()%>">
                         <img src="${pageContext.request.contextPath}/assets/elements/editar.svg" alt="">
                     </button>
                     <button type="submit" name="apagar">
@@ -194,6 +160,11 @@
     </table>
 </main>
 </body>
+<script src="assets/js/script.js">
+</script>
+<script>
+    adicionarListenerPopUps('assets/modals/popup-adicionar-tipoIndustria.html', 'assets/modals/popup-alterar-tipoIndustria.html')
+</script>
 </html>
 <%
 } catch (UsuarioNaoAutenticadoException causa){
