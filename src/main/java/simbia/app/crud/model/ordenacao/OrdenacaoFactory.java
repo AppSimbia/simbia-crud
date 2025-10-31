@@ -72,5 +72,25 @@ public class OrdenacaoFactory {
                 return criarParaVantagem("porId", true);
         }
     }
+    public static OrdenarServlet<Vantagem> criarParaVantagem(String tipoOrdenacao, boolean crescente) {
+        switch (tipoOrdenacao) {
+            case "porId":
+                return new OrdenacaoGenerica<>(
+                        vantagem -> vantagem.getIdVantagem(),
+                        crescente,
+                        "porId"
+                );
+
+            case "porNome":
+                return new OrdenacaoGenerica<>(
+                        vantagem -> vantagem.getNomeVantagem().toLowerCase(),
+                        crescente,
+                        "porNome"
+                );
+
+            default:
+                return criarParaVantagem("porId", true);
+        }
+    }
 
 }
