@@ -28,41 +28,7 @@
     <title>Simbia - Plano</title>
 </head>
 <body>
-<%
-    if (requisicaoResposta.existeSessaoDaRequisicao("vantagemplanoPopup")){
-        if (requisicaoResposta.recuperarAtributoDaSessao("vantagemplanoPopup").equals("adicionar")){
-%>
-<section id="container-geral-popup">
-    <div id="content-popup-geral">
-        <div id="vertical-line"></div>
-        <div>
-            <div>
-                <h2>Adicionar Vantagem Plano</h2>
-                <a href="${pageContext.request.contextPath}/vantagem-plano/popup/adicionar">
-                    <button name="btnFechar" id="close"><img src="${pageContext.request.contextPath}/assets/elements/btnFechar.svg" alt="fechar" ></button>
-                </a>
-            </div>
-            <form action="">
-                <div>
-                    <label for="nome">Nome vantagem plano</label>
-                    <input type="text" name="nome" placeholder="Acesso à IA">
-                </div>
-
-                <div>
-                    <label for="descricao">Descrição</label>
-                    <textarea name="descricao" id="input-descricao"> </textarea>
-                </div>
-
-                <button type="submit" name="btnAdicionar" id="btnAdd">Adicionar</button>
-            </form>
-        </div>
-    </div>
-</section>
-
-<%
-        }
-    }
-%>
+<div id="popup-container"></div>
 <!-- MENU LATERAL -->
 <img src="${pageContext.request.contextPath}/assets/elements/icon-simbia.svg" alt="logo-simbia">
 <aside>
@@ -130,9 +96,7 @@
                     Atualizar
                 </button>
             </a>
-            <a href="${pageContext.request.contextPath}/vantagem-plano/popup/adicionar">
-                <button class="btnAdicionar" id="btnAdicionar"><img src="${pageContext.request.contextPath}/assets/elements/icon-adicionar.svg" alt="icone-adicionar">Adicionar registro</button>
-            </a>
+            <button class="btnAdicionar" id="btnAdicionar"><img src="${pageContext.request.contextPath}/assets/elements/icon-adicionar.svg" alt="icone-adicionar">Adicionar registro</button>
         </div>
 
     </header>
@@ -200,6 +164,11 @@
     </table>
 </main>
 </body>
+<script src="assets/js/script.js">
+</script>
+<script>
+    adicionarListenerPopUps('assets/modals/popup-adicionar-vantagemPlano.html', 'assets/modals/popup-alterar-vantagemPlano.html')
+</script>
 </html>
 <%
 } catch (UsuarioNaoAutenticadoException causa){

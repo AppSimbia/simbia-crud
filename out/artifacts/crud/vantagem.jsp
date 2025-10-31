@@ -28,40 +28,7 @@
   <title>Simbia - Vantagem</title>
 </head>
 <body>
-<%
-  if (requisicaoResposta.existeSessaoDaRequisicao("vantagemPopup")){
-    if (requisicaoResposta.recuperarAtributoDaSessao("vantagemPopup").equals("adicionar")){
-%>
-<section id="container-geral-popup">
-  <div id="content-popup-geral">
-    <div id="vertical-line"></div>
-    <div>
-      <div>
-        <h2>Adicionar Vantagem</h2>
-        <a href="${pageContext.request.contextPath}/vantagem/popup/adicionar">
-          <button name="btnFechar" id="close"><img src="${pageContext.request.contextPath}/assets/elements/btnFechar.svg" alt="fechar" ></button>
-        </a>
-      </div>
-      <form action="">
-        <div>
-          <label for="nome-categoria">Nome vantagem</label>
-          <input type="text" name="nome" placeholder="Acesso à IA">
-        </div>
-
-        <div>
-          <label for="descricao">Descrição</label>
-          <textarea name="descricao" id="input-descricao"> </textarea>
-        </div>
-
-        <button type="submit" name="btnAdicionar" id="btnAdd">Adicionar</button>
-      </form>
-    </div>
-  </div>
-</section>
-<%
-    }
-  }
-%>
+<div id="popup-container"></div>
 <!-- MENU LATERAL -->
 <img src="${pageContext.request.contextPath}/assets/elements/icon-simbia.svg" alt="logo-simbia">
 <aside>
@@ -128,9 +95,7 @@
           Atualizar
         </button>
       </a>
-      <a href="${pageContext.request.contextPath}/vantagem/popup/adicionar">
-        <button class="btnAdicionar" id="btnAdicionar"><img src="${pageContext.request.contextPath}/assets/elements/icon-adicionar.svg" alt="icone-adicionar">Adicionar registro</button>
-      </a>
+      <button class="btnAdicionar" id="btnAdicionar"><img src="${pageContext.request.contextPath}/assets/elements/icon-adicionar.svg" alt="icone-adicionar">Adicionar registro</button>
     </div>
   </header>
 
@@ -202,11 +167,11 @@
 
       <td class="acoes">
         <div>
-          <button name="editar">
-            <img src="assets/elements/editar.svg" alt="">
+          <button name="editar" value="<%=registro.getIdVantagem()%>;<%=registro.getNomeVantagem()%>;<%=registro.getDescricao()%>">
+            <img src="assets/elements/editar.svg">
           </button>
           <button type="submit" name="apagar">
-            <img src="assets/elements/apagar.svg" alt="">
+            <img src="assets/elements/apagar.svg">
           </button>
         </div>
       </td>
@@ -216,6 +181,11 @@
   </table>
 </main>
 </body>
+<script src="assets/js/script.js">
+</script>
+<script>
+  adicionarListenerPopUps('assets/modals/popup-adicionar-vantagem.html', 'assets/modals/popup-alterar-vantagem.html')
+</script>
 </html>
 <%
 } catch (UsuarioNaoAutenticadoException causa){
