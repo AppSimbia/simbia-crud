@@ -1,5 +1,6 @@
 package simbia.app.crud.model.ordenacao;
 
+import org.jetbrains.annotations.NotNull;
 import simbia.app.crud.interfaces.ComparadorCampo;
 import simbia.app.crud.infra.servlet.abstractclasses.OrdenarServlet;
 import simbia.app.crud.model.dao.*;
@@ -72,25 +73,4 @@ public class OrdenacaoFactory {
                 return criarParaVantagem("porId", true);
         }
     }
-    public static OrdenarServlet<Vantagem> criarParaVantagem(String tipoOrdenacao, boolean crescente) {
-        switch (tipoOrdenacao) {
-            case "porId":
-                return new OrdenacaoGenerica<>(
-                        vantagem -> vantagem.getIdVantagem(),
-                        crescente,
-                        "porId"
-                );
-
-            case "porNome":
-                return new OrdenacaoGenerica<>(
-                        vantagem -> vantagem.getNomeVantagem().toLowerCase(),
-                        crescente,
-                        "porNome"
-                );
-
-            default:
-                return criarParaVantagem("porId", true);
-        }
-    }
-
 }

@@ -200,7 +200,7 @@
       <td>[SENHA PROTEGIDA]</td>
       <td class="acoes">
         <div>
-          <button name="editar">
+          <button name="editar" value="<%=registro.getIdAdministrador()%>;<%=registro.getEmail()%>;<%=registro.getNome()%>">
             <img src="${pageContext.request.contextPath}/assets/elements/editar.svg" alt="">
           </button>
           <button type="submit" name="apagar">
@@ -215,6 +215,11 @@
 
 </main>
 </body>
+<script src="${pageContext.request.contextPath}/assets/js/script.js">
+</script>
+<script>
+  adicionarListenerPopUps('${pageContext.request.contextPath}/assets/modals/popup-adicionar-admin.html', '${pageContext.request.contextPath}/assets/modals/popup-alterar-admin.html', 'administrador')
+</script>
 </html>
 <%
   } catch (UsuarioNaoAutenticadoException causa){

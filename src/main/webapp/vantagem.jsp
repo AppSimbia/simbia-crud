@@ -181,10 +181,10 @@
   </table>
 </main>
 </body>
-<script src="assets/js/script.js">
+<script src="${pageContext.request.contextPath}/assets/js/script.js">
 </script>
 <script>
-  adicionarListenerPopUps('assets/modals/popup-adicionar-vantagem.html', 'assets/modals/popup-alterar-vantagem.html')
+  adicionarListenerPopUps('${pageContext.request.contextPath}/assets/modals/popup-adicionar-vantagem.html', '${pageContext.request.contextPath}/assets/modals/popup-alterar-vantagem.html')
 </script>
 </html>
 <%

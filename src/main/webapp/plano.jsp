@@ -114,8 +114,20 @@
       <th class="id">
         <div>
           <p>ID</p>
-          <form action="">
-            <button type="submit" value="porId"><i class="fa-solid fa-angle-down"></i></button>
+          <form action="${pageContext.request.contextPath}/plano/ordenar" method="GET">
+            <input type="hidden" name="tipoOrdenacao" value="porId">
+            <input type="hidden" name="ordem" value="<%=
+              (request.getAttribute("criterioOrdenacao") != null && request.getAttribute("criterioOrdenacao").equals("porNome")
+                && request.getAttribute("ordemAtual") != null && request.getAttribute("ordemAtual").equals("asc"))
+              ? "desc" : "asc"
+            %>">
+            <button type="submit">
+              <i class="fa-solid <%=
+                (request.getAttribute("criterioOrdenacao") != null && request.getAttribute("criterioOrdenacao").equals("porNome"))
+                  ? (request.getAttribute("ordemAtual").equals("asc") ? "fa-angle-up icone-ativo" : "fa-angle-down icone-ativo")
+                  : "fa-angle-down"
+              %>"></i>
+            </button>
           </form>
         </div>
 
@@ -123,17 +135,41 @@
       <th>
         <div>
           <p>NOME</p>
-          <form action="">
-            <button type="submit" value="porNome"><i class="fa-solid fa-angle-down"></i></button>
+          <form action="${pageContext.request.contextPath}/categoria-produto/ordenar" method="GET">
+            <input type="hidden" name="tipoOrdenacao" value="porNome">
+            <input type="hidden" name="ordem" value="<%=
+              (request.getAttribute("criterioOrdenacao") != null && request.getAttribute("criterioOrdenacao").equals("porNome")
+                && request.getAttribute("ordemAtual") != null && request.getAttribute("ordemAtual").equals("asc"))
+              ? "desc" : "asc"
+            %>">
+            <button type="submit">
+              <i class="fa-solid <%=
+                (request.getAttribute("criterioOrdenacao") != null && request.getAttribute("criterioOrdenacao").equals("porNome"))
+                  ? (request.getAttribute("ordemAtual").equals("asc") ? "fa-angle-up icone-ativo" : "fa-angle-down icone-ativo")
+                  : "fa-angle-down"
+              %>"></i>
+            </button>
           </form>
         </div>
 
       </th>
       <th>
         <div>
-          <p>Valor</p>
-          <form action="">
-            <button type="submit" value="porEmail"><i class="fa-solid fa-angle-down"></i></button>
+          <p>VALOR</p>
+          <form action="${pageContext.request.contextPath}plano/ordenar" method="GET">
+            <input type="hidden" name="tipoOrdenacao" value="porValor">
+            <input type="hidden" name="ordem" value="<%=
+              (request.getAttribute("criterioOrdenacao") != null && request.getAttribute("criterioOrdenacao").equals("porNome")
+                && request.getAttribute("ordemAtual") != null && request.getAttribute("ordemAtual").equals("asc"))
+              ? "desc" : "asc"
+            %>">
+            <button type="submit">
+              <i class="fa-solid <%=
+                (request.getAttribute("criterioOrdenacao") != null && request.getAttribute("criterioOrdenacao").equals("porNome"))
+                  ? (request.getAttribute("ordemAtual").equals("asc") ? "fa-angle-up icone-ativo" : "fa-angle-down icone-ativo")
+                  : "fa-angle-down"
+              %>"></i>
+            </button>
           </form>
         </div>
 
@@ -167,10 +203,10 @@
   </table>
 </main>
 </body>
-<script src="assets/js/script.js">
+<script src="${pageContext.request.contextPath}/assets/js/script.js">
 </script>
 <script>
-  adicionarListenerPopUps('assets/modals/popup-adicionar-plano.html', 'assets/modals/popup-alterar-plano.html', 'plano')
+  adicionarListenerPopUps('${pageContext.request.contextPath}/assets/modals/popup-adicionar-plano.html', '${pageContext.request.contextPath}/assets/modals/popup-alterar-plano.html', 'plano')
 </script>
 </html>
 <%

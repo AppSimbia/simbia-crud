@@ -115,8 +115,20 @@
             <th class="id">
                 <div>
                     <p>ID</p>
-                    <form action="">
-                        <button type="submit" value="porId"><i class="fa-solid fa-angle-down"></i></button>
+                    <form action="${pageContext.request.contextPath}/vantagem-plano/ordenar" method="GET">
+                        <input type="hidden" name="tipoOrdenacao" value="porId">
+                        <input type="hidden" name="ordem" value="<%=
+              (request.getAttribute("criterioOrdenacao") != null && request.getAttribute("criterioOrdenacao").equals("porNome")
+                && request.getAttribute("ordemAtual") != null && request.getAttribute("ordemAtual").equals("asc"))
+              ? "desc" : "asc"
+            %>">
+                        <button type="submit">
+                            <i class="fa-solid <%=
+                (request.getAttribute("criterioOrdenacao") != null && request.getAttribute("criterioOrdenacao").equals("porNome"))
+                  ? (request.getAttribute("ordemAtual").equals("asc") ? "fa-angle-up icone-ativo" : "fa-angle-down icone-ativo")
+                  : "fa-angle-down"
+              %>"></i>
+                        </button>
                     </form>
                 </div>
 
@@ -124,8 +136,20 @@
             <th>
                 <div>
                     <p>ID-PLANO</p>
-                    <form action="">
-                        <button type="submit" value="porNome"><i class="fa-solid fa-angle-down"></i></button>
+                    <form action="${pageContext.request.contextPath}/vantagem-plano/ordenar" method="GET">
+                        <input type="hidden" name="tipoOrdenacao" value="porIdPlano">
+                        <input type="hidden" name="ordem" value="<%=
+              (request.getAttribute("criterioOrdenacao") != null && request.getAttribute("criterioOrdenacao").equals("porNome")
+                && request.getAttribute("ordemAtual") != null && request.getAttribute("ordemAtual").equals("asc"))
+              ? "desc" : "asc"
+            %>">
+                        <button type="submit">
+                            <i class="fa-solid <%=
+                (request.getAttribute("criterioOrdenacao") != null && request.getAttribute("criterioOrdenacao").equals("porNome"))
+                  ? (request.getAttribute("ordemAtual").equals("asc") ? "fa-angle-up icone-ativo" : "fa-angle-down icone-ativo")
+                  : "fa-angle-down"
+              %>"></i>
+                        </button>
                     </form>
                 </div>
 
@@ -133,8 +157,20 @@
             <th>
                 <div>
                     <p>ID-VANTAGEM</p>
-                    <form action="">
-                        <button type="submit" value="porEmail"><i class="fa-solid fa-angle-down"></i></button>
+                    <form action="${pageContext.request.contextPath}/vantagem-plano/ordenar" method="GET">
+                        <input type="hidden" name="tipoOrdenacao" value="porIdVantagem">
+                        <input type="hidden" name="ordem" value="<%=
+              (request.getAttribute("criterioOrdenacao") != null && request.getAttribute("criterioOrdenacao").equals("porNome")
+                && request.getAttribute("ordemAtual") != null && request.getAttribute("ordemAtual").equals("asc"))
+              ? "desc" : "asc"
+            %>">
+                        <button type="submit">
+                            <i class="fa-solid <%=
+                (request.getAttribute("criterioOrdenacao") != null && request.getAttribute("criterioOrdenacao").equals("porNome"))
+                  ? (request.getAttribute("ordemAtual").equals("asc") ? "fa-angle-up icone-ativo" : "fa-angle-down icone-ativo")
+                  : "fa-angle-down"
+              %>"></i>
+                        </button>
                     </form>
                 </div>
 
@@ -164,10 +200,10 @@
     </table>
 </main>
 </body>
-<script src="assets/js/script.js">
+<script src="${pageContext.request.contextPath}/assets/js/script.js">
 </script>
 <script>
-    adicionarListenerPopUps('assets/modals/popup-adicionar-vantagemPlano.html', 'assets/modals/popup-alterar-vantagemPlano.html')
+    adicionarListenerPopUps('${pageContext.request.contextPath}/assets/modals/popup-adicionar-vantagemPlano.html', '${pageContext.request.contextPath}/assets/modals/popup-alterar-vantagemPlano.html')
 </script>
 </html>
 <%
