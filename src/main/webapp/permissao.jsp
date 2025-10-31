@@ -28,41 +28,7 @@
   <title>Simbia - Permissao</title>
 </head>
 <body>
-<%
-  if (requisicaoResposta.existeSessaoDaRequisicao("permissaoPopup")){
-    if (requisicaoResposta.recuperarAtributoDaSessao("permissaoPopup").equals("adicionar")){
-%>
-<section id="container-geral-popup">
-  <div id="content-popup-geral">
-    <div id="vertical-line"></div>
-    <div>
-      <div>
-        <h2>Adicionar permissão</h2>
-        <a href="${pageContext.request.contextPath}/permissao/popup/adicionar">
-          <button name="btnFechar" id="close"><img src="${pageContext.request.contextPath}/assets/elements/btnFechar.svg" alt="fechar" ></button>
-        </a>
-      </div>
-
-      <form action="" >
-        <div>
-          <label for="nome-categoria">Nome permissão</label>
-          <input type="text" name="nome-categoria" placeholder="Geral">
-        </div>
-
-        <div>
-          <label for="descricao">Descrição</label>
-          <textarea name="descricao" id="input-descricao"> </textarea>
-        </div>
-
-        <button type="submit" name="btnAdicionar" id="btnAdd">Adicionar</button>
-      </form>
-    </div>
-  </div>
-</section>
-<%
-    }
-  }
-%>
+<div id="popup-container"></div>
 <!-- MENU LATERAL -->
 <img src="${pageContext.request.contextPath}/assets/elements/icon-simbia.svg" alt="logo-simbia">
 <aside>
@@ -123,15 +89,11 @@
   <header>
     <h1>Permissão</h1>
     <div>
-      <a href="<%=request.getContextPath()%>/permissao/atualizar" class="atualizar">
-        <button name="atualizar">
+      <button name="atualizar">
           <img src="${pageContext.request.contextPath}/assets/elements/icon-atualizar.svg" alt="icon-atualizar">
           Atualizar
-        </button>
-      </a>
-      <a href="${pageContext.request.contextPath}/permissao/popup/adicionar">
-        <button class="btnAdicionar" id="btnAdicionar"><img src="${pageContext.request.contextPath}/assets/elements/icon-adicionar.svg" alt="icone-adicionar">Adicionar registro</button>
-      </a>
+      </button>
+      <button class="btnAdicionar" id="btnAdicionar"><img src="${pageContext.request.contextPath}/assets/elements/icon-adicionar.svg" alt="icone-adicionar">Adicionar registro</button>
     </div>
 
   </header>
@@ -182,7 +144,7 @@
 
       <td class="acoes">
         <div>
-          <button name="editar">
+          <button name="editar" value="<%=registro.getIdPermissao()%>;<%=registro.getNomePermissao()%>;<%=registro.getDescricao()%>">
             <img src="${pageContext.request.contextPath}/assets/elements/editar.svg" alt="">
           </button>
           <button type="submit" name="apagar">
@@ -196,6 +158,11 @@
   </table>
 </main>
 </body>
+<script src="assets/js/script.js">
+</script>
+<script>
+  adicionarListenerPopUps('assets/modals/popup-adicionar-permissao.html', 'assets/modals/popup-alterar-permissao.html')
+</script>
 </html>
 <%
 } catch (UsuarioNaoAutenticadoException causa){

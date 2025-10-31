@@ -32,6 +32,6 @@ public class AdministradorRegistrosServlet extends RegistrosServlet<Administrado
 
     @Override
     public String enderecoDeDespacheCasoErro() {
-        return "erroEmRegistros.jsp";
+        return "erroDeConexao.html";
     }
 }

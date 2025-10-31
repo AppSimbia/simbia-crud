@@ -32,6 +32,6 @@ public class TipoIndustriaRegistrosServlet extends RegistrosServlet<TipoIndustri
 
     @Override
     public String enderecoDeDespacheCasoErro() {
-        return "erro.jsp";
+        return "erroDeConexao.html";
     }
 }

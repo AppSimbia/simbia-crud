@@ -32,6 +32,6 @@ public class CategoriaProdutoRegistrosServlet extends RegistrosServlet<Categoria
 
     @Override
     public String enderecoDeDespacheCasoErro() {
-        return "erro.jsp";
+        return "erroDeConexao.html";
     }
 }

@@ -22,6 +22,8 @@ public abstract class DaoManipuladorDeSenhasEmails<T> extends DaoGenerica<Admini
      */
     public abstract Optional<T> recuperarPeloEmailESenha(String email, String senhaPura) ;
 
+    public abstract void AtualizarSerializandoSenha(T entidade);
+
     //métodos utilitários
     protected static String gerarHashBCrypt(String senhaPura){
         String hashSenha = null;
