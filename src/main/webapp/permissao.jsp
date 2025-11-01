@@ -5,15 +5,24 @@
 <%@ page import="simbia.app.crud.infra.servlet.exception.operacao.UsuarioNaoAutenticadoException" %>
 <%@ page import="simbia.app.crud.infra.servlet.exception.operacao.RequisicaoSemRegistrosException" %>
 <%@ page import="simbia.app.crud.model.dao.Permissao" %>
+<%@ page import="java.util.ArrayList" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%
   RequisicaoResposta requisicaoResposta = new RequisicaoResposta(request, response);
+  List<Permissao> registros = new ArrayList<>();
 
   try{
     ValidacoesDeDados.validarSeAdministradorEstaAtutenticado(requisicaoResposta);
+    registros = UtilitariosJSP.recuperarRegistrosDaRequisicao(requisicaoResposta, "permissao");
 
-    List<Permissao> registros = UtilitariosJSP.recuperarRegistrosDaRequisicao(requisicaoResposta, "permissao");
+  } catch (UsuarioNaoAutenticadoException causa){
+    requisicaoResposta.despacharPara("/assets/paginas-de-erro/erro-autenticacao.html");
+    return;
 
+  } catch (RequisicaoSemRegistrosException causa){
+    requisicaoResposta.despacharPara("/permissao/registros");
+    return;
+  }
 %>
 <!DOCTYPE html>
 <html lang="pt-br">
@@ -25,7 +34,7 @@
         crossorigin="anonymous" referrerpolicy="no-referrer"/>
   <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/style/tabelas/style.css">
   <link rel="icon" href="${pageContext.request.contextPath}/assets/elements/logo-bolinha.svg">
-  <title>Simbia - Permissao</title>
+  <title>Simbia - Permissão</title>
 </head>
 <body>
 <div id="container-geral-popup"></div>
@@ -89,10 +98,12 @@
   <header>
     <h1>Permissão</h1>
     <div>
-      <button name="atualizar">
+      <a href="<%=request.getContextPath()%>/permissao/atualizar" class="atualizar">
+        <button name="atualizar">
           <img src="${pageContext.request.contextPath}/assets/elements/icon-atualizar.svg" alt="icon-atualizar">
           Atualizar
-      </button>
+        </button>
+      </a>
       <button class="btnAdicionar" id="btnAdicionar"><img src="${pageContext.request.contextPath}/assets/elements/icon-adicionar.svg" alt="icone-adicionar">Adicionar registro</button>
     </div>
 
@@ -115,13 +126,13 @@
           <form action="${pageContext.request.contextPath}/permissao/ordenar" method="GET">
             <input type="hidden" name="tipoOrdenacao" value="porId">
             <input type="hidden" name="ordem" value="<%=
-              (request.getAttribute("criterioOrdenacao") != null && request.getAttribute("criterioOrdenacao").equals("porNome")
+              (request.getAttribute("criterioOrdenacao") != null && request.getAttribute("criterioOrdenacao").equals("porId")
                 && request.getAttribute("ordemAtual") != null && request.getAttribute("ordemAtual").equals("asc"))
               ? "desc" : "asc"
             %>">
             <button type="submit">
               <i class="fa-solid <%=
-                (request.getAttribute("criterioOrdenacao") != null && request.getAttribute("criterioOrdenacao").equals("porNome"))
+                (request.getAttribute("criterioOrdenacao") != null && request.getAttribute("criterioOrdenacao").equals("porId"))
                   ? (request.getAttribute("ordemAtual").equals("asc") ? "fa-angle-up icone-ativo" : "fa-angle-down icone-ativo")
                   : "fa-angle-down"
               %>"></i>
@@ -160,7 +171,7 @@
     </tr>
     </thead>
     <tbody>
-    <% for (Permissao registro : registros){%>
+    <% for (Permissao registro : registros){ %>
     <tr>
       <td class="id"><%=registro.getIdPermissao()%></td>
       <td><%=registro.getNomePermissao()%></td>
@@ -177,7 +188,9 @@
         </div>
       </td>
     </tr>
-    <% } %>
+    <%
+      }
+    %>
     </tbody>
   </table>
 </main>
@@ -188,20 +201,3 @@
   configPopUpAdicionar('/crud/assets/modals/popup-adicionar-permissao.html', '/crud/permissao/adicionar');
 </script>
 </html>
-<%
-} catch (UsuarioNaoAutenticadoException causa){
-%>
-<html>
-<head>
-
-</head>
-<body>
-<h1>Acesso não autenticado</h1>
-<a href="/crud/entrar.jsp">Autenticar</a>
-</body>
-</html>
-<%
-  } catch (RequisicaoSemRegistrosException causa){
-    requisicaoResposta.despacharPara("/permissao/registros");
-  }
-%>

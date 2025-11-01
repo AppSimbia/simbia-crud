@@ -5,15 +5,24 @@
 <%@ page import="simbia.app.crud.infra.servlet.exception.operacao.UsuarioNaoAutenticadoException" %>
 <%@ page import="simbia.app.crud.infra.servlet.exception.operacao.RequisicaoSemRegistrosException" %>
 <%@ page import="simbia.app.crud.model.dao.Vantagem" %>
+<%@ page import="java.util.ArrayList" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%
   RequisicaoResposta requisicaoResposta = new RequisicaoResposta(request, response);
+  List<Vantagem> registros = new ArrayList<>();
 
   try{
     ValidacoesDeDados.validarSeAdministradorEstaAtutenticado(requisicaoResposta);
+    registros = UtilitariosJSP.recuperarRegistrosDaRequisicao(requisicaoResposta, "vantagem");
 
-    List<Vantagem> registros = UtilitariosJSP.recuperarRegistrosDaRequisicao(requisicaoResposta, "vantagem");
+  } catch (UsuarioNaoAutenticadoException causa){
+    requisicaoResposta.despacharPara("/assets/paginas-de-erro/erro-autenticacao.html");
+    return;
 
+  } catch (RequisicaoSemRegistrosException causa){
+    requisicaoResposta.despacharPara("/vantagem/registros");
+    return;
+  }
 %>
 <!DOCTYPE html>
 <html lang="pt-br">
@@ -101,7 +110,7 @@
 
   <hr>
 
-  <form action="<%=request.getContextPath()%>/vantagem-plano/filtro" class="form-pesquisa">
+  <form action="<%=request.getContextPath()%>/vantagem/filtro" class="form-pesquisa">
     <input type="text" placeholder="Pesquisar" name="filtro">
     <button type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
   </form>
@@ -159,7 +168,7 @@
     </tr>
     </thead>
     <tbody>
-    <% for (Vantagem registro : registros){%>
+    <% for (Vantagem registro : registros){ %>
     <tr>
       <td class="id"><%=registro.getIdVantagem()%></td>
       <td><%=registro.getNomeVantagem()%></td>
@@ -168,15 +177,17 @@
       <td class="acoes">
         <div>
           <button name="editar" value="<%=registro.getIdVantagem()%>;<%=registro.getNomeVantagem()%>;<%=registro.getDescricao()%>">
-            <img src="assets/elements/editar.svg">
+            <img src="${pageContext.request.contextPath}/assets/elements/editar.svg">
           </button>
           <button type="submit" name="apagar">
-            <img src="assets/elements/apagar.svg">
+            <img src="${pageContext.request.contextPath}/assets/elements/apagar.svg">
           </button>
         </div>
       </td>
     </tr>
-    <% } %>
+    <%
+      }
+    %>
     </tbody>
   </table>
 </main>
@@ -187,20 +198,3 @@
   configPopUpAdicionar('/crud/assets/modals/popup-adicionar-vantagem.html', '/crud/vantagem/adicionar');
 </script>
 </html>
-<%
-} catch (UsuarioNaoAutenticadoException causa){
-%>
-<html>
-<head>
-
-</head>
-<body>
-<h1>Acesso não autenticado</h1>
-<a href="/crud/entrar.jsp">Autenticar</a>
-</body>
-</html>
-<%
-  } catch (RequisicaoSemRegistrosException causa){
-    requisicaoResposta.despacharPara("/vantagem/registros");
-  }
-%>

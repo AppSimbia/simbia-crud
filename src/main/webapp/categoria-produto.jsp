@@ -5,15 +5,24 @@
 <%@ page import="simbia.app.crud.infra.servlet.exception.operacao.UsuarioNaoAutenticadoException" %>
 <%@ page import="simbia.app.crud.infra.servlet.exception.operacao.RequisicaoSemRegistrosException" %>
 <%@ page import="simbia.app.crud.model.dao.CategoriaProduto" %>
+<%@ page import="java.util.ArrayList" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%
   RequisicaoResposta requisicaoResposta = new RequisicaoResposta(request, response);
+  List<CategoriaProduto> registros = new ArrayList<>();
 
   try{
     ValidacoesDeDados.validarSeAdministradorEstaAtutenticado(requisicaoResposta);
+    registros = UtilitariosJSP.recuperarRegistrosDaRequisicao(requisicaoResposta, "categoriaproduto");
 
-    List<CategoriaProduto> registros = UtilitariosJSP.recuperarRegistrosDaRequisicao(requisicaoResposta, "categoriaproduto");
+  } catch (UsuarioNaoAutenticadoException causa){
+    requisicaoResposta.despacharPara("/assets/paginas-de-erro/erro-autenticacao.html");
+    return;
 
+  } catch (RequisicaoSemRegistrosException causa){
+    requisicaoResposta.despacharPara("/categoria-produto/registros");
+    return;
+  }
 %>
 <!DOCTYPE html>
 <html lang="pt-br">
@@ -117,13 +126,13 @@
           <form action="${pageContext.request.contextPath}/categoria-produto/ordenar" method="GET">
             <input type="hidden" name="tipoOrdenacao" value="porId">
             <input type="hidden" name="ordem" value="<%=
-              (request.getAttribute("criterioOrdenacao") != null && request.getAttribute("criterioOrdenacao").equals("porNome")
+              (request.getAttribute("criterioOrdenacao") != null && request.getAttribute("criterioOrdenacao").equals("porId")
                 && request.getAttribute("ordemAtual") != null && request.getAttribute("ordemAtual").equals("asc"))
               ? "desc" : "asc"
             %>">
             <button type="submit">
               <i class="fa-solid <%=
-                (request.getAttribute("criterioOrdenacao") != null && request.getAttribute("criterioOrdenacao").equals("porNome"))
+                (request.getAttribute("criterioOrdenacao") != null && request.getAttribute("criterioOrdenacao").equals("porId"))
                   ? (request.getAttribute("ordemAtual").equals("asc") ? "fa-angle-up icone-ativo" : "fa-angle-down icone-ativo")
                   : "fa-angle-down"
               %>"></i>
@@ -162,7 +171,7 @@
     </tr>
     </thead>
     <tbody>
-    <% for (CategoriaProduto registro : registros){%>
+    <% for (CategoriaProduto registro : registros){ %>
     <tr>
       <td class="id"><%=registro.getIdCategoriaProduto()%></td>
       <td><%=registro.getNomeCategoria()%></td>
@@ -179,7 +188,9 @@
         </div>
       </td>
     </tr>
-    <% } %>
+    <%
+      }
+    %>
     </tbody>
   </table>
 </main>
@@ -190,20 +201,3 @@
   configPopUpAdicionar('/crud/assets/modals/popup-adicionar-categoriaProduto.html', '/crud/categoria-produto/adicionar');
 </script>
 </html>
-<%
-} catch (UsuarioNaoAutenticadoException causa){
-%>
-<html>
-<head>
-
-</head>
-<body>
-<h1>Acesso não autenticado</h1>
-<a href="/crud/entrar.jsp">Autenticar</a>
-</body>
-</html>
-<%
-  } catch (RequisicaoSemRegistrosException causa){
-    requisicaoResposta.despacharPara("/categoria-produto/registros");
-  }
-%>

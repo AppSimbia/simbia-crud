@@ -5,15 +5,24 @@
 <%@ page import="simbia.app.crud.model.dao.Administrador" %>
 <%@ page import="simbia.app.crud.infra.servlet.exception.operacao.UsuarioNaoAutenticadoException" %>
 <%@ page import="simbia.app.crud.infra.servlet.exception.operacao.RequisicaoSemRegistrosException" %>
+<%@ page import="java.util.ArrayList" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%
   RequisicaoResposta requisicaoResposta = new RequisicaoResposta(request, response);
+  List<Administrador> registros = new ArrayList<>();
 
   try{
     ValidacoesDeDados.validarSeAdministradorEstaAtutenticado(requisicaoResposta);
+    registros = UtilitariosJSP.recuperarRegistrosDaRequisicao(requisicaoResposta, "administrador");
 
-    List<Administrador> registros = UtilitariosJSP.recuperarRegistrosDaRequisicao(requisicaoResposta, "administrador");
+  } catch (UsuarioNaoAutenticadoException causa){
+    requisicaoResposta.despacharPara("/assets/paginas-de-erro/erro-autenticacao.html");
+    return;
 
+  } catch (RequisicaoSemRegistrosException causa){
+    requisicaoResposta.despacharPara("/administrador/registros");
+    return;
+  }
 %>
 <!DOCTYPE html>
 <html lang="pt-br">
@@ -28,9 +37,7 @@
   <title>Simbia - Administrador</title>
 </head>
 <body>
-<div id="container-geral-popup">
-
-</div>
+<div id="container-geral-popup"></div>
 <!-- MENU LATERAL -->
 <img src="${pageContext.request.contextPath}/assets/elements/icon-simbia.svg" alt="logo-simbia">
 <aside>
@@ -118,7 +125,7 @@
         <div>
           <p>ID</p>
           <form action="${pageContext.request.contextPath}/administrador/ordenar" method="GET">
-          <input type="hidden" name="tipoOrdenacao" value="porId">
+            <input type="hidden" name="tipoOrdenacao" value="porId">
             <input type="hidden" name="ordem" value="<%=
               (request.getAttribute("criterioOrdenacao") != null && request.getAttribute("criterioOrdenacao").equals("porId")
                 && request.getAttribute("ordemAtual") != null && request.getAttribute("ordemAtual").equals("asc"))
@@ -214,7 +221,9 @@
       </td>
 
     </tr>
-    <% } %>
+    <%
+      }
+    %>
     </tbody>
   </table>
 
@@ -225,20 +234,3 @@
   configPopUpAdicionar('/crud/assets/modals/popup-adicionar-admin.html', '/crud/administrador/adicionar')
 </script>
 </html>
-<%
-  } catch (UsuarioNaoAutenticadoException causa){
-%>
-<html>
-  <head>
-
-  </head>
-  <body>
-    <h1>Acesso não autenticado</h1>
-    <a href="/crud/entrar.jsp">Autenticar</a>
-  </body>
-</html>
-<%
-  } catch (RequisicaoSemRegistrosException causa){
-    requisicaoResposta.despacharPara("/administrador/registros");
-  }
-%>

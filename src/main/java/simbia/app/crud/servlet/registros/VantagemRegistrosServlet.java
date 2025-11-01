@@ -32,6 +32,6 @@ public class VantagemRegistrosServlet extends RegistrosServlet<Vantagem> {
 
     @Override
     public String enderecoDeDespacheCasoErro() {
-        return "erroDeConexao.html";
+        return "/crud/assets/paginas-de-erro/erro-conexao.html";
     }
 }
