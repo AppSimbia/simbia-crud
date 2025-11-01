@@ -98,9 +98,21 @@ async function chamarPopUpEditar(enderecoPopUpEditar, enderecoServletEditar, inf
             if (informacoes[3] == 'true'){
                 document.querySelector('[value="ativo"]').checked = true
             }else{
-                document.querySelector('[value="inativo"]').checked = false
+                document.querySelector('[value="inativo"]').checked = true
             }
-        } else{
+        } else if (tabela == 'vantagemplano'){
+            const informacoes = info.split(';')
+
+            console.log(informacoes)
+
+            document.querySelector('#display-fechar-add-admin p').innerText = "ID:" + informacoes[0]
+            document.querySelector('#id-plano').value = informacoes[2]
+            document.querySelector("#id-vantagem").value = informacoes[1]
+
+            console.log(document.querySelector('#id-plano'))
+            console.log(document.querySelector('#id-vantagem'))
+
+        } else {
             const informacoes = info.split(';')
 
             document.querySelector('#display-fechar-add-admin p').innerText = "ID:" + informacoes[0]

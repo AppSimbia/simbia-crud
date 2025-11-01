@@ -214,7 +214,7 @@
           </button>
 
           <!-- apagar: usar name="deletar" e type="button" para combinar com o JS -->
-          <button type="button" name="deletar" value="<%=registro.getIdAdministrador()%>">
+          <button type="button" name="apagar" value="<%=registro.getIdAdministrador()%>">
             <img src="${pageContext.request.contextPath}/assets/elements/apagar.svg">
           </button>
         </div>

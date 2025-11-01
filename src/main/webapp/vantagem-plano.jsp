@@ -215,6 +215,6 @@
 </script>
 <script>
     configPopUpAdicionar('/crud/assets/modals/popup-adicionar-vantagemPlano.html', '/crud/vantagem-plano/adicionar');
-    configPopUpEditar('/crud/assets/modals/popup-alterar-vantagemPlano.html', '/crud/vantagem-plano/alterar')
+    configPopUpEditar('/crud/assets/modals/popup-alterar-vantagemPlano.html', '/crud/vantagem-plano/alterar', 'vantagemplano')
 </script>
 </html>
