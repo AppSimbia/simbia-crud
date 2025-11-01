@@ -6,7 +6,6 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import simbia.app.crud.infra.dao.abstractclasses.DaoException;
 import simbia.app.crud.infra.dao.exception.errosDeOperacao.NaoHouveAlteracaoNoBancoDeDadosException;
-import simbia.app.crud.infra.servlet.exception.ErrosDeDevolucaoParaClient;
 import simbia.app.crud.model.servlet.RequisicaoResposta;
 import java.io.IOException;
 
@@ -43,12 +42,12 @@ public abstract class DeletarServlet extends HttpServlet {
             requisicaoResposta.redirecionarPara(enderecoDeDespache());
 
         } catch (NaoHouveAlteracaoNoBancoDeDadosException causa) {
-            requisicaoResposta.adicionarAtributoNaRequisicao("erro", ErrosDeDevolucaoParaClient.NAO_HOUVE_ALTERACAO_NO_BANCO);
+            requisicaoResposta.adicionarAtributoNaRequisicao("erro", causa);
             requisicaoResposta.despacharPara(paginaDeErro);
 
         } catch (DaoException causa){
             causa.printStackTrace();
-            requisicaoResposta.adicionarAtributoNaRequisicao("erro", ErrosDeDevolucaoParaClient.ERRO_DE_COMUNICACAO_COM_O_BANCO_DE_DADOS);
+            requisicaoResposta.adicionarAtributoNaRequisicao("erro", causa);
             requisicaoResposta.despacharPara(paginaDeErro);
 
         }

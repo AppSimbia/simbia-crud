@@ -4,7 +4,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import simbia.app.crud.infra.servlet.exception.RequisicaoSemRegistrosException;
+import simbia.app.crud.infra.servlet.exception.operacao.RequisicaoSemRegistrosException;
 import simbia.app.crud.model.servlet.RequisicaoResposta;
 import simbia.app.crud.util.ValidacoesDeDados;
 

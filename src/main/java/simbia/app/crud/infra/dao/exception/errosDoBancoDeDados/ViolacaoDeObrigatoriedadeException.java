@@ -33,7 +33,7 @@ public class ViolacaoDeObrigatoriedadeException extends DaoException {
 //outros
     @Override
     public String gerarMensagemPorSQLException(SQLException causa) {
-        return " - Violação de obrigatoriedade, valor do campo \"" + campoViolado + "\" da tabela \"" + tabelaViolada + "\" é nulo.";
+        return "Campo " + campoViolado + " não pode estar vazio";
     }
 
 

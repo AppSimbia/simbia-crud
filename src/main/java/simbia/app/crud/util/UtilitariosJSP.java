@@ -1,6 +1,6 @@
 package simbia.app.crud.util;
 
-import simbia.app.crud.infra.servlet.exception.RequisicaoSemRegistrosException;
+import simbia.app.crud.infra.servlet.exception.operacao.RequisicaoSemRegistrosException;
 import simbia.app.crud.model.servlet.RequisicaoResposta;
 
 import java.util.List;

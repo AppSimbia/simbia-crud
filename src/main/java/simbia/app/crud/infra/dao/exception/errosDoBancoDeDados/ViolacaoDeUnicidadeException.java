@@ -40,7 +40,7 @@ public class ViolacaoDeUnicidadeException extends DaoException {
 //outros
   @Override
   public String gerarMensagemPorSQLException(SQLException causa) {
-    return " - Violação de unicidade, campo \"" + Util.subStringCampoDeViolacaoDeUnicidade(Util.subStringConstraint(causa)) + "\" da tabela \"" + Util.subStringTabelaDeViolacaoDeUnicidade(Util.subStringConstraint(causa)) + "\" já possuí este valor.";
+    return "Um " + Util.subStringCampoDeViolacaoDeUnicidade(Util.subStringConstraint(causa)) + " como este já foi registrado antes";
   }
 
   /**

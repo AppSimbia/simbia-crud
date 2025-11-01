@@ -38,7 +38,7 @@ public class ViolacaoDeRegistroDeChaveEstrangeiraException extends DaoException 
 //outros
     @Override
     public String gerarMensagemPorSQLException(SQLException causa) {
-        return " - Violação de registro de chave estrangeira, valor \"" + valorDeViolacao + "\" do campo \"" + campoViolado + "\" não existe na tabela \"" + tabelaViolada + "\".";
+        return "campo " + tabelaViolada + " não possuí nenhum registro de ID " + valorDeViolacao;
     }
 
     /**

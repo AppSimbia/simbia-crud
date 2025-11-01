@@ -23,6 +23,10 @@ public abstract class DaoException extends RuntimeException{
         return dataHora + mensagem;
     }
 
+//getter
+    public String getMensagem(){
+        return mensagem;
+    }
 //outros
 
     /**
