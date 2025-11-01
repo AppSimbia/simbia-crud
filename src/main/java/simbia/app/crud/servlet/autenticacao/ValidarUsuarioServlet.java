@@ -48,12 +48,12 @@ public class ValidarUsuarioServlet extends HttpServlet {
 
         } catch (DaoException causa) {
             causa.printStackTrace();
-            requisicaoResposta.adicionarAtributoNaRequisicao("erro", "Servidor instável, tente novamente");
+            requisicaoResposta.adicionarAtributoNaRequisicao("erro", "Servidor instável;Por favor, tente novamente");
             requisicaoResposta.despacharPara("entrar.jsp");
 
         } catch (ValidacaoDeDadosException | OperacoesException causa) {
             causa.printStackTrace();
-            requisicaoResposta.adicionarAtributoNaRequisicao("erro", "Email ou senha incorretos");
+            requisicaoResposta.adicionarAtributoNaRequisicao("erro", "Informações erradas;Email ou senha incorretos");
             requisicaoResposta.despacharPara("entrar.jsp");
         }
     }

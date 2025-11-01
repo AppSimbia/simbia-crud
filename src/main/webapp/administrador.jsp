@@ -220,16 +220,6 @@
 
 </main>
 </body>
-<script defer src="${pageContext.request.contextPath}/assets/js/script.js"></script>
-<script>
-  document.addEventListener('DOMContentLoaded', () => {
-    adicionarListenerPopUps(
-            '${pageContext.request.contextPath}/assets/modals/popup-adicionar-admin.html',
-            '${pageContext.request.contextPath}/assets/modals/popup-alterar-admin.html',
-            'administrador'
-    );
-  });
-</script>
 </html>
 <%
   } catch (UsuarioNaoAutenticadoException causa){

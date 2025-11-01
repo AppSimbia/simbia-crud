@@ -7,7 +7,8 @@ async function chamarErro(mensagem){
         containerErro.innerHTML = htmlRecuperado
         containerErro.style.display = 'block'
 
-        document.querySelector('#container-erro p').innerText = mensagem
+        document.querySelector('#container-erro h1').innerText = mensagem.split(';')[0]
+        document.querySelector('#container-erro h2').innerText = mensagem.split(';')[1]
 
         document.querySelector('#container-erro [name="btnFechar"]')
             .addEventListener('click', () => fecharModal(containerErro))
