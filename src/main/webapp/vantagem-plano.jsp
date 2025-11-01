@@ -5,15 +5,24 @@
 <%@ page import="simbia.app.crud.infra.servlet.exception.operacao.UsuarioNaoAutenticadoException" %>
 <%@ page import="simbia.app.crud.infra.servlet.exception.operacao.RequisicaoSemRegistrosException" %>
 <%@ page import="simbia.app.crud.model.dao.VantagemPlano" %>
+<%@ page import="java.util.ArrayList" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%
     RequisicaoResposta requisicaoResposta = new RequisicaoResposta(request, response);
-
+    List<VantagemPlano> registros = new ArrayList<>();
     try{
         ValidacoesDeDados.validarSeAdministradorEstaAtutenticado(requisicaoResposta);
 
-        List<VantagemPlano> registros = UtilitariosJSP.recuperarRegistrosDaRequisicao(requisicaoResposta, "vantagemplano");
+        registros = UtilitariosJSP.recuperarRegistrosDaRequisicao(requisicaoResposta, "vantagemplano");
 
+    } catch (UsuarioNaoAutenticadoException causa){
+        requisicaoResposta.despacharPara("/assets/paginas-de-erro/erro-autenticacao.html");
+        return;
+
+    } catch (RequisicaoSemRegistrosException causa){
+        requisicaoResposta.despacharPara("/vantagem-plano/registros");
+        return;
+    }
 %>
 <!DOCTYPE html>
 <html lang="pt-br">
@@ -195,7 +204,9 @@
                 </div>
             </td>
         </tr>
-        <% } %>
+        <%
+        }
+        %>
         </tbody>
     </table>
 </main>
@@ -204,22 +215,6 @@
 </script>
 <script>
     configPopUpAdicionar('/crud/assets/modals/popup-adicionar-vantagemPlano.html', '/crud/vantagem-plano/adicionar');
+    configPopUpEditar('/crud/assets/modals/popup-alterar-vantagemPlano.html', '/crud/vantagem-plano/alterar')
 </script>
 </html>
-<%
-} catch (UsuarioNaoAutenticadoException causa){
-%>
-<html>
-<head>
-
-</head>
-<body>
-<h1>Acesso não autenticado</h1>
-<a href="/crud/entrar.jsp">Autenticar</a>
-</body>
-</html>
-<%
-    } catch (RequisicaoSemRegistrosException causa){
-        requisicaoResposta.despacharPara("/vantagem-plano/registros");
-    }
-%>
