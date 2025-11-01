@@ -56,10 +56,10 @@ public abstract class FiltroServlet<T> extends HttpServlet {
 
         ValidacoesDeDados.validarRegistros(registros);
 
-        String regexFiltro = gerarRegexDeFiltroDaRequisicao(requisicaoResposta);
+        String sequenciaDeCaracteres = recuperarFiltroDaRequisicao(requisicaoResposta);
 
         for (T entidade : registros) {
-            if (entidadeCorrepondeAoFiltro(regexFiltro, entidade)) {
+            if (entidadeCorrepondeAoFiltro(sequenciaDeCaracteres, entidade)) {
                 registrosFiltrados.add(entidade);
             }
         }
@@ -67,20 +67,18 @@ public abstract class FiltroServlet<T> extends HttpServlet {
         requisicaoResposta.adicionarAtributoNaRequisicao(nomeDaTabela() + "Formatados", registrosFiltrados);
     }
 
-    /**
-     * Gera a expressão regular de filtro a partir do parâmetro "filtro" da requisição.
-     * Se o filtro estiver vazio ou ausente, retorna ".*" (corresponde a qualquer texto).
-     * Caso contrário, retorna ".*filtro.*" em lowercase para busca case-insensitive.
-     */
-    private String gerarRegexDeFiltroDaRequisicao(RequisicaoResposta requisicaoResposta) {
+    private String recuperarFiltroDaRequisicao(RequisicaoResposta requisicaoResposta) {
         String filtro = requisicaoResposta.recuperarParametroDaRequisicao("filtro");
-        String regexDeFiltro = ".*";
 
-        if ((filtro != null && !filtro.trim().isEmpty())) {
-            regexDeFiltro = ".*" + filtro.toLowerCase() + ".*";
+        if (!filtro.isEmpty()){
+            if (filtro.trim().isEmpty()){
+                filtro = "";
+            }
+        }else{
+            filtro = "";
         }
 
-        return regexDeFiltro;
+        return filtro.toLowerCase();
     }
 
     /**
@@ -88,7 +86,7 @@ public abstract class FiltroServlet<T> extends HttpServlet {
      * A implementação deve converter os campos relevantes da entidade para lowercase
      * e verificar se correspondem ao padrão regex fornecido.
      */
-    public abstract boolean entidadeCorrepondeAoFiltro(String regexFiltro, T entidade);
+    public abstract boolean entidadeCorrepondeAoFiltro(String sequenciaDeCaracteres, T entidade);
 
     /**
      * Retorna o nome da tabela (ex: "usuario", "produto").

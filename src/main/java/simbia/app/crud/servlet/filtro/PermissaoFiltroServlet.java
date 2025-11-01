@@ -10,9 +10,9 @@ import simbia.app.crud.model.dao.Permissao;
 @WebServlet("/permissao/filtro")
 public class PermissaoFiltroServlet extends FiltroServlet<Permissao> {
     @Override
-    public boolean entidadeCorrepondeAoFiltro(String regexFiltro, Permissao entidade) {
-        return String.valueOf(entidade.getIdPermissao()).matches(regexFiltro) ||
-                entidade.getNomePermissao().toLowerCase().matches(regexFiltro);
+    public boolean entidadeCorrepondeAoFiltro(String sequenciaDeCaracteres, Permissao entidade) {
+        return String.valueOf(entidade.getIdPermissao()).contains(sequenciaDeCaracteres) ||
+                entidade.getNomePermissao().toLowerCase().contains(sequenciaDeCaracteres);
     }
 
     @Override
