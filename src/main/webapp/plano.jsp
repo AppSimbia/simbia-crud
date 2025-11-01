@@ -28,7 +28,7 @@
   <title>Simbia - Plano</title>
 </head>
 <body>
-<div id="popup-container"></div>
+<div id="container-geral-popup"></div>
 <!-- MENU LATERAL -->
 <img src="${pageContext.request.contextPath}/assets/elements/icon-simbia.svg" alt="logo-simbia">
 <aside>
@@ -203,10 +203,10 @@
   </table>
 </main>
 </body>
-<script src="${pageContext.request.contextPath}/assets/js/script.js">
+<script src="/crud/assets/js/script.js">
 </script>
 <script>
-  adicionarListenerPopUps('${pageContext.request.contextPath}/assets/modals/popup-adicionar-plano.html', '${pageContext.request.contextPath}/assets/modals/popup-alterar-plano.html', 'plano')
+  configPopUpAdicionar('/crud/assets/modals/popup-adicionar-plano.html', '/crud/plano/adicionar');
 </script>
 </html>
 <%
