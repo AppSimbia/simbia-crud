@@ -204,7 +204,7 @@
       <td class="id"><%= registro.getIdAdministrador() %></td>
       <td><%= registro.getNome() %></td>
       <td><%= registro.getEmail() %></td>
-      <td>[SENHA PROTEGIDA]</td>
+      <td>●●●●●●●●●●</td>
       <td class="acoes">
         <div>
           <!-- editar: NÃO submete formulário -->
