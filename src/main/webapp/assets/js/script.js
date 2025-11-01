@@ -26,23 +26,27 @@ async function chamarPopUpAdicionar(enderecoPopUpAdicionar, enderecoServletRegis
     try{
         const response = await fetch(enderecoPopUpAdicionar)
         const htmlRecuperado = await response.text()
-
         const containerPopUp = document.getElementById('container-geral-popup')
+
         containerPopUp.innerHTML = htmlRecuperado
-        containerPopUp.style.display = 'flex'
-        document.querySelector('#container-geral-popup section').style.display = 'flex'
+
         document.querySelector('#container-geral-popup form').action = enderecoServletRegistro
 
         document.querySelector('#container-geral-popup [name="btnFechar"]')
             .addEventListener('click', () => fecharModal(containerPopUp))
+
         document.querySelector('#container-geral-popup section')
             .addEventListener('click', (e) => {
                 if (e.target === e.currentTarget) {
                     fecharModal(containerPopUp)
                 }
             })
+
+        containerPopUp.style.display = 'flex'
+        document.querySelector('#container-geral-popup section').style.display = 'flex'
+
     } catch (error){
-        console.log('Erro ao lançar pop-up de adicionar')
+        console.log('Erro ao lançar pop-up de adicionar:', error)
     }
 }
 

@@ -346,7 +346,7 @@ table tbody tr td:last-child {
 
     background-color: rgba(0, 0, 0, 0.408);
 
-    display: flex;
+    display: none;
     align-items: center;
     justify-content: center;
     z-index: 4;
