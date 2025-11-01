@@ -25,8 +25,8 @@
 
     /* layout */
     --menu-width: clamp(168px, calc(9vw + 9vh), 400px);
-    --menu-height: calc(100vh - var(--menu-vertical-margin));
     --menu-vertical-margin: clamp(50px, 10vh, 70px);
+    --menu-height: calc(100vh - var(--menu-vertical-margin));
     --menu-title-size: clamp(20px, calc(1.12vw + 1.12vh), 30px);
 }
 
