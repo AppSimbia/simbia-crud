@@ -11,10 +11,11 @@ import jakarta.servlet.http.HttpServletResponse;
 
 import simbia.app.crud.dao.AdministradorDao;
 import simbia.app.crud.infra.dao.abstractclasses.DaoException;
-import simbia.app.crud.infra.servlet.exception.EmailOuSenhaErradosException;
-import simbia.app.crud.infra.servlet.exception.ErrosDeDevolucaoParaClient;
-import simbia.app.crud.infra.servlet.exception.PadraoEmailErradoException;
-import simbia.app.crud.infra.servlet.exception.PadraoSenhaErradoException;
+import simbia.app.crud.infra.servlet.abstractclasses.OperacoesException;
+import simbia.app.crud.infra.servlet.abstractclasses.ValidacaoDeDadosException;
+import simbia.app.crud.infra.servlet.exception.operacao.EmailOuSenhaErradosException;
+import simbia.app.crud.infra.servlet.exception.validacaoDeDados.PadraoEmailErradoException;
+import simbia.app.crud.infra.servlet.exception.validacaoDeDados.PadraoSenhaErradoException;
 import simbia.app.crud.model.dao.Administrador;
 import simbia.app.crud.model.servlet.RequisicaoResposta;
 import simbia.app.crud.util.ValidacoesDeDados;
@@ -45,14 +46,14 @@ public class ValidarUsuarioServlet extends HttpServlet {
             verificarUsuario(requisicaoResposta);
             requisicaoResposta.redirecionarPara("/administrador.jsp");
 
-        } catch (EmailOuSenhaErradosException | PadraoSenhaErradoException | PadraoEmailErradoException causa) {
-            causa.printStackTrace();
-            requisicaoResposta.adicionarAtributoNaRequisicao("erro", ErrosDeDevolucaoParaClient.EMAIL_OU_SENHA_INCORRETOS);
-            requisicaoResposta.despacharPara("entrar.jsp");
-
         } catch (DaoException causa) {
             causa.printStackTrace();
-            requisicaoResposta.adicionarAtributoNaRequisicao("erro", ErrosDeDevolucaoParaClient.ERRO_DE_COMUNICACAO_COM_O_BANCO_DE_DADOS);
+            requisicaoResposta.adicionarAtributoNaRequisicao("erro", "Servidor instável, tente novamente");
+            requisicaoResposta.despacharPara("entrar.jsp");
+
+        } catch (ValidacaoDeDadosException | OperacoesException causa) {
+            causa.printStackTrace();
+            requisicaoResposta.adicionarAtributoNaRequisicao("erro", "Email ou senha incorretos");
             requisicaoResposta.despacharPara("entrar.jsp");
         }
     }

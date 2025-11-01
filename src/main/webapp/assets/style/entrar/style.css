@@ -49,18 +49,22 @@
     color: white;
     font-size: calc(0.8vw + 0.8vh);
 }
+
 #body-login #div-erro img{
     width: calc(1.5vw + 1.5vh);
     margin-right: 1vw;
 }
+
 #body-login main, #body-login form{
     display: flex;
     flex-direction: column;
     margin: 0 auto
 }
+
 #body-login main{
     margin-top: 20vh;
 }
+
 #body-login main > img{
     height: calc(3.5vw + 3.5vh);
     margin-bottom: 1.5vh;
@@ -76,6 +80,7 @@
     background-color: rgba(82, 82, 82, 0.11);
     padding-top: 5vh;
 }
+
 #body-login form input{
     color: rgb(255, 255, 255);
     width: 20vw;
@@ -87,13 +92,16 @@
     padding-left: 1vw;
     font-size: calc(0.8vw + 0.8vh);
 }
+
 #body-login form input::placeholder{
     color: rgba(255, 255, 255, 0.708);
 }
+
 #body-login form input:focus{
     outline: none;
     background-color: rgba(255, 255, 255, 0.441);
 }
+
 #body-login form button{
     width: 12.5vw;
     height: 6vh;
@@ -102,6 +110,7 @@
     font-size: calc(0.9vw + 0.9vh);
     margin: 0 auto;
 }
+
 #body-login form button:hover{
     background-color: white;
 }

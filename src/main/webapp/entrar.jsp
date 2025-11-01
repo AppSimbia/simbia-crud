@@ -1,5 +1,8 @@
-<%@ page import="simbia.app.crud.infra.servlet.exception.ErrosDeDevolucaoParaClient" %>
+<%@ page import="simbia.app.crud.model.servlet.RequisicaoResposta" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%
+  RequisicaoResposta requisicaoResposta = new RequisicaoResposta(request, response);
+%>
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
@@ -11,17 +14,9 @@
 </head>
 <body id="body-login">
 <main>
-  <% if (request.getAttribute("erro") == ErrosDeDevolucaoParaClient.EMAIL_OU_SENHA_INCORRETOS){%>
-  <div id="div-erro">
-    <p>Usuário ou senha inválidos</p>
-    <img src="assets/elements/erro-icon.svg" alt="icon-error">
+  <div id="container-erro">
+    bababa
   </div>
-  <% } else if (request.getAttribute("erro") == ErrosDeDevolucaoParaClient.ERRO_DE_COMUNICACAO_COM_O_BANCO_DE_DADOS) {%>
-  <div id="div-erro">
-    <p>Servidor instável, tente de novamente</p>
-    <img src="assets/elements/erro-icon.svg" alt="icon-error">
-  </div>
-  <% } %>
   <img src="assets/elements/simbia-logo.svg" alt="logo">
   <form action="entrar" method="POST">
     <input type="email" name="email" placeholder="Digite seu email" value="<%=(request.getParameter("email") != null ? request.getParameter("email") : "")%>" required>
@@ -31,4 +26,15 @@
   </form>
 </main>
 </body>
+<script src="/crud/assets/js/script.js"></script>
+<script>
+  <%
+   if (requisicaoResposta.existeAtributoNaRequisicao("erro")){
+
+    %>chamarErro('<%= (String) requisicaoResposta.recuperarAtributoDaRequisicao("erro") %>')<%
+    requisicaoResposta.removerAtributoNaSessao("erro");
+
+    }
+  %>
+</script>
 </html>

@@ -1,7 +1,12 @@
 package simbia.app.crud.util;
 
 import simbia.app.crud.infra.dao.exception.errosDeOperacao.NaoHouveAlteracaoNoBancoDeDadosException;
-import simbia.app.crud.infra.servlet.exception.*;
+import simbia.app.crud.infra.servlet.exception.operacao.EmailOuSenhaErradosException;
+import simbia.app.crud.infra.servlet.exception.operacao.RequisicaoSemRegistrosException;
+import simbia.app.crud.infra.servlet.exception.operacao.RequisicaoSemTipoOrdenacaoException;
+import simbia.app.crud.infra.servlet.exception.operacao.UsuarioNaoAutenticadoException;
+import simbia.app.crud.infra.servlet.exception.validacaoDeDados.PadraoEmailErradoException;
+import simbia.app.crud.infra.servlet.exception.validacaoDeDados.PadraoSenhaErradoException;
 import simbia.app.crud.model.servlet.RequisicaoResposta;
 
 import java.time.LocalDateTime;

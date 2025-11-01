@@ -3,8 +3,8 @@
 <%@ page import="simbia.app.crud.model.servlet.RequisicaoResposta" %>
 <%@ page import="java.util.List" %>
 <%@ page import="simbia.app.crud.model.dao.Administrador" %>
-<%@ page import="simbia.app.crud.infra.servlet.exception.UsuarioNaoAutenticadoException" %>
-<%@ page import="simbia.app.crud.infra.servlet.exception.RequisicaoSemRegistrosException" %>
+<%@ page import="simbia.app.crud.infra.servlet.exception.operacao.UsuarioNaoAutenticadoException" %>
+<%@ page import="simbia.app.crud.infra.servlet.exception.operacao.RequisicaoSemRegistrosException" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%
   RequisicaoResposta requisicaoResposta = new RequisicaoResposta(request, response);
