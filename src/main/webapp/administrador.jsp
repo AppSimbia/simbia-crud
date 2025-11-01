@@ -220,6 +220,10 @@
 
 </main>
 </body>
+<script src="/crud/assets/js/script.js"></script>
+<script>
+  configPopUpAdicionar('/crud/assets/modals/popup-adicionar-admin.html', '/crud/administrador/adicionar')
+</script>
 </html>
 <%
   } catch (UsuarioNaoAutenticadoException causa){

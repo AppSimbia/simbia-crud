@@ -28,7 +28,7 @@
   <title>Simbia - Permissao</title>
 </head>
 <body>
-<div id="popup-container"></div>
+<div id="container-geral-popup"></div>
 <!-- MENU LATERAL -->
 <img src="${pageContext.request.contextPath}/assets/elements/icon-simbia.svg" alt="logo-simbia">
 <aside>
@@ -182,10 +182,10 @@
   </table>
 </main>
 </body>
-<script src="${pageContext.request.contextPath}/assets/js/script.js">
+<script src="/crud/assets/js/script.js">
 </script>
 <script>
-  adicionarListenerPopUps('${pageContext.request.contextPath}/assets/modals/popup-adicionar-permissao.html', '${pageContext.request.contextPath}/assets/modals/popup-alterar-permissao.html')
+  configPopUpAdicionar('/crud/assets/modals/popup-adicionar-permissao.html', '/crud/permissao/adicionar');
 </script>
 </html>
 <%
