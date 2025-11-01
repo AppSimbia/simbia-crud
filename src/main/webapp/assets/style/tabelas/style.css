@@ -448,6 +448,7 @@ table tbody tr td:last-child {
 
     padding: 15px;
     width: 100%;
+    margin-right: 30px;
 
     background-color: var(--super-light-gray);
 }
@@ -532,6 +533,15 @@ table tbody tr td:last-child {
     cursor: pointer;
 
     transition: all 0.2s ease;
+}
+
+#container-geral-popup .pErro{
+    color: red;
+    margin-top: 10px;
+    font-weight: bold;
+    font-size: 10px;
+    flex-wrap: wrap;
+    max-width: 200px;
 }
 
 #container-geral-popup .checkbox-group input[type="radio"]:checked {
@@ -641,8 +651,8 @@ table tbody tr td:last-child {
 }
 @media (max-width: 768px) {
     #container-geral-popup #content-popup-geral {
-        width: 90vw;
-        min-height: 70vh;
+        width: 80vw;
+        min-height: 10vh;
         padding: 20px;
         flex-direction: column;
         align-items: center;
@@ -676,6 +686,11 @@ table tbody tr td:last-child {
         font-size: 14px;
         margin: 30px 0 40px 0;
     }
+
+    #container-geral-popup .pErro {
+        margin-bottom: -10px;
+    }
+
 }
 /* estilização popups de confirmação */
 #container-geral-popup-confirmacao{
@@ -855,14 +870,4 @@ table tbody tr td:last-child {
     #content-popup-confirmacao #btnCancel {
         margin-bottom: -20px;
     }
-}
-
-#container-geral-popup,
-#container-geral-popup-confirmacao {
-    display: none;
-}
-
-#container-geral-popup.active,
-#container-geral-popup-confirmacao.active {
-    display: flex;
 }

@@ -5,22 +5,24 @@
             <div id="display-fechar-add-admin">
                 <h2>Alterar [NOME CATEGORIA]</h2>
                 <p>Tabela: Categoria produto</p>
-                <button name="btnFechar" id="close"><img src="/crud/assets/elements/btnFechar.svg" alt="fechar" ></button>
+                <button name="btnFechar" id="close"><img src="assets/elements/btnFechar.svg" alt="fechar" ></button>
             </div>
 
             <form action="">
-                    <div>
-                        <label for="nome-categoria">Novo nome categoria</label>
-                        <input type="text" name="nome" placeholder="Eletrônico">
-                    </div>
+                <div>
+                    <label for="nome-categoria">Novo nome categoria</label>
+                    <input type="text" name="nome" placeholder="Eletrônico" id="nome-categoria">
+                    <p name="erro-nome-padrao" class="pErro"></p>
+                </div>
 
-                    <div>
-                        <label for="descricao">Nova descrição</label>
-                        <textarea name="descricao" id="input-descricao"> </textarea> 
-                    </div>
+                <div>
+                    <label for="descricao">Nova descrição</label>
+                    <textarea name="descricao" id="descricao"> </textarea>
+                    <p name="erro-descricao-padrao" class="pErro"></p>
+                </div>
 
                 <button type="submit" name="btnSalvar" id="btnAdd">Salvar</button>
-            </form>               
+            </form>
         </div>
     </div>
-</section>    
+</section>

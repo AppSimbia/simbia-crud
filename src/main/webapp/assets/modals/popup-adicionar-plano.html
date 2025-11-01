@@ -1,41 +1,43 @@
 <section id="container-geral-popup">
-        <div id="content-popup-geral">
-            <div id="vertical-line"></div>
-            <div>
-                <div id="display-fechar-add-admin">
-                    <h2>Adicionar plano</h2>
-                    <button name="btnFechar" id="close"><img src="/crud/assets/elements/btnFechar.svg" alt="fechar" ></button>
+    <div id="content-popup-geral">
+        <div id="vertical-line"></div>
+        <div>
+            <div id="display-fechar-add-admin">
+                <h2>Adicionar plano</h2>
+                <button name="btnFechar" id="close"><img src="assets/elements/btnFechar.svg" alt="fechar" ></button>
+            </div>
+
+            <form action="">
+                <div class="display-input-input">
+                    <div>
+                        <label for="nome">Nome plano</label>
+                        <input type="text" name="nome" placeholder="Pro" id="nome">
+                        <p name="erro-nome-padrao" class="pErro"></p>
+                    </div>
+
+                    <div>
+                        <label for="valor">Valor</label>
+                        <input type="number" name="valor" placeholder="R$ 100,00" id="valor">
+                        <p name="erro-valor-padrao" class="pErro"></p>
+                    </div>
                 </div>
 
-                <form action="">
-                    <div class="display-input-input">
-                        <div>
-                            <label for="nome">Nome plano</label>
-                            <input type="text" name="nome" placeholder="Pro">
-                        </div>
+                <div class="status-container">
+                    <label>Status</label>
+                    <div class="checkbox-group">
+                        <label>
+                            <input type="radio" name="status" value="ativo">
+                            Ativo
+                        </label>
 
-                        <div>
-                            <label for="valor">Valor</label>
-                            <input type="number" name="valor" placeholder="R$ 100,00">
-                        </div>
+                        <label>
+                            <input type="radio" name="status" value="inativo">
+                            Inativo
+                        </label>
                     </div>
-                    
-                    <div class="status-container">
-                        <label>Status</label>
-                        <div class="checkbox-group">
-                            <label>
-                                <input type="radio" name="status" value="ativo">
-                                Ativo
-                            </label>
-
-                            <label>
-                                <input type="radio" name="status" value="inativo">
-                                Inativo
-                            </label>
-                        </div>
-                    </div>
-                    <button type="submit" name="btnAdicionar" id="btnAdd">Adicionar</button>
-                </form>                
-            </div>
+                </div>
+                <button type="submit" name="btnAdicionar" id="btnAdd">Adicionar</button>
+            </form>
         </div>
-</section>    
+    </div>
+</section>

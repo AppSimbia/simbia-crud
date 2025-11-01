@@ -4,22 +4,24 @@
         <div>
             <div>
                 <h2>Adicionar permissão</h2>
-                <button name="btnFechar" id="close"><img src="/crud/assets/elements/btnFechar.svg" alt="fechar" ></button>
+                <button name="btnFechar" id="close"><img src="assets/ícones/btnFechar.svg" alt="fechar" ></button>
             </div>
 
             <form action="" >
-                    <div>
-                        <label for="nome-categoria">Nome permissão</label>
-                        <input type="text" name="nome-categoria" placeholder="Geral">
-                    </div>
+                <div>
+                    <label for="nome-categoria">Nome permissão</label>
+                    <input type="text" name="nome-categoria" placeholder="Geral" id="nome-categoria">
+                    <p name="erro-nome-padrao" class="pErro"></p>
+                </div>
 
-                    <div>
-                        <label for="descricao">Descrição</label>
-                        <textarea name="descricao" id="input-descricao"> </textarea> 
-                    </div>
+                <div>
+                    <label for="descricao">Descrição</label>
+                    <textarea name="descricao" id="descricao"> </textarea>
+                    <p name="erro-descricao-padrao" class="pErro"></p>
+                </div>
 
                 <button type="submit" name="btnAdicionar" id="btnAdd">Adicionar</button>
-            </form>            
+            </form>
         </div>
-    </div>    
+    </div>
 </section>
