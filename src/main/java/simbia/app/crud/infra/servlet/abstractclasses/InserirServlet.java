@@ -6,7 +6,6 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import simbia.app.crud.infra.dao.abstractclasses.DaoException;
 import simbia.app.crud.infra.dao.exception.errosDeOperacao.NaoHouveAlteracaoNoBancoDeDadosException;
-import simbia.app.crud.infra.servlet.exception.ErrosDeDevolucaoParaClient;
 import simbia.app.crud.model.servlet.RequisicaoResposta;
 
 import java.io.IOException;
@@ -42,12 +41,10 @@ public abstract class InserirServlet<T> extends HttpServlet {
 
         } catch (NaoHouveAlteracaoNoBancoDeDadosException causa) {
             // Erro: DAO não inseriu
-            requisicaoResposta.adicionarAtributoNaRequisicao("erro", ErrosDeDevolucaoParaClient.NAO_HOUVE_ALTERACAO_NO_BANCO);
 
         } catch (DaoException causa) {
             // Erro: Falha de banco
             causa.printStackTrace();
-            requisicaoResposta.adicionarAtributoNaRequisicao("erro", ErrosDeDevolucaoParaClient.ERRO_DE_COMUNICACAO_COM_O_BANCO_DE_DADOS);
 
         }
     }
