@@ -1,6 +1,5 @@
 package simbia.app.crud.infra.servlet.abstractclasses;
 
-import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -24,7 +23,7 @@ public abstract class InserirServlet<T> extends HttpServlet {
      */
     @Override
     protected void doPost(HttpServletRequest requisicao, HttpServletResponse resposta)
-            throws ServletException, IOException {
+            throws IOException {
 
         RequisicaoResposta requisicaoResposta = new RequisicaoResposta(requisicao, resposta);
 
@@ -45,7 +44,6 @@ public abstract class InserirServlet<T> extends HttpServlet {
         } catch (DaoException causa) {
             // Erro: Falha de banco
             causa.printStackTrace();
-
         }
     }
 
