@@ -218,5 +218,6 @@
 </script>
 <script>
   configPopUpAdicionar('/crud/assets/modals/popup-adicionar-plano.html', '/crud/plano/adicionar');
+  configPopUpEditar('/crud/assets/modals/popup-alterar-plano.html', '/crud/plano/alterar', 'plano')
 </script>
 </html>

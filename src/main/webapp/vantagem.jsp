@@ -196,5 +196,6 @@
 </script>
 <script>
   configPopUpAdicionar('/crud/assets/modals/popup-adicionar-vantagem.html', '/crud/vantagem/adicionar');
+  configPopUpEditar('/crud/assets/modals/popup-alterar-vantagem.html', '/crud/vantagem/alterar')
 </script>
 </html>

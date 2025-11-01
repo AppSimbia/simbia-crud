@@ -199,5 +199,6 @@
 </script>
 <script>
     configPopUpAdicionar('/crud/assets/modals/popup-adicionar-tipoIndustria.html', '/crud/tipo-industria/adicionar');
+    configPopUpEditar('/crud/assets/modals/popup-alterar-tipoIndustria.html', '/crud/tipo-industria/alterar')
 </script>
 </html>

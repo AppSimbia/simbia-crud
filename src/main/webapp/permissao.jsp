@@ -199,5 +199,6 @@
 </script>
 <script>
   configPopUpAdicionar('/crud/assets/modals/popup-adicionar-permissao.html', '/crud/permissao/adicionar');
+  configPopUpEditar('/crud/assets/modals/popup-alterar-permissao.html', '/crud/permissao/alterar')
 </script>
 </html>
