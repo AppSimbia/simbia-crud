@@ -201,7 +201,7 @@
           <button name="editar" value="<%=registro.getIdPlano()%>;<%=registro.getNomePlano()%>;<%=registro.getValor()%>;<%=registro.isAtivo()%>">
             <img src="${pageContext.request.contextPath}/assets/elements/editar.svg" alt="">
           </button>
-          <button type="submit" name="apagar">
+          <button type="submit" name="apagar" value="<%=registro.getIdPlano()%>">
             <img src="${pageContext.request.contextPath}/assets/elements/apagar.svg" alt="">
           </button>
         </div>
@@ -219,5 +219,6 @@
 <script>
   configPopUpAdicionar('/crud/assets/modals/popup-adicionar-plano.html', '/crud/plano/adicionar');
   configPopUpEditar('/crud/assets/modals/popup-alterar-plano.html', '/crud/plano/alterar', 'plano')
+  configPopUpDeletar('/crud/plano/deletar')
 </script>
 </html>

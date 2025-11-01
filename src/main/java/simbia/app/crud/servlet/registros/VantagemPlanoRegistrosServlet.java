@@ -14,7 +14,7 @@ import java.util.List;
 @WebServlet("/vantagem-plano/registros")
 public class VantagemPlanoRegistrosServlet extends RegistrosServlet<VantagemPlano> {
     @Override
-    public List recuperarRegistrosDaTabela() throws DaoException {
+    public List<VantagemPlano> recuperarRegistrosDaTabela() throws DaoException {
         VantagemPlanoDao dao = new VantagemPlanoDao();
 
         return dao.recuperarTudo();

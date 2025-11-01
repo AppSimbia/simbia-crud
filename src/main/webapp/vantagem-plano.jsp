@@ -198,7 +198,7 @@
                     <button name="editar" value="<%=registro.getIdVantagemPlano()%>;<%=registro.getIdVantagem()%>;<%=registro.getIdPlano()%>">
                         <img src="${pageContext.request.contextPath}/assets/elements/editar.svg">
                     </button>
-                    <button type="submit" name="apagar">
+                    <button type="submit" name="apagar" value="<%=registro.getIdVantagemPlano()%>">
                         <img src="${pageContext.request.contextPath}/assets/elements/apagar.svg">
                     </button>
                 </div>
@@ -216,5 +216,6 @@
 <script>
     configPopUpAdicionar('/crud/assets/modals/popup-adicionar-vantagemPlano.html', '/crud/vantagem-plano/adicionar');
     configPopUpEditar('/crud/assets/modals/popup-alterar-vantagemPlano.html', '/crud/vantagem-plano/alterar', 'vantagemplano')
+    configPopUpDeletar('/crud/vantagem-plano/deletar')
 </script>
 </html>

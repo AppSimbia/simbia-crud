@@ -182,7 +182,7 @@
           <button name="editar" value="<%=registro.getIdPermissao()%>;<%=registro.getNomePermissao()%>;<%=registro.getDescricao()%>">
             <img src="${pageContext.request.contextPath}/assets/elements/editar.svg">
           </button>
-          <button type="submit" name="apagar">
+          <button type="submit" name="apagar" value="<%=registro.getIdPermissao()%>">
             <img src="${pageContext.request.contextPath}/assets/elements/apagar.svg">
           </button>
         </div>
@@ -200,5 +200,6 @@
 <script>
   configPopUpAdicionar('/crud/assets/modals/popup-adicionar-permissao.html', '/crud/permissao/adicionar');
   configPopUpEditar('/crud/assets/modals/popup-alterar-permissao.html', '/crud/permissao/alterar')
+  configPopUpDeletar('/crud/permissao/deletar')
 </script>
 </html>

@@ -233,5 +233,6 @@
 <script>
   configPopUpAdicionar('/crud/assets/modals/popup-adicionar-admin.html', '/crud/administrador/adicionar')
   configPopUpEditar('/crud/assets/modals/popup-alterar-admin.html', '/crud/administrador/alterar', 'administrador')
+  configPopUpDeletar('/crud/adiministrador/deletar')
 </script>
 </html>

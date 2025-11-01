@@ -29,6 +29,13 @@ function configPopUpEditar(enderecoPopUpAdicionar, enderecoServletRegistro, tabe
     })
 }
 
+function configPopUpDeletar(enderecoServletDeletar){
+    document.getElementsByName('apagar')
+        .forEach( btn =>{
+            btn.addEventListener('click', () => chamarPopUpDeletar(enderecoServletDeletar, btn.value))
+        })
+}
+
 async function chamarPopUpAdicionar(enderecoPopUpAdicionar, enderecoServletRegistro){
     try{
         const response = await fetch(enderecoPopUpAdicionar)
@@ -122,6 +129,36 @@ async function chamarPopUpEditar(enderecoPopUpEditar, enderecoServletEditar, inf
 
     } catch (error){
         console.log('Erro ao lançar pop-up de adicionar:', error)
+    }
+}
+
+async function chamarPopUpDeletar(enderecoServletDeletar, info){
+    try{
+        const response = await fetch('/crud/assets/modals/popup-confirmacao-deletar.html')
+        const htmlRecuperado = await response.text()
+        const containerPopUp = document.getElementById('container-geral-popup')
+
+        containerPopUp.innerHTML = htmlRecuperado
+        document.querySelector('#container-geral-popup form').action = enderecoServletDeletar
+
+        document.querySelector('#container-geral-popup [name="btnFechar"]')
+            .addEventListener('click', () => fecharModal(containerPopUp))
+
+        document.querySelector('#container-geral-popup section')
+            .addEventListener('click', (e) => {
+                if (e.target === e.currentTarget) {
+                    fecharModal(containerPopUp)
+                }
+            })
+
+        containerPopUp.style.display = 'flex'
+        document.querySelector('#container-geral-popup section').style.display = 'flex'
+
+        document.querySelector('#container-geral-popup section form button').value = info
+        document.querySelector('span').innerText = info
+
+    } catch (error){
+        console.log('Erro ao lançar pop-up de deletar:', error)
     }
 }
 
