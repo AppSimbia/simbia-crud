@@ -214,7 +214,7 @@
           </button>
 
           <!-- apagar: usar name="deletar" e type="button" para combinar com o JS -->
-          <button type="button" name="deletar" value="<%=registro.getIdAdministrador()%>">
+          <button type="button" name="apagar" value="<%=registro.getIdAdministrador()%>">
             <img src="${pageContext.request.contextPath}/assets/elements/apagar.svg">
           </button>
         </div>
@@ -233,5 +233,6 @@
 <script>
   configPopUpAdicionar('/crud/assets/modals/popup-adicionar-admin.html', '/crud/administrador/adicionar')
   configPopUpEditar('/crud/assets/modals/popup-alterar-admin.html', '/crud/administrador/alterar', 'administrador')
+  configPopUpDeletar('/crud/adiministrador/deletar')
 </script>
 </html>

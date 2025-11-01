@@ -182,7 +182,7 @@
                     <button name="editar" value="<%=registro.getIdTipoIndustria()%>;<%=registro.getNomeTipoIndustria()%>;<%=registro.getDescricao()%>">
                         <img src="${pageContext.request.contextPath}/assets/elements/editar.svg">
                     </button>
-                    <button type="submit" name="apagar">
+                    <button type="submit" name="apagar" value="<%=registro.getIdTipoIndustria()%>">
                         <img src="${pageContext.request.contextPath}/assets/elements/apagar.svg">
                     </button>
                 </div>
@@ -200,5 +200,6 @@
 <script>
     configPopUpAdicionar('/crud/assets/modals/popup-adicionar-tipoIndustria.html', '/crud/tipo-industria/adicionar');
     configPopUpEditar('/crud/assets/modals/popup-alterar-tipoIndustria.html', '/crud/tipo-industria/alterar')
+    configPopUpDeletar('/crud/tipo-industria/deletar')
 </script>
 </html>

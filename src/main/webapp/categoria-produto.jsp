@@ -200,5 +200,6 @@
 <script>
   configPopUpAdicionar('/crud/assets/modals/popup-adicionar-categoriaProduto.html', '/crud/categoria-produto/adicionar');
   configPopUpEditar('/crud/assets/modals/popup-alterar-categoriaProduto.html', '/crud/categoria-produto/alterar')
+  configPopUpDeletar('/crud/categoria-produto/deletar')
 </script>
 </html>
