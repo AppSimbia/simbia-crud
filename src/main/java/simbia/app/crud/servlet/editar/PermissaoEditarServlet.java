@@ -52,7 +52,7 @@ public class PermissaoEditarServlet extends EditarServlet<Permissao> {
             requisicaoResposta.redirecionarPara("/permissao/atualizar");
 
         } catch (ViolacaoDeUnicidadeException causa) {
-            String errosJSON = "{\"nome\":\"Esta categoria já está cadastrada\"}";
+            String errosJSON = "{\"nome\":\"Esta permissão já está cadastrada\"}";
             requisicaoResposta.adicionarAtributoNaSessaoDaRequisicao("erros", errosJSON);
             requisicaoResposta.adicionarAtributoNaSessaoDaRequisicao("popupAberto", "true");
             requisicaoResposta.redirecionarPara("/permissao.jsp");
