@@ -10,13 +10,13 @@
                 <div class="display-input-input">
                     <div>
                         <label for="nome">Nome</label>
-                        <input type="text" name="nome" placeholder="Fulano Silva" id="nome">
+                        <input type="text" name="nome" placeholder="Fulano Silva" id="nome" required>
                         <p name="erro-nome-padrao" class="pErro"></p>
                     </div>
 
                     <div>
                         <label for="email">E-mail</label>
-                        <input type="email" name="email" placeholder="usuario@email.com" id="email">
+                        <input type="email" name="email" placeholder="usuario@email.com" id="email" required>
                         <p name="erro-email-padrao" class="pErro"></p>
                     </div>
                 </div>
@@ -24,13 +24,13 @@
                 <div class="display-input-input">
                     <div>
                         <label for="senha">Senha</label>
-                        <input type="password" name="senha" id="senha">
+                        <input type="password" name="senha" id="senha" required>
                         <p class="pExplicarRegex"> A senha precisa ter pelo menos 1 caracter minúsculo, maiúsculo, numérico e especial.</p>
                         <p name="erro-senha-padrao" class="pErro"></p>
                     </div>
                     <div>
                         <label for="repetir-senha">Repetir senha</label>
-                        <input type="password" name="repetir-senha" id="repetir-senha">
+                        <input type="password" name="repetir-senha" id="repetir-senha" required>
                         <p name="erro-senha-repetida" class="pErro"></p>
                     </div>
                 </div>
