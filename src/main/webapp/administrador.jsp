@@ -38,6 +38,7 @@
 </head>
 <body>
 <div id="container-geral-popup"></div>
+<div id="container-status"></div>
 <!-- MENU LATERAL -->
 <img src="${pageContext.request.contextPath}/assets/elements/icon-simbia.svg" alt="logo-simbia">
 <aside>

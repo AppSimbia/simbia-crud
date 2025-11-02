@@ -14,7 +14,6 @@
 </head>
 <body id="body-login">
 <main>
-
   <div id="container-erro"></div>
 
   <img src="assets/elements/simbia-logo.svg" alt="logo">

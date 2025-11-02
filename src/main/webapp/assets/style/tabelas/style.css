@@ -870,3 +870,61 @@ table tbody tr td:last-child {
         margin-bottom: -20px;
     }
 }
+
+#container-status {
+    position: absolute;
+
+    bottom: 0;
+    right: 0;
+
+    z-index: 10000;
+}
+
+#container-status > div{
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    height: 12vh;
+    width: 33vw;
+    background-color: #FFD8D8;
+    border-radius: 50px 0 0 0;
+}
+
+#container-status img{
+    width: 2.5vw;
+    margin-left: 1vw;
+    margin-right: 1vw;
+}
+
+#container-status h1{
+    font-size: calc(1.2vw + 1.2vh);
+    margin-right:10vw;
+    color: #FF2323;
+    font-weight: 500;
+}
+
+#container-status h2{
+    font-size: calc(0.65vw + 0.65vh);
+    color: #FF8181;
+    font-weight: 300
+}
+
+#container-status #close {
+    position: absolute;
+
+    background: none;
+
+    border: none;
+
+    bottom: 20px;
+    right: 0px;
+
+    width: 60px;
+    height: 16px;
+
+    transition: 0.2s;
+}
+
+#container-status #close:hover{
+    transform: scale(1.1);
+}
