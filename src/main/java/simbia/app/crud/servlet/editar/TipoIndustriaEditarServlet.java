@@ -26,15 +26,12 @@ public class TipoIndustriaEditarServlet extends EditarServlet<TipoIndustria> {
         RequisicaoResposta requisicaoResposta = new RequisicaoResposta(requisicao, resposta);
 
         try {
-            // Recupera dados do formulário
             String nome = requisicaoResposta.recuperarParametroDaRequisicao("nome");
             String descricao = requisicaoResposta.recuperarParametroDaRequisicao("descricao");
 
-            // VALIDAÇÃO UNIFICADA - UMA LINHA!
             ValidacoesDeDados.ResultadoValidacao resultado =
                     ValidacoesDeDados.validarNomeDescricao(nome, descricao, "TipoIndustria");
 
-            // Se houver erros, retorna para o popup
             if (resultado.temErros()) {
                 String errosJSON = resultado.toJSON();
                 requisicaoResposta.adicionarAtributoNaSessaoDaRequisicao("erros", errosJSON);
@@ -45,7 +42,6 @@ public class TipoIndustriaEditarServlet extends EditarServlet<TipoIndustria> {
                 return;
             }
 
-            // Se passou nas validações, cria objeto e insere no banco
             TipoIndustria tipoIndustria = new TipoIndustria(nome, descricao);
             TipoIndustriaDao dao = new TipoIndustriaDao();
             dao.inserir(tipoIndustria);
@@ -54,7 +50,6 @@ public class TipoIndustriaEditarServlet extends EditarServlet<TipoIndustria> {
             requisicaoResposta.redirecionarPara("/tipo-industria/atualizar");
 
         } catch (ViolacaoDeUnicidadeException causa) {
-            // Trata erro de nome duplicado
             String errosJSON = "{\"nome\":\"Este nome já está cadastrado\"}";
             requisicaoResposta.adicionarAtributoNaSessaoDaRequisicao("erros", errosJSON);
             requisicaoResposta.adicionarAtributoNaSessaoDaRequisicao("popupAberto", "true");
