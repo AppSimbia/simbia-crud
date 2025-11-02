@@ -18,7 +18,6 @@ import simbia.app.crud.model.dao.Administrador;
 import simbia.app.crud.model.servlet.RequisicaoResposta;
 import simbia.app.crud.util.ValidacoesDeDados;
 
-import javax.crypto.spec.PSource;
 import java.io.IOException;
 
 /**
@@ -40,71 +39,63 @@ public class AdministradorInserirServlet extends InserirServlet<Administrador> {
             inserirRegistroNoBanco(registro);
             requisicaoResposta.adicionarAtributoNaSessaoDaRequisicao("status", "Operação concluída com sucesso!");
 
-            requisicaoResposta.redirecionarPara(enderecoDeDespache());
+            requisicaoResposta.redirecionarPara(enderecoDeRedirecionamento());
 
         } catch (PadraoNomeErradoException causa) {
-            requisicaoResposta.adicionarAtributoNaRequisicao("status", "erro-nome");
             requisicaoResposta.adicionarAtributoNaRequisicao("mensagem", "Nome deve conter apenas letras e espaços.");
             requisicaoResposta.adicionarAtributoNaRequisicao("popupAdicionarAberto", true);
             requisicaoResposta.adicionarAtributoNaRequisicao("dados", dados(requisicaoResposta));
 
-            requisicaoResposta.despacharPara(enderecoDeDespacheCasoErro());
+            requisicaoResposta.redirecionarPara(enderecoDeRedirecionamentoCasoErro());
 
         } catch (PadraoSenhaErradoException causa) {
-            requisicaoResposta.adicionarAtributoNaRequisicao("status", "erro-senha");
             requisicaoResposta.adicionarAtributoNaRequisicao("mensagem", "Senha deve conter ao menos um caractere minúsculo, maiúsculo, numérico e especial.");
             requisicaoResposta.adicionarAtributoNaRequisicao("popupAdicionarAberto", true);
             requisicaoResposta.adicionarAtributoNaRequisicao("dados", dados(requisicaoResposta));
 
-            requisicaoResposta.despacharPara(enderecoDeDespacheCasoErro());
+            requisicaoResposta.redirecionarPara(enderecoDeRedirecionamentoCasoErro());
 
         } catch (PadraoEmailErradoException causa) {
-            requisicaoResposta.adicionarAtributoNaRequisicao("status", "erro-email");
             requisicaoResposta.adicionarAtributoNaRequisicao("mensagem", "Insira um email válido.");
             requisicaoResposta.adicionarAtributoNaRequisicao("popupAdicionarAberto", true);
             requisicaoResposta.adicionarAtributoNaRequisicao("dados", dados(requisicaoResposta));
 
-            requisicaoResposta.despacharPara(enderecoDeDespacheCasoErro());
+            requisicaoResposta.redirecionarPara(enderecoDeRedirecionamentoCasoErro());
 
         } catch (SenhasDiferentesException causa) {
-            requisicaoResposta.adicionarAtributoNaRequisicao("status", "erro-senha-diferentes");
             requisicaoResposta.adicionarAtributoNaRequisicao("mensagem", "As suas senhas não correspondem.");
             requisicaoResposta.adicionarAtributoNaRequisicao("popupAdicionarAberto", true);
             requisicaoResposta.adicionarAtributoNaRequisicao("dados", dados(requisicaoResposta));
 
-            requisicaoResposta.despacharPara(enderecoDeDespacheCasoErro());
+            requisicaoResposta.redirecionarPara(enderecoDeRedirecionamentoCasoErro());
 
         } catch (NaoHouveAlteracaoNoBancoDeDadosException causa) {
-            requisicaoResposta.adicionarAtributoNaRequisicao("status", "falhou");
             requisicaoResposta.adicionarAtributoNaRequisicao("mensagem", "Operação falhou! Tente novamente.");
             requisicaoResposta.adicionarAtributoNaRequisicao("popupAdicionarAberto", false);
 
-            requisicaoResposta.despacharPara(enderecoDeDespacheCasoErro());
+            requisicaoResposta.redirecionarPara(enderecoDeRedirecionamentoCasoErro());
 
         } catch (ViolacaoDeObrigatoriedadeException causa) {
-            requisicaoResposta.adicionarAtributoNaRequisicao("status", causa.getCampoViolado() + "-vazio");
             requisicaoResposta.adicionarAtributoNaRequisicao("mensagem", "Campo obrigatório.");
             requisicaoResposta.adicionarAtributoNaRequisicao("popupAdicionarAberto", true);
             requisicaoResposta.adicionarAtributoNaRequisicao("dados", dados(requisicaoResposta));
 
-            requisicaoResposta.despacharPara(enderecoDeDespacheCasoErro());
+            requisicaoResposta.redirecionarPara(enderecoDeRedirecionamentoCasoErro());
 
         } catch (ViolacaoDeUnicidadeException causa) {
-            requisicaoResposta.adicionarAtributoNaRequisicao("status", causa.getCampoViolado() + "-repetido");
             requisicaoResposta.adicionarAtributoNaRequisicao("mensagem", "Campo já possui registro com esse valor.");
             requisicaoResposta.adicionarAtributoNaRequisicao("popupAdicionarAberto", true);
             requisicaoResposta.adicionarAtributoNaRequisicao("dados", dados(requisicaoResposta));
 
-            requisicaoResposta.despacharPara(enderecoDeDespacheCasoErro());
+            requisicaoResposta.redirecionarPara(enderecoDeRedirecionamentoCasoErro());
 
         } catch (FalhaDeConexaoDriverInadequadoException | FalhaDeConexaoGeralException |
                  FalhaDeConexaoBancoDeDadosInexistenteException | FalhaDeConexaoQuedaRepentina |
                  FalhaDeConexaoSenhaIncorretaException causa) {
-            requisicaoResposta.adicionarAtributoNaRequisicao("status", "erro-conexao");
             requisicaoResposta.adicionarAtributoNaRequisicao("mensagem", "Erro de conexão! Tente novamente.");
             requisicaoResposta.adicionarAtributoNaRequisicao("popupAdicionarAberto", false);
 
-            requisicaoResposta.despacharPara(enderecoDeDespacheCasoErro());
+            requisicaoResposta.redirecionarPara(enderecoDeRedirecionamentoCasoErro());
         }
     }
 
@@ -142,7 +133,7 @@ public class AdministradorInserirServlet extends InserirServlet<Administrador> {
      * Retorna o endereço para onde redirecionar após inserção bem-sucedida.
      */
     @Override
-    public String enderecoDeDespache() {
+    public String enderecoDeRedirecionamento() {
         return "/administrador/atualizar";
     }
 
@@ -150,7 +141,7 @@ public class AdministradorInserirServlet extends InserirServlet<Administrador> {
      * Retorna o endereço para onde despachar em caso de erro.
      */
     @Override
-    public String enderecoDeDespacheCasoErro() {
+    public String enderecoDeRedirecionamentoCasoErro() {
         return "/administrador.jsp";
     }
 

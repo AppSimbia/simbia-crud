@@ -16,13 +16,16 @@ public abstract class InserirServlet<T> extends HttpServlet {
 
         try{
             inserirNovoRegistro(requisicaoResposta);
-            requisicaoResposta.despacharPara(enderecoDeDespache());
+            requisicaoResposta.despacharPara(enderecoDeRedirecionamento());
 
         } catch (DaoException causa){
+            //impementação que deve sobescrever e tratar excessões
 
         } catch (OperacoesException causa){
+            //impementação que deve sobescrever e tratar excessões
 
         } catch (ValidacaoDeDadosException causa){
+            //impementação que deve sobescrever e tratar excessões
 
         }
     }
@@ -38,7 +41,7 @@ public abstract class InserirServlet<T> extends HttpServlet {
 
     public abstract T recuperarNovoRegistroNaRequisicao(RequisicaoResposta requisicaoResposta);
 
-    public abstract String enderecoDeDespache();
+    public abstract String enderecoDeRedirecionamento();
 
-    public abstract String enderecoDeDespacheCasoErro();
+    public abstract String enderecoDeRedirecionamentoCasoErro();
 }
