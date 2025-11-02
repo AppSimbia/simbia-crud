@@ -32,7 +32,7 @@ public class VantagemDeletarServlet extends DeletarServlet {
      */
     @Override
     public String enderecoDeDespache() {
-        return "/vantagem/registros";
+        return "/vantagem/atualizar";
     }
 
     /**
@@ -41,7 +41,7 @@ public class VantagemDeletarServlet extends DeletarServlet {
      */
     @Override
     public String enderecoDeDespacheCasoErro() {
-        return "/erro.jsp";
+        return "../vantagem/registros";
     }
 }
 
