@@ -219,7 +219,7 @@
 <script src="${pageContext.request.contextPath}/assets/js/script.js">
 </script>
 <script>
-  configPopUpAdicionar('${pageContext.request.contextPath}/assets/modals/popup-adicionar-plano.html', '${pageContext.request.contextPath}/plano/adicionar');
+  configPopUpAdicionar('${pageContext.request.contextPath}/assets/modals/popup-adicionar-plano.html', '${pageContext.request.contextPath}/plano/inserir');
   configPopUpEditar('${pageContext.request.contextPath}/assets/modals/popup-alterar-plano.html', '${pageContext.request.contextPath}/plano/alterar', 'plano')
   configPopUpDeletar('${pageContext.request.contextPath}/plano/deletar')
 

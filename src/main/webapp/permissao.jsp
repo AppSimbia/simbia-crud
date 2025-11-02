@@ -200,7 +200,7 @@
 <script src="${pageContext.request.contextPath}/assets/js/script.js">
 </script>
 <script>
-  configPopUpAdicionar('${pageContext.request.contextPath}/assets/modals/popup-adicionar-permissao.html', '${pageContext.request.contextPath}/permissao/adicionar');
+  configPopUpAdicionar('${pageContext.request.contextPath}/assets/modals/popup-adicionar-permissao.html', '${pageContext.request.contextPath}/permissao/inserir');
   configPopUpEditar('${pageContext.request.contextPath}/assets/modals/popup-alterar-permissao.html', '${pageContext.request.contextPath}/permissao/alterar')
   configPopUpDeletar('${pageContext.request.contextPath}/permissao/deletar')
 

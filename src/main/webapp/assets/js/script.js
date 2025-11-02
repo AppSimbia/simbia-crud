@@ -36,34 +36,91 @@ function configPopUpDeletar(enderecoServletDeletar){
         })
 }
 
-async function chamarPopUpAdicionar(enderecoPopUpAdicionar, enderecoServletRegistro){
-    try{
-        const response = await fetch(enderecoPopUpAdicionar)
-        const htmlRecuperado = await response.text()
-        const containerPopUp = document.getElementById('container-geral-popup')
+/**
+ * Exibe erros de validação nos campos do popup
+ */
+function exibirErrosValidacao(errosJSON) {
+    if (!errosJSON) return;
 
-        containerPopUp.innerHTML = htmlRecuperado
+    try {
+        const erros = JSON.parse(errosJSON);
 
-        document.querySelector('#container-geral-popup form').action = enderecoServletRegistro
+        // Limpa todos os erros anteriores
+        document.querySelectorAll('.pErro').forEach(p => {
+            p.textContent = '';
+            p.style.display = 'none';
+        });
 
-        document.querySelector('#container-geral-popup [name="btnFechar"]')
-            .addEventListener('click', () => fecharModal(containerPopUp))
+        // Exibe novos erros
+        for (const [campo, mensagem] of Object.entries(erros)) {
+            // Tenta encontrar o elemento de erro
+            const seletores = [
+                `[name="erro-${campo}-padrao"]`,
+                `[name="erro-${campo}"]`,
+                `[data-erro="${campo}"]`
+            ];
 
-        document.querySelector('#container-geral-popup section')
-            .addEventListener('click', (e) => {
-                if (e.target === e.currentTarget) {
-                    fecharModal(containerPopUp)
+            let elemento = null;
+            for (const seletor of seletores) {
+                elemento = document.querySelector(seletor);
+                if (elemento) break;
+            }
+
+            if (elemento) {
+                elemento.textContent = mensagem;
+                elemento.style.display = 'block';
+                elemento.style.color = 'red';
+
+                // Destaca o input com erro
+                const input = document.querySelector(`[name="${campo}"]`);
+                if (input) {
+                    input.style.border = '2px solid red';
+
+                    // Remove destaque ao corrigir
+                    input.addEventListener('input', function() {
+                        this.style.border = '';
+                        if (elemento) {
+                            elemento.textContent = '';
+                            elemento.style.display = 'none';
+                        }
+                    }, { once: true });
                 }
-            })
-
-        containerPopUp.style.display = 'flex'
-        document.querySelector('#container-geral-popup section').style.display = 'flex'
-
-    } catch (error){
-        console.log('Erro ao lançar pop-up de adicionar:', error)
+            }
+        }
+    } catch (e) {
+        console.error('Erro ao processar validações:', e);
     }
 }
 
+/**
+ * Preenche campos do formulário com dados anteriores
+ */
+function preencherCamposFormulario(dados, separador = ';') {
+    if (!dados || dados === 'null') return;
+
+    const valores = dados.split(separador);
+    const inputs = document.querySelectorAll('#container-geral-popup input:not([type="radio"]), #container-geral-popup textarea');
+
+    inputs.forEach((input, index) => {
+        if (valores[index] && valores[index] !== 'null' && valores[index].trim() !== '') {
+            input.value = valores[index];
+        }
+    });
+}
+
+/**
+ * Limpa todos os erros do formulário
+ */
+function limparErrosFormulario() {
+    document.querySelectorAll('.pErro').forEach(p => {
+        p.textContent = '';
+        p.style.display = 'none';
+    });
+
+    document.querySelectorAll('input, textarea').forEach(input => {
+        input.style.border = '';
+    });
+}
 async function chamarPopUpEditar(enderecoPopUpEditar, enderecoServletEditar, info, tabela){
     try{
         const response = await fetch(enderecoPopUpEditar)
@@ -206,5 +263,39 @@ async function mostrarStatus(tipo) {
 
     } catch (error) {
         console.log('Erro ao mostrar status:', error);
+    }
+}
+
+async function chamarPopUpAdicionar(enderecoPopUpAdicionar, enderecoServletRegistro){
+    try{
+        const response = await fetch(enderecoPopUpAdicionar)
+        const htmlRecuperado = await response.text()
+        const containerPopUp = document.getElementById('container-geral-popup')
+
+        containerPopUp.innerHTML = htmlRecuperado
+        document.querySelector('#container-geral-popup form').action = enderecoServletRegistro
+
+        document.querySelector('#container-geral-popup [name="btnFechar"]')
+            .addEventListener('click', () => {
+                limparErrosFormulario(); // Limpa erros ao fechar
+                fecharModal(containerPopUp);
+            })
+
+        document.querySelector('#container-geral-popup section')
+            .addEventListener('click', (e) => {
+                if (e.target === e.currentTarget) {
+                    limparErrosFormulario();
+                    fecharModal(containerPopUp)
+                }
+            })
+
+        containerPopUp.style.display = 'flex'
+        document.querySelector('#container-geral-popup section').style.display = 'flex'
+
+        return Promise.resolve(); // Retorna promise para aguardar
+
+    } catch (error){
+        console.log('Erro ao lançar pop-up de adicionar:', error)
+        return Promise.reject(error);
     }
 }

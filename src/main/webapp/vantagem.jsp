@@ -197,7 +197,7 @@
 <script src="${pageContext.request.contextPath}/assets/js/script.js">
 </script>
 <script>
-  configPopUpAdicionar('${pageContext.request.contextPath}/assets/modals/popup-adicionar-vantagem.html', '${pageContext.request.contextPath}/vantagem/adicionar');
+  configPopUpAdicionar('${pageContext.request.contextPath}/assets/modals/popup-adicionar-vantagem.html', '${pageContext.request.contextPath}/vantagem/inserir');
   configPopUpEditar('${pageContext.request.contextPath}/assets/modals/popup-alterar-vantagem.html', '${pageContext.request.contextPath}/vantagem/alterar')
   configPopUpDeletar('${pageContext.request.contextPath}/vantagem/deletar')
 
