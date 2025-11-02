@@ -203,5 +203,15 @@
     configPopUpAdicionar('${pageContext.request.contextPath}/assets/modals/popup-adicionar-tipoIndustria.html', '${pageContext.request.contextPath}/tipo-industria/adicionar');
     configPopUpEditar('${pageContext.request.contextPath}/assets/modals/popup-alterar-tipoIndustria.html', '${pageContext.request.contextPath}/tipo-industria/alterar')
     configPopUpDeletar('${pageContext.request.contextPath}/tipo-industria/deletar')
+
+    <%
+  Boolean status = (Boolean) session.getAttribute("status");
+  if (status != null) {
+      requisicaoResposta.removerAtributoNaSessao("status");
+%>
+    window.onload = function() {
+        mostrarStatus('<%= status ? "sucesso" : "erro" %>');
+    }
+    <% } %>
 </script>
 </html>

@@ -203,5 +203,15 @@
   configPopUpAdicionar('${pageContext.request.contextPath}/assets/modals/popup-adicionar-permissao.html', '${pageContext.request.contextPath}/permissao/adicionar');
   configPopUpEditar('${pageContext.request.contextPath}/assets/modals/popup-alterar-permissao.html', '${pageContext.request.contextPath}/permissao/alterar')
   configPopUpDeletar('${pageContext.request.contextPath}/permissao/deletar')
+
+  <%
+  Boolean status = (Boolean) session.getAttribute("status");
+  if (status != null) {
+      requisicaoResposta.removerAtributoNaSessao("status");
+%>
+  window.onload = function() {
+    mostrarStatus('<%= status ? "sucesso" : "erro" %>');
+  }
+  <% } %>
 </script>
 </html>

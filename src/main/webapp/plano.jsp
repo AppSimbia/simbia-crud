@@ -222,5 +222,15 @@
   configPopUpAdicionar('${pageContext.request.contextPath}/assets/modals/popup-adicionar-plano.html', '${pageContext.request.contextPath}/plano/adicionar');
   configPopUpEditar('${pageContext.request.contextPath}/assets/modals/popup-alterar-plano.html', '${pageContext.request.contextPath}/plano/alterar', 'plano')
   configPopUpDeletar('${pageContext.request.contextPath}/plano/deletar')
+
+  <%
+  Boolean status = (Boolean) session.getAttribute("status");
+  if (status != null) {
+      requisicaoResposta.removerAtributoNaSessao("status");
+%>
+  window.onload = function() {
+    mostrarStatus('<%= status ? "sucesso" : "erro" %>');
+  }
+  <% } %>
 </script>
 </html>
