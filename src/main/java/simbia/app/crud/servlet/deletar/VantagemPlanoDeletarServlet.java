@@ -28,12 +28,12 @@ public class VantagemPlanoDeletarServlet extends DeletarServlet {
 
     @Override
     public String enderecoDeDespache() {
-        return "/tipo-industria/atualizar";
+        return "/vantagem-plano/atualizar";
     }
 
     @Override
     public String enderecoDeDespacheCasoErro() {
-        return "../tipo-industria/registros";
+        return "../vantagem-plano/registros";
     }
 }
 
