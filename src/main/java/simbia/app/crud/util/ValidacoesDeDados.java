@@ -36,6 +36,22 @@ public class ValidacoesDeDados {
         }
     }
 
+    public static void validarId(String id) throws NumberFormatException{
+        if (id == null){
+            throw new NumberFormatException();
+        }
+
+        if (id.trim().isEmpty()){
+            throw new NumberFormatException();
+        }
+
+        long l = Long.parseLong(id);
+
+        if (l < 0) {
+            throw new NumberFormatException();
+        }
+    }
+
     /**
      * Valida se a senha segue os requisitos de segurança
      * Requisitos: 8-200 caracteres, maiúscula, minúscula, número e caractere especial
