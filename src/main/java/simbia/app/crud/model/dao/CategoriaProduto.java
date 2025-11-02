@@ -6,7 +6,7 @@ import java.sql.SQLException;
 /**
  * Classe de entidade da tabela {@code CATEGORIAPRODUTO}
  */
-public class CategoriaProduto {
+public class Permissao {
     //atributos
     private long idCategoriaProduto; //PK
     private String nomeCategoria;

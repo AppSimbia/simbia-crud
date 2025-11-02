@@ -20,16 +20,9 @@ import simbia.app.crud.util.ValidacoesDeDados;
 
 import java.io.IOException;
 
-/**
- * Servlet para inserir novos administradores no sistema.
- */
 @WebServlet("/administrador/inserir")
 public class AdministradorInserirServlet extends InserirServlet<Administrador> {
 
-    /**
-     * Processa a requisição POST para inserir um administrador.
-     * Valida os dados, insere no banco e trata possíveis erros.
-     */
     @Override
     protected void doPost(HttpServletRequest requisicao, HttpServletResponse resposta) throws ServletException, IOException {
         RequisicaoResposta requisicaoResposta = new RequisicaoResposta(requisicao, resposta);
@@ -98,19 +91,12 @@ public class AdministradorInserirServlet extends InserirServlet<Administrador> {
         }
     }
 
-    /**
-     * Insere o administrador no banco de dados usando o DAO.
-     */
     @Override
     public void inserirRegistroNoBanco(Administrador entidade) throws DaoException, OperacoesException {
         AdministradorDao dao = new AdministradorDao();
         dao.inserir(entidade);
     }
 
-    /**
-     * Recupera e valida os dados do formulário de cadastro.
-     * Retorna um objeto Administrador pronto para ser inserido.
-     */
     @Override
     public Administrador recuperarNovoRegistroNaRequisicao(RequisicaoResposta requisicaoResposta)
             throws PadraoNomeErradoException, PadraoEmailErradoException,
@@ -128,26 +114,16 @@ public class AdministradorInserirServlet extends InserirServlet<Administrador> {
         return new Administrador(email, senha, nome);
     }
 
-    /**
-     * Retorna o endereço para onde redirecionar após inserção bem-sucedida.
-     */
     @Override
     public String enderecoDeRedirecionamento() {
         return "/administrador/atualizar";
     }
 
-    /**
-     * Retorna o endereço para onde despachar em caso de erro.
-     */
     @Override
     public String enderecoDeRedirecionamentoCasoErro() {
         return "/administrador.jsp";
     }
 
-    /**
-     * Recupera os dados do formulário e retorna como string formatada.
-     * Formato: "nome;email;senha;repetir-senha"
-     */
     private static String dados(RequisicaoResposta requisicaoResposta){
         String nome = requisicaoResposta.recuperarParametroDaRequisicao("nome");
         String email = requisicaoResposta.recuperarParametroDaRequisicao("email");

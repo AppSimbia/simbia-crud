@@ -237,14 +237,6 @@
   configPopUpDeletar('${pageContext.request.contextPath}/administrador/deletar')
 
   <%
-  if (requisicaoResposta.existeSessaoDaRequisicao("status")){
-  %>
-
-  <%
-  }
-  %>
-
-  <%
     Boolean status = (Boolean) session.getAttribute("status");
     if (status != null) {
         requisicaoResposta.removerAtributoNaSessao("status");
