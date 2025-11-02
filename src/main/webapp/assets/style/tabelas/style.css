@@ -9,7 +9,7 @@
     --white-secondary: hsla(195, 40%, 95%, 1);
     --white-primary: hsla(0, 0%, 100%, 1);
     --white-reddish: hsla(20, 100%, 97%, 1);
-    --navy: hsla(210, 80%, 7%, 1);
+    --navy: hsl(210, 78%, 7%);
     --gray: hsla(195, 40%, 91%, 1);
     --dark-gray: hsla(0, 0%, 66%, 1);
     --darker-cyan: hsla(181, 45%, 33%, 1);
@@ -533,7 +533,14 @@ table tbody tr td:last-child {
 
     transition: all 0.2s ease;
 }
-
+#container-geral-popup .pExplicarRegex{
+    color: var(--dark-gray);
+    margin-top: 10px;
+    font-weight: bold;
+    font-size: 10px;
+    flex-wrap: wrap;
+    max-width: 200px;
+}
 #container-geral-popup .pErro{
     color: red;
     margin-top: 10px;
