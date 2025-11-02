@@ -7,16 +7,16 @@
                 <button name="btnFechar" id="close"><img src="assets/elements/btnFechar.svg" alt="fechar"></button>
             </div>
 
-            <form action="">
+            <form action="" method="POST">
                 <div>
                     <label for="nome-categoria">Nome categoria</label>
-                    <input type="text" name="nome" placeholder="Eletrônico" id="nome-categoria">
+                    <input type="text" name="nome" placeholder="Eletrônico" id="nome-categoria" required>
                     <p name="erro-nome-padrao" class="pErro"></p>
                 </div>
 
                 <div>
                     <label for="descricao">Descrição</label>
-                    <textarea name="descricao" id="descricao"> </textarea>
+                    <textarea name="descricao" id="descricao" required> </textarea>
                     <p name="erro-descricao-padrao" class="pErro"></p>
                 </div>
 

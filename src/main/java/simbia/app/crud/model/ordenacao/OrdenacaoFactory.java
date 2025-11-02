@@ -1,6 +1,5 @@
 package simbia.app.crud.model.ordenacao;
 
-import simbia.app.crud.interfaces.ComparadorCampo;
 import simbia.app.crud.infra.servlet.abstractclasses.OrdenarServlet;
 import simbia.app.crud.model.dao.*;
 

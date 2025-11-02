@@ -15,6 +15,6 @@ public class VantagemPlanoServlet extends AtualizarServlet {
 
     @Override
     public String enderecoDeRedirecionamento() {
-        return "/vatagem-plano.jsp";
+        return "/vantagem-plano.jsp";
     }
 }

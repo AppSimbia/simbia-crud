@@ -12,13 +12,13 @@
                 <div class="display-input-input">
                     <div>
                         <label for="nome">Novo nome plano</label>
-                        <input type="text" name="nome" placeholder="Pro" id="nome">
+                        <input type="text" name="nome" placeholder="Pro" id="nome" required>
                         <p name="erro-nome-padrao" class="pErro"></p>
                     </div>
 
                     <div>
                         <label for="valor">Novo valor</label>
-                        <input type="number" name="valor" placeholder="R$ 100,00" id="valor">
+                        <input type="number" name="valor" placeholder="R$ 100,00" id="valor" min="0" step="0.01" required>
                         <p name="erro-valor-padrao" class="pErro"></p>
                     </div>
                 </div>
