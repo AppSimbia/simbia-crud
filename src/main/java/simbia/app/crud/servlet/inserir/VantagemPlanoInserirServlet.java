@@ -46,8 +46,8 @@ public class VantagemPlanoInserirServlet extends InserirServlet<VantagemPlano> {
 
             // Se passou nas validações, insere no banco
             VantagemPlano registro = new VantagemPlano(
-                    Long.parseLong(idVantagem),
-                    Long.parseLong(idPlano)
+                    Long.parseLong(idPlano),     // idPlano primeiro
+                    Long.parseLong(idVantagem)   // idVantagem segundo
             );
             VantagemPlanoDao dao = new VantagemPlanoDao();
             dao.inserir(registro);
