@@ -21,7 +21,6 @@ public class AdministradorDeletarServlet extends DeletarServlet {
      */
     @Override
     public void chamarDaoParaDeletar(long id) throws NaoHouveAlteracaoNoBancoDeDadosException, DaoException {
-        // Chama o método deletar do DAO específico
         this.administradorDao.deletar(id);
     }
 

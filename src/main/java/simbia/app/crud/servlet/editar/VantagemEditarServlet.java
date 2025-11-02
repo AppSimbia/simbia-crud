@@ -18,7 +18,6 @@ import java.io.IOException;
 
 @WebServlet("/vantagem/alterar")
 public class VantagemEditarServlet extends EditarServlet<Vantagem> {
-
     @Override
     protected void doPost(HttpServletRequest requisicao, HttpServletResponse resposta)
             throws ServletException, IOException {
@@ -32,17 +31,19 @@ public class VantagemEditarServlet extends EditarServlet<Vantagem> {
                     ValidacoesDeDados.validarNomeDescricao(nome, descricao, "vantagem");
 
             if (resultado.temErros()) {
-                String id = requisicaoResposta.recuperarParametroDaRequisicao("id");
+                String errosJSON = resultado.toJSON();
 
-                requisicaoResposta.adicionarAtributoNaSessaoDaRequisicao("erros", resultado.toJSON());
-                requisicaoResposta.adicionarAtributoNaSessaoDaRequisicao("dados", nome + ";" + descricao + ";" + id);
+                String id = requisicaoResposta.recuperarParametroDaRequisicao("id");
+                requisicaoResposta.adicionarAtributoNaSessaoDaRequisicao("erros", errosJSON);
+                requisicaoResposta.adicionarAtributoNaSessaoDaRequisicao("dados",
+                        nome + ";" + descricao + ";" + id);
+
                 requisicaoResposta.adicionarAtributoNaSessaoDaRequisicao("popupAberto", "true");
                 requisicaoResposta.redirecionarPara("/vantagem.jsp");
                 return;
             }
 
             Vantagem vantagem = recuperarRegistroEmEdicaoNaRequisicao(requisicaoResposta);
-
             editarRegistroNoBanco(vantagem);
 
             requisicaoResposta.adicionarAtributoNaSessaoDaRequisicao("status", true);
@@ -54,7 +55,7 @@ public class VantagemEditarServlet extends EditarServlet<Vantagem> {
             requisicaoResposta.adicionarAtributoNaSessaoDaRequisicao("popupAberto", "true");
             requisicaoResposta.redirecionarPara("/vantagem.jsp");
 
-        } catch (DaoException causa) {
+        } catch (DaoException | OperacoesException | ValidacaoDeDadosException causa) {
             causa.printStackTrace();
             requisicaoResposta.adicionarAtributoNaSessaoDaRequisicao("status", false);
             requisicaoResposta.redirecionarPara("/vantagem.jsp");
@@ -69,15 +70,21 @@ public class VantagemEditarServlet extends EditarServlet<Vantagem> {
 
     @Override
     public Vantagem recuperarRegistroEmEdicaoNaRequisicao(RequisicaoResposta requisicaoResposta)
-            throws DaoException, OperacoesException, ValidacaoDeDadosException {
+            throws ValidacaoDeDadosException, DaoException, OperacoesException {
 
         String idStr = requisicaoResposta.recuperarParametroDaRequisicao("id");
         String nome = requisicaoResposta.recuperarParametroDaRequisicao("nome");
         String descricao = requisicaoResposta.recuperarParametroDaRequisicao("descricao");
 
+        ValidacoesDeDados.validarDescricao(descricao);
+        ValidacoesDeDados.validarNome(nome);
+
         long id = Long.parseLong(idStr);
 
-        return new Vantagem(id, nome, descricao);
+        Vantagem vantagem = new Vantagem(nome, descricao);
+        vantagem.setIdVantagem(id);
+
+        return vantagem;
     }
 
     @Override

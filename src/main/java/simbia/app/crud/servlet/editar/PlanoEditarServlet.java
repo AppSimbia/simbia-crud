@@ -20,31 +20,23 @@ import java.math.BigDecimal;
 @WebServlet("/plano/alterar")
 public class PlanoEditarServlet extends EditarServlet<Plano> {
 
-    /**
-     * Processa a requisição POST para atualizar um plano.
-     * Valida os dados, atualiza no banco e trata possíveis erros.
-     */
     @Override
     protected void doPost(HttpServletRequest requisicao, HttpServletResponse resposta)
             throws ServletException, IOException {
         RequisicaoResposta requisicaoResposta = new RequisicaoResposta(requisicao, resposta);
 
         try {
-            // 1. Recupera dados do formulário
             String idStr = requisicaoResposta.recuperarParametroDaRequisicao("id");
             String nome = requisicaoResposta.recuperarParametroDaRequisicao("nome");
             String valorStr = requisicaoResposta.recuperarParametroDaRequisicao("valor");
             String status = requisicaoResposta.recuperarParametroDaRequisicao("status");
 
-            // 2. VALIDAÇÃO usando ValidacoesDeDados
             ValidacoesDeDados.ResultadoValidacao resultado =
                     ValidacoesDeDados.validarPlano(nome, valorStr, status);
 
-            // 3. Se houver erros de validação, retorna para o popup
             if (resultado.temErros()) {
                 String errosJSON = resultado.toJSON();
                 requisicaoResposta.adicionarAtributoNaSessaoDaRequisicao("erros", errosJSON);
-                // Formato: id;nome;valor;status para preencherCamposFormulario
                 String statusFormatado = "ativo".equals(status) ? "true" : "false";
                 requisicaoResposta.adicionarAtributoNaSessaoDaRequisicao("dados",
                         idStr + ";" + nome + ";" + valorStr + ";" + statusFormatado);
@@ -53,7 +45,6 @@ public class PlanoEditarServlet extends EditarServlet<Plano> {
                 return;
             }
 
-            // 4. Se passou nas validações, cria o objeto COM ID e atualiza no banco
             long id = Long.parseLong(idStr);
             BigDecimal valor = new BigDecimal(valorStr);
             boolean ativo = "ativo".equals(status);
@@ -62,7 +53,6 @@ public class PlanoEditarServlet extends EditarServlet<Plano> {
             PlanoDao dao = new PlanoDao();
             dao.atualizar(plano);
 
-            // 5. Sucesso - redireciona com mensagem de sucesso
             requisicaoResposta.adicionarAtributoNaSessaoDaRequisicao("status", true);
             requisicaoResposta.redirecionarPara("/plano/atualizar");
 
@@ -110,22 +100,17 @@ public class PlanoEditarServlet extends EditarServlet<Plano> {
         } catch (FalhaDeConexaoDriverInadequadoException | FalhaDeConexaoGeralException |
                  FalhaDeConexaoBancoDeDadosInexistenteException | FalhaDeConexaoQuedaRepentina |
                  FalhaDeConexaoSenhaIncorretaException causa) {
-            // Erros de conexão com banco
             causa.printStackTrace();
             requisicaoResposta.adicionarAtributoNaSessaoDaRequisicao("status", false);
             requisicaoResposta.redirecionarPara("/plano.jsp");
 
         } catch (DaoException causa) {
-            // Outros erros do banco
             causa.printStackTrace();
             requisicaoResposta.adicionarAtributoNaSessaoDaRequisicao("status", false);
             requisicaoResposta.redirecionarPara("/plano.jsp");
         }
     }
 
-    /**
-     * Método auxiliar para tratar erros de forma consistente
-     */
     private void tratarErro(RequisicaoResposta requisicaoResposta, String errosJSON, String dados) {
         try {
             requisicaoResposta.adicionarAtributoNaSessaoDaRequisicao("erros", errosJSON);
@@ -137,19 +122,12 @@ public class PlanoEditarServlet extends EditarServlet<Plano> {
         }
     }
 
-    /**
-     * Atualiza o plano no banco de dados usando o DAO.
-     */
     @Override
     public void editarRegistroNoBanco(Plano entidade) throws DaoException, OperacoesException {
         PlanoDao dao = new PlanoDao();
         dao.atualizar(entidade);
     }
 
-    /**
-     * Recupera os dados do formulário de edição.
-     * Retorna um objeto Plano pronto para ser atualizado.
-     */
     @Override
     public Plano recuperarRegistroEmEdicaoNaRequisicao(RequisicaoResposta requisicaoResposta)
             throws NumberFormatException {
@@ -171,17 +149,11 @@ public class PlanoEditarServlet extends EditarServlet<Plano> {
         return new Plano(id, valor, ativo, nome);
     }
 
-    /**
-     * Retorna o endereço para onde redirecionar após atualização bem-sucedida.
-     */
     @Override
     public String enderecoDeRedirecionamento() {
         return "/plano/atualizar";
     }
 
-    /**
-     * Retorna o endereço para onde despachar em caso de erro.
-     */
     @Override
     public String enderecoDeRedirecionamentoCasoErro() {
         return "/plano.jsp";

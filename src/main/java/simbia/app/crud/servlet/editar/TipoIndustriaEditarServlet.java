@@ -9,8 +9,7 @@ import simbia.app.crud.infra.dao.abstractclasses.DaoException;
 import simbia.app.crud.infra.dao.exception.errosDoBancoDeDados.ViolacaoDeUnicidadeException;
 import simbia.app.crud.infra.servlet.abstractclasses.EditarServlet;
 import simbia.app.crud.infra.servlet.abstractclasses.OperacoesException;
-import simbia.app.crud.infra.servlet.exception.validacaoDeDados.PadraoEmailErradoException;
-import simbia.app.crud.infra.servlet.exception.validacaoDeDados.PadraoNomeErradoException;
+import simbia.app.crud.infra.servlet.abstractclasses.ValidacaoDeDadosException;
 import simbia.app.crud.model.dao.TipoIndustria;
 import simbia.app.crud.model.servlet.RequisicaoResposta;
 import simbia.app.crud.util.ValidacoesDeDados;
@@ -19,43 +18,41 @@ import java.io.IOException;
 
 @WebServlet("/tipo-industria/alterar")
 public class TipoIndustriaEditarServlet extends EditarServlet<TipoIndustria> {
+
     @Override
     protected void doPost(HttpServletRequest requisicao, HttpServletResponse resposta)
             throws ServletException, IOException {
-
         RequisicaoResposta requisicaoResposta = new RequisicaoResposta(requisicao, resposta);
 
         try {
-            // Recupera dados do formulário
             String nome = requisicaoResposta.recuperarParametroDaRequisicao("nome");
             String descricao = requisicaoResposta.recuperarParametroDaRequisicao("descricao");
 
-            // VALIDAÇÃO UNIFICADA - UMA LINHA!
             ValidacoesDeDados.ResultadoValidacao resultado =
-                    ValidacoesDeDados.validarNomeDescricao(nome, descricao, "TipoIndustria");
+                    ValidacoesDeDados.validarNomeDescricao(nome, descricao, "Permissao");
 
-            // Se houver erros, retorna para o popup
             if (resultado.temErros()) {
-                String errosJSON = resultado.toJSON();
-                requisicaoResposta.adicionarAtributoNaSessaoDaRequisicao("erros", errosJSON);
-                requisicaoResposta.adicionarAtributoNaSessaoDaRequisicao("dados",
-                        nome + ";" + descricao);
+                String id = requisicaoResposta.recuperarParametroDaRequisicao("id");
+
+                requisicaoResposta.adicionarAtributoNaSessaoDaRequisicao("erros", resultado.toJSON());
+
+                requisicaoResposta.adicionarAtributoNaSessaoDaRequisicao("dados", nome + ";" + descricao + ";" + id);
+
+
                 requisicaoResposta.adicionarAtributoNaSessaoDaRequisicao("popupAberto", "true");
                 requisicaoResposta.redirecionarPara("/tipo-industria.jsp");
                 return;
             }
 
-            // Se passou nas validações, cria objeto e insere no banco
-            TipoIndustria tipoIndustria = new TipoIndustria(nome, descricao);
-            TipoIndustriaDao dao = new TipoIndustriaDao();
-            dao.inserir(tipoIndustria);
+            TipoIndustria tipoIndustria = recuperarRegistroEmEdicaoNaRequisicao(requisicaoResposta);
+
+            editarRegistroNoBanco(tipoIndustria);
 
             requisicaoResposta.adicionarAtributoNaSessaoDaRequisicao("status", true);
             requisicaoResposta.redirecionarPara("/tipo-industria/atualizar");
 
         } catch (ViolacaoDeUnicidadeException causa) {
-            // Trata erro de nome duplicado
-            String errosJSON = "{\"nome\":\"Este nome já está cadastrado\"}";
+            String errosJSON = "{\"nome\":\"Este tipo de indústria já está cadastrado\"}";
             requisicaoResposta.adicionarAtributoNaSessaoDaRequisicao("erros", errosJSON);
             requisicaoResposta.adicionarAtributoNaSessaoDaRequisicao("popupAberto", "true");
             requisicaoResposta.redirecionarPara("/tipo-industria.jsp");
@@ -70,20 +67,20 @@ public class TipoIndustriaEditarServlet extends EditarServlet<TipoIndustria> {
     @Override
     public void editarRegistroNoBanco(TipoIndustria entidade) throws DaoException, OperacoesException {
         TipoIndustriaDao dao = new TipoIndustriaDao();
-
         dao.atualizar(entidade);
     }
 
     @Override
     public TipoIndustria recuperarRegistroEmEdicaoNaRequisicao(RequisicaoResposta requisicaoResposta)
-            throws PadraoNomeErradoException, PadraoEmailErradoException {
+            throws DaoException, OperacoesException, ValidacaoDeDadosException {
+
+        String idStr = requisicaoResposta.recuperarParametroDaRequisicao("id");
         String nome = requisicaoResposta.recuperarParametroDaRequisicao("nome");
         String descricao = requisicaoResposta.recuperarParametroDaRequisicao("descricao");
 
-        ValidacoesDeDados.validarDescricao("descricao");
-        ValidacoesDeDados.validarNome("nome");
+        long id = Long.parseLong(idStr);
 
-        return new TipoIndustria(nome, descricao);
+        return new TipoIndustria(id, nome, descricao);
     }
 
     @Override

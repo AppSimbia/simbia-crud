@@ -9,8 +9,7 @@ import simbia.app.crud.infra.dao.abstractclasses.DaoException;
 import simbia.app.crud.infra.dao.exception.errosDoBancoDeDados.ViolacaoDeUnicidadeException;
 import simbia.app.crud.infra.servlet.abstractclasses.EditarServlet;
 import simbia.app.crud.infra.servlet.abstractclasses.OperacoesException;
-import simbia.app.crud.infra.servlet.exception.validacaoDeDados.PadraoEmailErradoException;
-import simbia.app.crud.infra.servlet.exception.validacaoDeDados.PadraoNomeErradoException;
+import simbia.app.crud.infra.servlet.abstractclasses.ValidacaoDeDadosException;
 import simbia.app.crud.model.dao.Permissao;
 import simbia.app.crud.model.servlet.RequisicaoResposta;
 import simbia.app.crud.util.ValidacoesDeDados;
@@ -19,40 +18,40 @@ import java.io.IOException;
 
 @WebServlet("/permissao/alterar")
 public class PermissaoEditarServlet extends EditarServlet<Permissao> {
+
     @Override
     protected void doPost(HttpServletRequest requisicao, HttpServletResponse resposta)
             throws ServletException, IOException {
         RequisicaoResposta requisicaoResposta = new RequisicaoResposta(requisicao, resposta);
 
         try {
-            // Recupera dados do formulário
             String nome = requisicaoResposta.recuperarParametroDaRequisicao("nome");
             String descricao = requisicaoResposta.recuperarParametroDaRequisicao("descricao");
 
             ValidacoesDeDados.ResultadoValidacao resultado =
                     ValidacoesDeDados.validarNomeDescricao(nome, descricao, "Permissao");
 
-            // Se houver erros, retorna para o popup
             if (resultado.temErros()) {
-                String errosJSON = resultado.toJSON();
-                requisicaoResposta.adicionarAtributoNaSessaoDaRequisicao("erros", errosJSON);
-                requisicaoResposta.adicionarAtributoNaSessaoDaRequisicao("dados",
-                        nome + ";" + descricao);
+                String id = requisicaoResposta.recuperarParametroDaRequisicao("id");
+
+                requisicaoResposta.adicionarAtributoNaSessaoDaRequisicao("erros", resultado.toJSON());
+
+                requisicaoResposta.adicionarAtributoNaSessaoDaRequisicao("dados", nome + ";" + descricao + ";" + id);
+
+
                 requisicaoResposta.adicionarAtributoNaSessaoDaRequisicao("popupAberto", "true");
                 requisicaoResposta.redirecionarPara("/permissao.jsp");
                 return;
             }
 
-            // Se passou nas validações, insere no banco
-            Permissao permissao = new Permissao(nome, descricao);
-            PermissaoDao dao = new PermissaoDao();
-            dao.inserir(permissao);
+            Permissao permissao = recuperarRegistroEmEdicaoNaRequisicao(requisicaoResposta);
+
+            editarRegistroNoBanco(permissao);
 
             requisicaoResposta.adicionarAtributoNaSessaoDaRequisicao("status", true);
             requisicaoResposta.redirecionarPara("/permissao/atualizar");
 
         } catch (ViolacaoDeUnicidadeException causa) {
-            // Trata erro de nome duplicado
             String errosJSON = "{\"nome\":\"Esta permissão já está cadastrada\"}";
             requisicaoResposta.adicionarAtributoNaSessaoDaRequisicao("erros", errosJSON);
             requisicaoResposta.adicionarAtributoNaSessaoDaRequisicao("popupAberto", "true");
@@ -68,20 +67,20 @@ public class PermissaoEditarServlet extends EditarServlet<Permissao> {
     @Override
     public void editarRegistroNoBanco(Permissao entidade) throws DaoException, OperacoesException {
         PermissaoDao dao = new PermissaoDao();
-
         dao.atualizar(entidade);
     }
 
     @Override
     public Permissao recuperarRegistroEmEdicaoNaRequisicao(RequisicaoResposta requisicaoResposta)
-            throws PadraoNomeErradoException, PadraoEmailErradoException {
+            throws DaoException, OperacoesException, ValidacaoDeDadosException {
+
+        String idStr = requisicaoResposta.recuperarParametroDaRequisicao("id");
         String nome = requisicaoResposta.recuperarParametroDaRequisicao("nome");
         String descricao = requisicaoResposta.recuperarParametroDaRequisicao("descricao");
 
-        ValidacoesDeDados.validarDescricao("descricao");
-        ValidacoesDeDados.validarNome("nome");
+        long id = Long.parseLong(idStr);
 
-        return new Permissao(nome, descricao);
+        return new Permissao(id, nome, descricao);
     }
 
     @Override
