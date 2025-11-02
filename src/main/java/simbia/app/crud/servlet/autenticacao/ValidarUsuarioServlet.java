@@ -1,90 +1,114 @@
-package simbia.app.crud.model.dao;
+package simbia.app.crud.servlet.autenticacao;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.io.IOException;
+import java.util.Optional;
+
+import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+
+import simbia.app.crud.dao.AdministradorDao;
+import simbia.app.crud.infra.dao.abstractclasses.DaoException;
+import simbia.app.crud.infra.servlet.abstractclasses.OperacoesException;
+import simbia.app.crud.infra.servlet.abstractclasses.ValidacaoDeDadosException;
+import simbia.app.crud.infra.servlet.exception.operacao.EmailOuSenhaErradosException;
+import simbia.app.crud.infra.servlet.exception.validacaoDeDados.PadraoEmailErradoException;
+import simbia.app.crud.infra.servlet.exception.validacaoDeDados.PadraoSenhaErradoException;
+import simbia.app.crud.model.dao.Administrador;
+import simbia.app.crud.model.servlet.RequisicaoResposta;
+import simbia.app.crud.util.ValidacoesDeDados;
 
 /**
- * Classe de entidade da tabela {@code CATEGORIAPRODUTO}
+ * Servlet de validação de usuário do sistema de CRUD.
+ *
+ * Fluxo: recupera email e senha da requisição → valida formato dos dados → busca
+ * administrador no banco → armazena usuário autenticado na sessão → redireciona
+ * para página de administração (ou despacha para página de login com erro).
+ *
+ * Mapeado na URL "/entrar", processa requisições POST do formulário de login.
  */
-public class CategoriaProduto {
-    //atributos
-    private long idCategoriaProduto; //PK
-    private String nomeCategoria;
-    private String descricao;
-
-    //atributos>constantes
-    private static final String COLUNA_PK_CATEGORIA_PRODUTO = "idcategoriaproduto";
-    private static final String COLUNA_NOME_CATEGORIA_PRODUTO = "cnmcategoria";
-    private static final String COLUNA_DESCRICAO_CATEGORIA_PRODUTO = "cdescricao";
-
-//construtores
-    /**
-     * Construtor completo da entidade CategoriaProduto a partir de um {@link ResultSet}.
-     * @param resultSet Um objeto {@link ResultSet} com os dados extraídos do banco de dados.
-     * @throws SQLException Caso algum dado não seja adequado.
-     */
-    public CategoriaProduto(ResultSet resultSet) throws SQLException {
-        this.idCategoriaProduto = resultSet.getLong(COLUNA_PK_CATEGORIA_PRODUTO);
-        this.nomeCategoria = resultSet.getString(COLUNA_NOME_CATEGORIA_PRODUTO);
-        this.descricao = resultSet.getString(COLUNA_DESCRICAO_CATEGORIA_PRODUTO);
-    }
+@WebServlet("/entrar")
+public class ValidarUsuarioServlet extends HttpServlet {
 
     /**
-     * Construtor completo da entidade CategoriaProduto.
-     * @param idCategoriaProduto ID único da categoria de produto
-     * @param nomeCategoria Nome da categoria de produto
-     * @param descricao Descrição da categoria de produto
+     * Processa a requisição POST: valida credenciais e autentica o usuário.
+     * Em caso de sucesso, redireciona para a página de administração.
+     * Em caso de erro, despacha de volta para a página de login com mensagem de erro.
      */
-    public CategoriaProduto(long idCategoriaProduto, String nomeCategoria, String descricao) {
-        this.idCategoriaProduto = idCategoriaProduto;
-        this.nomeCategoria = nomeCategoria;
-        this.descricao = descricao;
-    }
-
-    /**
-     * Construtor da entidade CategoriaProduto sem a {@code primary key}.
-     * @param nomeCategoria Nome da categoria de produto
-     * @param descricao Descrição da categoria de produto
-     */
-    public CategoriaProduto(String nomeCategoria, String descricao) {
-        this.nomeCategoria = nomeCategoria;
-        this.descricao = descricao;
-    }
-
-    public CategoriaProduto(){}
-    //toString
     @Override
-    public String toString() {
-        return "CategoriaProduto{" +
-                "idCategoriaProduto=" + idCategoriaProduto +
-                ", nomeCategoria='" + nomeCategoria + '\'' +
-                ", descricao='" + descricao + '\'' +
-                '}';
+    protected void doPost(HttpServletRequest requisicao, HttpServletResponse resposta)
+            throws ServletException, IOException {
+        RequisicaoResposta requisicaoResposta = new RequisicaoResposta(requisicao, resposta);
+
+        try {
+            verificarUsuario(requisicaoResposta);
+            requisicaoResposta.redirecionarPara("/administrador.jsp");
+
+        } catch (DaoException causa) {
+            causa.printStackTrace();
+            requisicaoResposta.adicionarAtributoNaRequisicao("erro", "Servidor instável;Por favor, tente novamente");
+            requisicaoResposta.despacharPara("entrar.jsp");
+
+        } catch (ValidacaoDeDadosException | OperacoesException causa) {
+            causa.printStackTrace();
+            requisicaoResposta.adicionarAtributoNaRequisicao("erro", "Informações erradas;Email ou senha incorretos");
+            requisicaoResposta.despacharPara("entrar.jsp");
+        }
     }
 
-    //getters
-    public long getIdCategoriaProduto() {
-        return idCategoriaProduto;
+    /**
+     * Verifica as credenciais do usuário e armazena o administrador autenticado na sessão.
+     * Recupera email e senha, busca no banco e salva na sessão como "administradorAutenticado".
+     */
+    private static void verificarUsuario(RequisicaoResposta requisicaoResposta)
+            throws EmailOuSenhaErradosException, PadraoEmailErradoException, PadraoSenhaErradoException {
+        String email = recuperarAtributoEmailDaRequisicao(requisicaoResposta);
+        String senha = recuperarAtributoSenhaDaRequisicao(requisicaoResposta);
+
+        Administrador registroCorrespondenteNoBanco = recuperarAdministradorNoBanco(email, senha);
+
+        requisicaoResposta.adicionarAtributoNaSessaoDaRequisicao("administradorAutenticado", registroCorrespondenteNoBanco);
     }
 
-    public String getNomeCategoria() {
-        return nomeCategoria;
+    /**
+     * Recupera o administrador do banco de dados com base no email e senha fornecidos.
+     * Valida se existe um registro correspondente às credenciais.
+     */
+    private static Administrador recuperarAdministradorNoBanco(String email, String senha)
+            throws EmailOuSenhaErradosException {
+        AdministradorDao dao = new AdministradorDao();
+        Optional<Administrador> retornoBanco = dao.recuperarPeloEmailESenha(email, senha);
+
+        ValidacoesDeDados.validarSeExisteRegistroCorrespondenteNoBanco(retornoBanco);
+
+        return retornoBanco.get();
     }
 
-    public String getDescricao() {
-        return descricao;
+    /**
+     * Recupera e valida o email da requisição.
+     * Verifica se o email está no formato correto antes de retorná-lo.
+     */
+    private static String recuperarAtributoEmailDaRequisicao(RequisicaoResposta requisicaoResposta)
+            throws PadraoEmailErradoException {
+        String email = requisicaoResposta.recuperarParametroDaRequisicao("email");
+
+        ValidacoesDeDados.validarEmail(email);
+
+        return email;
     }
 
-    //setters
-    public void setIdCategoriaProduto(long idCategoriaProduto) {
-        this.idCategoriaProduto = idCategoriaProduto;
-    }
+    /**
+     * Recupera e valida a senha da requisição.
+     * Verifica se a senha está no formato correto antes de retorná-la.
+     */
+    private static String recuperarAtributoSenhaDaRequisicao(RequisicaoResposta requisicaoResposta)
+            throws PadraoSenhaErradoException {
+        String senha = requisicaoResposta.recuperarParametroDaRequisicao("senha");
 
-    public void setNomeCategoria(String nomeCategoria) {
-        this.nomeCategoria = nomeCategoria;
-    }
+        ValidacoesDeDados.validarSenha(senha);
 
-    public void setDescricao(String descricao) {
-        this.descricao = descricao;
+        return senha;
     }
 }
