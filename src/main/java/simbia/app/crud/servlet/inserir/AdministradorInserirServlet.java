@@ -18,6 +18,7 @@ import simbia.app.crud.model.dao.Administrador;
 import simbia.app.crud.model.servlet.RequisicaoResposta;
 import simbia.app.crud.util.ValidacoesDeDados;
 
+import javax.crypto.spec.PSource;
 import java.io.IOException;
 
 /**
@@ -142,7 +143,7 @@ public class AdministradorInserirServlet extends InserirServlet<Administrador> {
      */
     @Override
     public String enderecoDeDespache() {
-        return "../administrador/atualizar";
+        return "/administrador/atualizar";
     }
 
     /**
@@ -150,7 +151,7 @@ public class AdministradorInserirServlet extends InserirServlet<Administrador> {
      */
     @Override
     public String enderecoDeDespacheCasoErro() {
-        return "../administrador.jsp";
+        return "/administrador.jsp";
     }
 
     /**
