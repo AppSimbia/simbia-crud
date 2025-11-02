@@ -10,9 +10,9 @@ import simbia.app.crud.model.dao.TipoIndustria;
 @WebServlet("/tipo-industria/filtro")
 public class TipoIndustriaFiltroServlet extends FiltroServlet<TipoIndustria> {
     @Override
-    public boolean entidadeCorrepondeAoFiltro(String regexFiltro, TipoIndustria entidade) {
-        return String.valueOf(entidade.getIdTipoIndustria()).matches(regexFiltro) ||
-                entidade.getNomeTipoIndustria().toLowerCase().matches(regexFiltro);
+    public boolean entidadeCorrepondeAoFiltro(String sequenciaDeCaracteres, TipoIndustria entidade) {
+        return String.valueOf(entidade.getIdTipoIndustria()).contains(sequenciaDeCaracteres) ||
+                entidade.getNomeTipoIndustria().toLowerCase().contains(sequenciaDeCaracteres);
     }
 
     @Override

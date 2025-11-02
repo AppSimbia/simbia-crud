@@ -14,7 +14,6 @@
 </head>
 <body id="body-login">
 <main>
-
   <div id="container-erro"></div>
 
   <img src="assets/elements/simbia-logo.svg" alt="logo">
@@ -29,7 +28,7 @@
 <%
    if (requisicaoResposta.existeAtributoNaRequisicao("erro")){
 %>
-<script src="/crud/assets/js/script.js"></script>
+<script src="${pageContext.request.contextPath}/assets/js/script.js"></script>
 <script>
   chamarErro('<%= (String) requisicaoResposta.recuperarAtributoDaRequisicao("erro") %>')
 </script>

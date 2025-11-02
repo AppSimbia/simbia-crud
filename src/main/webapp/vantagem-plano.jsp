@@ -38,6 +38,8 @@
 </head>
 <body>
 <div id="container-geral-popup"></div>
+<div id="container-status"></div>
+
 <!-- MENU LATERAL -->
 <img src="${pageContext.request.contextPath}/assets/elements/icon-simbia.svg" alt="logo-simbia">
 <aside>
@@ -127,13 +129,13 @@
                     <form action="${pageContext.request.contextPath}/vantagem-plano/ordenar" method="GET">
                         <input type="hidden" name="tipoOrdenacao" value="porId">
                         <input type="hidden" name="ordem" value="<%=
-              (request.getAttribute("criterioOrdenacao") != null && request.getAttribute("criterioOrdenacao").equals("porNome")
+              (request.getAttribute("criterioOrdenacao") != null && request.getAttribute("criterioOrdenacao").equals("porId")
                 && request.getAttribute("ordemAtual") != null && request.getAttribute("ordemAtual").equals("asc"))
               ? "desc" : "asc"
             %>">
                         <button type="submit">
                             <i class="fa-solid <%=
-                (request.getAttribute("criterioOrdenacao") != null && request.getAttribute("criterioOrdenacao").equals("porNome"))
+                (request.getAttribute("criterioOrdenacao") != null && request.getAttribute("criterioOrdenacao").equals("porId"))
                   ? (request.getAttribute("ordemAtual").equals("asc") ? "fa-angle-up icone-ativo" : "fa-angle-down icone-ativo")
                   : "fa-angle-down"
               %>"></i>
@@ -148,13 +150,13 @@
                     <form action="${pageContext.request.contextPath}/vantagem-plano/ordenar" method="GET">
                         <input type="hidden" name="tipoOrdenacao" value="porIdPlano">
                         <input type="hidden" name="ordem" value="<%=
-              (request.getAttribute("criterioOrdenacao") != null && request.getAttribute("criterioOrdenacao").equals("porNome")
+              (request.getAttribute("criterioOrdenacao") != null && request.getAttribute("criterioOrdenacao").equals("porIdPlano")
                 && request.getAttribute("ordemAtual") != null && request.getAttribute("ordemAtual").equals("asc"))
               ? "desc" : "asc"
             %>">
                         <button type="submit">
                             <i class="fa-solid <%=
-                (request.getAttribute("criterioOrdenacao") != null && request.getAttribute("criterioOrdenacao").equals("porNome"))
+                (request.getAttribute("criterioOrdenacao") != null && request.getAttribute("criterioOrdenacao").equals("porIdPlano"))
                   ? (request.getAttribute("ordemAtual").equals("asc") ? "fa-angle-up icone-ativo" : "fa-angle-down icone-ativo")
                   : "fa-angle-down"
               %>"></i>
@@ -169,13 +171,13 @@
                     <form action="${pageContext.request.contextPath}/vantagem-plano/ordenar" method="GET">
                         <input type="hidden" name="tipoOrdenacao" value="porIdVantagem">
                         <input type="hidden" name="ordem" value="<%=
-              (request.getAttribute("criterioOrdenacao") != null && request.getAttribute("criterioOrdenacao").equals("porNome")
+              (request.getAttribute("criterioOrdenacao") != null && request.getAttribute("criterioOrdenacao").equals("porIdVantagem")
                 && request.getAttribute("ordemAtual") != null && request.getAttribute("ordemAtual").equals("asc"))
               ? "desc" : "asc"
             %>">
                         <button type="submit">
                             <i class="fa-solid <%=
-                (request.getAttribute("criterioOrdenacao") != null && request.getAttribute("criterioOrdenacao").equals("porNome"))
+                (request.getAttribute("criterioOrdenacao") != null && request.getAttribute("criterioOrdenacao").equals("porIdVantagem"))
                   ? (request.getAttribute("ordemAtual").equals("asc") ? "fa-angle-up icone-ativo" : "fa-angle-down icone-ativo")
                   : "fa-angle-down"
               %>"></i>
@@ -211,11 +213,11 @@
     </table>
 </main>
 </body>
-<script src="/crud/assets/js/script.js">
+<script src="${pageContext.request.contextPath}/assets/js/script.js">
 </script>
 <script>
-    configPopUpAdicionar('/crud/assets/modals/popup-adicionar-vantagemPlano.html', '/crud/vantagem-plano/adicionar');
-    configPopUpEditar('/crud/assets/modals/popup-alterar-vantagemPlano.html', '/crud/vantagem-plano/alterar', 'vantagemplano')
-    configPopUpDeletar('/crud/vantagem-plano/deletar')
+    configPopUpAdicionar('${pageContext.request.contextPath}/assets/modals/popup-adicionar-vantagemPlano.html', '${pageContext.request.contextPath}/vantagem-plano/adicionar');
+    configPopUpEditar('${pageContext.request.contextPath}/assets/modals/popup-alterar-vantagemPlano.html', '${pageContext.request.contextPath}/vantagem-plano/alterar', 'vantagemplano')
+    configPopUpDeletar('${pageContext.request.contextPath}/vantagem-plano/deletar')
 </script>
 </html>

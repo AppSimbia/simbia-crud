@@ -10,10 +10,10 @@ import simbia.app.crud.model.dao.VantagemPlano;
 @WebServlet("/vantagem-plano/filtro")
 public class VantagemPlanoFiltroServlet extends FiltroServlet<VantagemPlano> {
     @Override
-    public boolean entidadeCorrepondeAoFiltro(String regexFiltro, VantagemPlano entidade) {
-        return String.valueOf(entidade.getIdVantagemPlano()).matches(regexFiltro) ||
-                String.valueOf(entidade.getIdVantagem()).matches(regexFiltro) ||
-                String.valueOf(entidade.getIdPlano()).matches(regexFiltro);
+    public boolean entidadeCorrepondeAoFiltro(String sequenciaDeCaracteres, VantagemPlano entidade) {
+        return String.valueOf(entidade.getIdVantagemPlano()).contains(sequenciaDeCaracteres) ||
+                String.valueOf(entidade.getIdVantagem()).contains(sequenciaDeCaracteres) ||
+                String.valueOf(entidade.getIdPlano()).contains(sequenciaDeCaracteres);
     }
 
     @Override

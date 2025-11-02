@@ -38,6 +38,8 @@
 </head>
 <body>
 <div id="container-geral-popup"></div>
+<div id="container-status"></div>
+
 <!-- MENU LATERAL -->
 <img src="${pageContext.request.contextPath}/assets/elements/icon-simbia.svg" alt="logo-simbia">
 <aside>
@@ -192,11 +194,11 @@
   </table>
 </main>
 </body>
-<script src="/crud/assets/js/script.js">
+<script src="${pageContext.request.contextPath}/assets/js/script.js">
 </script>
 <script>
-  configPopUpAdicionar('/crud/assets/modals/popup-adicionar-vantagem.html', '/crud/vantagem/adicionar');
-  configPopUpEditar('/crud/assets/modals/popup-alterar-vantagem.html', '/crud/vantagem/alterar')
-  configPopUpDeletar('/crud/vantagem/deletar')
+  configPopUpAdicionar('${pageContext.request.contextPath}/assets/modals/popup-adicionar-vantagem.html', '${pageContext.request.contextPath}/vantagem/adicionar');
+  configPopUpEditar('${pageContext.request.contextPath}/assets/modals/popup-alterar-vantagem.html', '${pageContext.request.contextPath}/vantagem/alterar')
+  configPopUpDeletar('${pageContext.request.contextPath}/vantagem/deletar')
 </script>
 </html>

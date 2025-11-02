@@ -11,10 +11,10 @@
     public class AdministradorFiltroServlet extends FiltroServlet<Administrador> {
 
         @Override
-        public boolean entidadeCorrepondeAoFiltro(String regexFiltro, Administrador entidade) {
-            return String.valueOf(entidade.getIdAdministrador()).matches(regexFiltro) ||
-                    entidade.getNome().toLowerCase().matches(regexFiltro) ||
-                    entidade.getEmail().toLowerCase().matches(regexFiltro);
+        public boolean entidadeCorrepondeAoFiltro(String sequenciaDeCaracteres, Administrador entidade) {
+            return String.valueOf(entidade.getIdAdministrador()).contains(sequenciaDeCaracteres) ||
+                    entidade.getNome().toLowerCase().contains(sequenciaDeCaracteres) ||
+                    entidade.getEmail().toLowerCase().contains(sequenciaDeCaracteres);
         }
 
         @Override
