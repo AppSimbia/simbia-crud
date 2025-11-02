@@ -199,7 +199,7 @@
 <script src="${pageContext.request.contextPath}/assets/js/script.js">
 </script>
 <script>
-  configPopUpAdicionar('${pageContext.request.contextPath}/assets/modals/popup-adicionar-categoriaProduto.html', '${pageContext.request.contextPath}/categoria-produto/adicionar');
+  configPopUpAdicionar('${pageContext.request.contextPath}/assets/modals/popup-adicionar-categoriaProduto.html', '${pageContext.request.contextPath}/categoria-produto/inserir');
   configPopUpEditar('${pageContext.request.contextPath}/assets/modals/popup-alterar-categoriaProduto.html', '${pageContext.request.contextPath}/categoria-produto/alterar')
   configPopUpDeletar('${pageContext.request.contextPath}/categoria-produto/deletar')
 </script>
