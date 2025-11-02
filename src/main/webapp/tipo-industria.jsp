@@ -200,7 +200,7 @@
 <script src="${pageContext.request.contextPath}/assets/js/script.js">
 </script>
 <script>
-    configPopUpAdicionar('${pageContext.request.contextPath}/assets/modals/popup-adicionar-tipoIndustria.html', '${pageContext.request.contextPath}/tipo-industria/adicionar');
+    configPopUpAdicionar('${pageContext.request.contextPath}/assets/modals/popup-adicionar-tipoIndustria.html', '${pageContext.request.contextPath}/tipo-industria/inserir');
     configPopUpEditar('${pageContext.request.contextPath}/assets/modals/popup-alterar-tipoIndustria.html', '${pageContext.request.contextPath}/tipo-industria/alterar')
     configPopUpDeletar('${pageContext.request.contextPath}/tipo-industria/deletar')
 </script>
