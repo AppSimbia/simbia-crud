@@ -31,61 +31,40 @@ public class AdministradorInserirServlet extends InserirServlet<Administrador> {
             Administrador registro = recuperarNovoRegistroNaRequisicao(requisicaoResposta);
             inserirRegistroNoBanco(registro);
 
+            requisicaoResposta.adicionarAtributoNaSessaoDaRequisicao("status", true);
+
             requisicaoResposta.redirecionarPara(enderecoDeRedirecionamento());
 
         } catch (PadraoNomeErradoException causa) {
-            requisicaoResposta.adicionarAtributoNaRequisicao("mensagem", "Nome deve conter apenas letras e espaços.");
-            requisicaoResposta.adicionarAtributoNaRequisicao("popupAdicionarAberto", true);
-            requisicaoResposta.adicionarAtributoNaRequisicao("dados", dados(requisicaoResposta));
-
             requisicaoResposta.redirecionarPara(enderecoDeRedirecionamentoCasoErro());
 
         } catch (PadraoSenhaErradoException causa) {
-            requisicaoResposta.adicionarAtributoNaRequisicao("mensagem", "Senha deve conter ao menos um caractere minúsculo, maiúsculo, numérico e especial.");
-            requisicaoResposta.adicionarAtributoNaRequisicao("popupAdicionarAberto", true);
-            requisicaoResposta.adicionarAtributoNaRequisicao("dados", dados(requisicaoResposta));
 
             requisicaoResposta.redirecionarPara(enderecoDeRedirecionamentoCasoErro());
 
         } catch (PadraoEmailErradoException causa) {
-            requisicaoResposta.adicionarAtributoNaRequisicao("mensagem", "Insira um email válido.");
-            requisicaoResposta.adicionarAtributoNaRequisicao("popupAdicionarAberto", true);
-            requisicaoResposta.adicionarAtributoNaRequisicao("dados", dados(requisicaoResposta));
 
             requisicaoResposta.redirecionarPara(enderecoDeRedirecionamentoCasoErro());
 
         } catch (SenhasDiferentesException causa) {
-            requisicaoResposta.adicionarAtributoNaRequisicao("mensagem", "As suas senhas não correspondem.");
-            requisicaoResposta.adicionarAtributoNaRequisicao("popupAdicionarAberto", true);
-            requisicaoResposta.adicionarAtributoNaRequisicao("dados", dados(requisicaoResposta));
 
             requisicaoResposta.redirecionarPara(enderecoDeRedirecionamentoCasoErro());
 
         } catch (NaoHouveAlteracaoNoBancoDeDadosException causa) {
-            requisicaoResposta.adicionarAtributoNaRequisicao("mensagem", "Operação falhou! Tente novamente.");
-            requisicaoResposta.adicionarAtributoNaRequisicao("popupAdicionarAberto", false);
+            requisicaoResposta.adicionarAtributoNaSessaoDaRequisicao("status", false);
 
             requisicaoResposta.redirecionarPara(enderecoDeRedirecionamentoCasoErro());
 
         } catch (ViolacaoDeObrigatoriedadeException causa) {
-            requisicaoResposta.adicionarAtributoNaRequisicao("mensagem", "Campo obrigatório.");
-            requisicaoResposta.adicionarAtributoNaRequisicao("popupAdicionarAberto", true);
-            requisicaoResposta.adicionarAtributoNaRequisicao("dados", dados(requisicaoResposta));
-
             requisicaoResposta.redirecionarPara(enderecoDeRedirecionamentoCasoErro());
 
         } catch (ViolacaoDeUnicidadeException causa) {
-            requisicaoResposta.adicionarAtributoNaRequisicao("mensagem", "Campo já possui registro com esse valor.");
-            requisicaoResposta.adicionarAtributoNaRequisicao("popupAdicionarAberto", true);
-            requisicaoResposta.adicionarAtributoNaRequisicao("dados", dados(requisicaoResposta));
-
             requisicaoResposta.redirecionarPara(enderecoDeRedirecionamentoCasoErro());
 
         } catch (FalhaDeConexaoDriverInadequadoException | FalhaDeConexaoGeralException |
                  FalhaDeConexaoBancoDeDadosInexistenteException | FalhaDeConexaoQuedaRepentina |
                  FalhaDeConexaoSenhaIncorretaException causa) {
-            requisicaoResposta.adicionarAtributoNaRequisicao("mensagem", "Erro de conexão! Tente novamente.");
-            requisicaoResposta.adicionarAtributoNaRequisicao("popupAdicionarAberto", false);
+            requisicaoResposta.adicionarAtributoNaSessaoDaRequisicao("status", false);
 
             requisicaoResposta.redirecionarPara(enderecoDeRedirecionamentoCasoErro());
         }
