@@ -230,11 +230,11 @@
 
 </main>
 </body>
-<script src="/crud/assets/js/script.js"></script>
+<script src="${pageContext.request.contextPath}/assets/js/script.js"></script>
 <script>
-  configPopUpAdicionar('/crud/assets/modals/popup-adicionar-admin.html', '/crud/administrador/adicionar')
-  configPopUpEditar('/crud/assets/modals/popup-alterar-admin.html', '/crud/administrador/alterar', 'administrador')
-  configPopUpDeletar('/crud/adiministrador/deletar')
+  configPopUpAdicionar('${pageContext.request.contextPath}/assets/modals/popup-adicionar-admin.html', '${pageContext.request.contextPath}/administrador/adicionar')
+  configPopUpEditar('${pageContext.request.contextPath}/assets/modals/popup-alterar-admin.html', '${pageContext.request.contextPath}/administrador/alterar', 'administrador')
+  configPopUpDeletar('${pageContext.request.contextPath}/adiministrador/deletar')
 
   <%
   if (requisicaoResposta.existeSessaoDaRequisicao("status")){

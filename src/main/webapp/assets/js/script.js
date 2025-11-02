@@ -26,7 +26,7 @@ function configPopUpEditar(enderecoPopUpAdicionar, enderecoServletRegistro, tabe
     document.getElementsByName('editar')
         .forEach( btn =>{
             btn.addEventListener('click', () => chamarPopUpEditar(enderecoPopUpAdicionar, enderecoServletRegistro, btn.value, tabela))
-    })
+        })
 }
 
 function configPopUpDeletar(enderecoServletDeletar){
@@ -86,6 +86,27 @@ async function chamarPopUpEditar(enderecoPopUpEditar, enderecoServletEditar, inf
 
         containerPopUp.style.display = 'flex'
         document.querySelector('#container-geral-popup section').style.display = 'flex'
+
+        const btnEnviar = document.getElementsByName('btnSalvar')[0]
+        const form = document.querySelector('#container-geral-popup form')
+
+        btnEnviar.type = 'button'
+
+        let confirmado = false
+
+        btnEnviar.addEventListener('click', (e) => {
+            e.preventDefault()
+
+            if (!confirmado) {
+                confirmado = true
+                btnEnviar.innerText = 'Tem certeza?'
+                btnEnviar.style.background = '#FFCF40'
+                btnEnviar.style.boxShadow = '0 0 70px rgba(255,207,64,0.27)'
+            } else {
+                form.submit()
+            }
+        })
+
         if (tabela == 'administrador') {
             const informacoes = info.split(';')
 

@@ -196,11 +196,11 @@
   </table>
 </main>
 </body>
-<script src="/crud/assets/js/script.js">
+<script src="${pageContext.request.contextPath}/assets/js/script.js">
 </script>
 <script>
-  configPopUpAdicionar('/crud/assets/modals/popup-adicionar-categoriaProduto.html', '/crud/categoria-produto/adicionar');
-  configPopUpEditar('/crud/assets/modals/popup-alterar-categoriaProduto.html', '/crud/categoria-produto/alterar')
-  configPopUpDeletar('/crud/categoria-produto/deletar')
+  configPopUpAdicionar('${pageContext.request.contextPath}/assets/modals/popup-adicionar-categoriaProduto.html', '${pageContext.request.contextPath}/categoria-produto/adicionar');
+  configPopUpEditar('${pageContext.request.contextPath}/assets/modals/popup-alterar-categoriaProduto.html', '${pageContext.request.contextPath}/categoria-produto/alterar')
+  configPopUpDeletar('${pageContext.request.contextPath}/categoria-produto/deletar')
 </script>
 </html>

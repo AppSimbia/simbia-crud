@@ -213,11 +213,11 @@
     </table>
 </main>
 </body>
-<script src="/crud/assets/js/script.js">
+<script src="${pageContext.request.contextPath}/assets/js/script.js">
 </script>
 <script>
-    configPopUpAdicionar('/crud/assets/modals/popup-adicionar-vantagemPlano.html', '/crud/vantagem-plano/adicionar');
-    configPopUpEditar('/crud/assets/modals/popup-alterar-vantagemPlano.html', '/crud/vantagem-plano/alterar', 'vantagemplano')
-    configPopUpDeletar('/crud/vantagem-plano/deletar')
+    configPopUpAdicionar('${pageContext.request.contextPath}/assets/modals/popup-adicionar-vantagemPlano.html', '${pageContext.request.contextPath}/vantagem-plano/adicionar');
+    configPopUpEditar('${pageContext.request.contextPath}/assets/modals/popup-alterar-vantagemPlano.html', '${pageContext.request.contextPath}/vantagem-plano/alterar', 'vantagemplano')
+    configPopUpDeletar('${pageContext.request.contextPath}/vantagem-plano/deletar')
 </script>
 </html>

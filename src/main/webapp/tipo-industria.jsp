@@ -197,11 +197,11 @@
     </table>
 </main>
 </body>
-<script src="/crud/assets/js/script.js">
+<script src="${pageContext.request.contextPath}/assets/js/script.js">
 </script>
 <script>
-    configPopUpAdicionar('/crud/assets/modals/popup-adicionar-tipoIndustria.html', '/crud/tipo-industria/adicionar');
-    configPopUpEditar('/crud/assets/modals/popup-alterar-tipoIndustria.html', '/crud/tipo-industria/alterar')
-    configPopUpDeletar('/crud/tipo-industria/deletar')
+    configPopUpAdicionar('${pageContext.request.contextPath}/assets/modals/popup-adicionar-tipoIndustria.html', '${pageContext.request.contextPath}/tipo-industria/adicionar');
+    configPopUpEditar('${pageContext.request.contextPath}/assets/modals/popup-alterar-tipoIndustria.html', '${pageContext.request.contextPath}/tipo-industria/alterar')
+    configPopUpDeletar('${pageContext.request.contextPath}/tipo-industria/deletar')
 </script>
 </html>

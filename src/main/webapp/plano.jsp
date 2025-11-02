@@ -216,11 +216,11 @@
   </table>
 </main>
 </body>
-<script src="/crud/assets/js/script.js">
+<script src="${pageContext.request.contextPath}/assets/js/script.js">
 </script>
 <script>
-  configPopUpAdicionar('/crud/assets/modals/popup-adicionar-plano.html', '/crud/plano/adicionar');
-  configPopUpEditar('/crud/assets/modals/popup-alterar-plano.html', '/crud/plano/alterar', 'plano')
-  configPopUpDeletar('/crud/plano/deletar')
+  configPopUpAdicionar('${pageContext.request.contextPath}/assets/modals/popup-adicionar-plano.html', '${pageContext.request.contextPath}/plano/adicionar');
+  configPopUpEditar('${pageContext.request.contextPath}/assets/modals/popup-alterar-plano.html', '${pageContext.request.contextPath}/plano/alterar', 'plano')
+  configPopUpDeletar('${pageContext.request.contextPath}/plano/deletar')
 </script>
 </html>

@@ -197,11 +197,11 @@
   </table>
 </main>
 </body>
-<script src="/crud/assets/js/script.js">
+<script src="${pageContext.request.contextPath}/assets/js/script.js">
 </script>
 <script>
-  configPopUpAdicionar('/crud/assets/modals/popup-adicionar-permissao.html', '/crud/permissao/adicionar');
-  configPopUpEditar('/crud/assets/modals/popup-alterar-permissao.html', '/crud/permissao/alterar')
-  configPopUpDeletar('/crud/permissao/deletar')
+  configPopUpAdicionar('${pageContext.request.contextPath}/assets/modals/popup-adicionar-permissao.html', '${pageContext.request.contextPath}/permissao/adicionar');
+  configPopUpEditar('${pageContext.request.contextPath}/assets/modals/popup-alterar-permissao.html', '${pageContext.request.contextPath}/permissao/alterar')
+  configPopUpDeletar('${pageContext.request.contextPath}/permissao/deletar')
 </script>
 </html>
