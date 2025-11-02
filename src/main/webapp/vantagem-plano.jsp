@@ -219,5 +219,15 @@
     configPopUpAdicionar('${pageContext.request.contextPath}/assets/modals/popup-adicionar-vantagemPlano.html', '${pageContext.request.contextPath}/vantagem-plano/inserir');
     configPopUpEditar('${pageContext.request.contextPath}/assets/modals/popup-alterar-vantagemPlano.html', '${pageContext.request.contextPath}/vantagem-plano/alterar', 'vantagemplano')
     configPopUpDeletar('${pageContext.request.contextPath}/vantagem-plano/deletar')
+
+    <%
+  Boolean status = (Boolean) session.getAttribute("status");
+  if (status != null) {
+      requisicaoResposta.removerAtributoNaSessao("status");
+%>
+    window.onload = function() {
+        mostrarStatus('<%= status ? "sucesso" : "erro" %>');
+    }
+    <% } %>
 </script>
 </html>

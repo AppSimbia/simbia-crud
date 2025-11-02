@@ -202,5 +202,15 @@
   configPopUpAdicionar('${pageContext.request.contextPath}/assets/modals/popup-adicionar-categoriaProduto.html', '${pageContext.request.contextPath}/categoria-produto/inserir');
   configPopUpEditar('${pageContext.request.contextPath}/assets/modals/popup-alterar-categoriaProduto.html', '${pageContext.request.contextPath}/categoria-produto/alterar')
   configPopUpDeletar('${pageContext.request.contextPath}/categoria-produto/deletar')
+
+  <%
+  Boolean status = (Boolean) session.getAttribute("status");
+  if (status != null) {
+      requisicaoResposta.removerAtributoNaSessao("status");
+%>
+  window.onload = function() {
+    mostrarStatus('<%= status ? "sucesso" : "erro" %>');
+  }
+  <% } %>
 </script>
 </html>

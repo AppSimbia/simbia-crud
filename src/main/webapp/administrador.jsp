@@ -266,6 +266,16 @@
   configPopUpAdicionar('${pageContext.request.contextPath}/assets/modals/popup-adicionar-admin.html', '${pageContext.request.contextPath}/administrador/inserir');
   configPopUpEditar('${pageContext.request.contextPath}/assets/modals/popup-alterar-admin.html', '${pageContext.request.contextPath}/administrador/alterar', 'administrador');
   configPopUpDeletar('${pageContext.request.contextPath}/administrador/deletar');
+
+  <%
+Boolean status = (Boolean) session.getAttribute("status");
+if (status != null) {
+    requisicaoResposta.removerAtributoNaSessao("status");
+%>
+  window.onload = function() {
+    mostrarStatus('<%= status ? "sucesso" : "erro" %>');
+  }
+  <% } %>
 </script>
 
 </html>

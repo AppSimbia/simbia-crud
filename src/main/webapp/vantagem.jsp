@@ -200,5 +200,15 @@
   configPopUpAdicionar('${pageContext.request.contextPath}/assets/modals/popup-adicionar-vantagem.html', '${pageContext.request.contextPath}/vantagem/inserir');
   configPopUpEditar('${pageContext.request.contextPath}/assets/modals/popup-alterar-vantagem.html', '${pageContext.request.contextPath}/vantagem/alterar')
   configPopUpDeletar('${pageContext.request.contextPath}/vantagem/deletar')
+
+  <%
+  Boolean status = (Boolean) session.getAttribute("status");
+  if (status != null) {
+      requisicaoResposta.removerAtributoNaSessao("status");
+%>
+  window.onload = function() {
+    mostrarStatus('<%= status ? "sucesso" : "erro" %>');
+  }
+  <% } %>
 </script>
 </html>

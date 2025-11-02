@@ -2,6 +2,7 @@ package simbia.app.crud.util;
 
 import simbia.app.crud.infra.dao.exception.errosDeOperacao.NaoHouveAlteracaoNoBancoDeDadosException;
 import simbia.app.crud.infra.servlet.exception.operacao.*;
+import simbia.app.crud.infra.servlet.exception.validacaoDeDados.PadraoDescricaoErradoException;
 import simbia.app.crud.infra.servlet.exception.validacaoDeDados.PadraoEmailErradoException;
 import simbia.app.crud.infra.servlet.exception.validacaoDeDados.PadraoNomeErradoException;
 import simbia.app.crud.infra.servlet.exception.validacaoDeDados.PadraoSenhaErradoException;
@@ -20,7 +21,7 @@ public class ValidacoesDeDados {
     // Atributos > Constantes > Expressões Regulares
     private static final String REGEX_EMAIL = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$";
     private static final String REGEX_SENHA = "(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*()_+=\\[\\]{}|;:'\",.<>?/~`\\\\-]).{8,200}";
-    private static final String REGEX_NOME = "^[a-zA-ZáàâãéèêíïóôõöúçñÁÀÂÃÉÈÊÍÏÓÔÕÖÚÇÑ'\\-\\s]+$";
+    private static final String REGEX_NOME = "^[ a-zA-ZáàâãéèêíïóôõöúçñÁÀÂÃÉÈÊÍÏÓÔÕÖÚÇÑ'\\-\\s]+$";
 
     // ============================================
     // MÉTODOS DE VALIDAÇÃO INDIVIDUAL
@@ -52,6 +53,10 @@ public class ValidacoesDeDados {
         if (l < 0) {
             throw new NumberFormatException();
         }
+    }
+
+    public static void validarDescricao(String descricao) throws PadraoDescricaoErradoException{
+        if (descricao.length() > 200) throw new PadraoDescricaoErradoException();
     }
 
     /**

@@ -16,7 +16,7 @@ import simbia.app.crud.util.ValidacoesDeDados;
 
 import java.io.IOException;
 
-@WebServlet("/vantagem-plano/adicionar")
+@WebServlet("/vantagem-plano/inserir")
 public class VantagemPlanoInserirServlet extends InserirServlet<VantagemPlano> {
     @Override
     protected void doPost(HttpServletRequest requisicao, HttpServletResponse resposta) throws ServletException, IOException {
@@ -26,6 +26,7 @@ public class VantagemPlanoInserirServlet extends InserirServlet<VantagemPlano> {
             VantagemPlano registro = recuperarNovoRegistroNaRequisicao(requisicaoResposta);
             inserirRegistroNoBanco(registro);
 
+            requisicaoResposta.adicionarAtributoNaSessaoDaRequisicao("status", true);
             requisicaoResposta.redirecionarPara(enderecoDeRedirecionamento());
 
         } catch (NumberFormatException causa){

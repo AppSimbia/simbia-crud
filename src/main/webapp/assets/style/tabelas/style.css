@@ -871,7 +871,7 @@ table tbody tr td:last-child {
 }
 
 #container-status{
-    position: absolute;
+    position: fixed;
 
     bottom: 0;
     right: 0;
@@ -891,6 +891,8 @@ table tbody tr td:last-child {
 
 #container-status #sucesso{
     background-color: #ffffff;
+    box-shadow: 0 0 10px 0 var(--shadow);
+
 }
 
 #container-status img{
