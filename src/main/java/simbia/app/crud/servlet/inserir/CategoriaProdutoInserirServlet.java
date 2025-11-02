@@ -33,18 +33,25 @@ public class CategoriaProdutoInserirServlet extends InserirServlet<CategoriaProd
             CategoriaProduto registro = recuperarNovoRegistroNaRequisicao(requisicaoResposta);
             inserirRegistroNoBanco(registro);
 
+            requisicaoResposta.adicionarAtributoNaSessaoDaRequisicao("status", true);
             requisicaoResposta.despacharPara(enderecoDeRedirecionamento());
 
         } catch (NaoHouveAlteracaoNoBancoDeDadosException causa) {
-        requisicaoResposta.redirecionarPara(enderecoDeRedirecionamentoCasoErro());
+            requisicaoResposta.adicionarAtributoNaSessaoDaRequisicao("status", false);
+            requisicaoResposta.redirecionarPara(enderecoDeRedirecionamentoCasoErro());
+
         } catch (ViolacaoDeObrigatoriedadeException causa) {
-        requisicaoResposta.redirecionarPara(enderecoDeRedirecionamentoCasoErro());
+            requisicaoResposta.redirecionarPara(enderecoDeRedirecionamentoCasoErro());
+
         } catch (ViolacaoDeUnicidadeException causa) {
-        requisicaoResposta.redirecionarPara(enderecoDeRedirecionamentoCasoErro());
+            requisicaoResposta.redirecionarPara(enderecoDeRedirecionamentoCasoErro());
+
         } catch (FalhaDeConexaoDriverInadequadoException | FalhaDeConexaoGeralException | FalhaDeConexaoBancoDeDadosInexistenteException
                  | FalhaDeConexaoQuedaRepentina | FalhaDeConexaoSenhaIncorretaException causa) {
+            requisicaoResposta.adicionarAtributoNaSessaoDaRequisicao("status", false);
             requisicaoResposta.redirecionarPara(enderecoDeRedirecionamentoCasoErro());
-    }
+
+        }
     }
 
     /**
@@ -53,6 +60,7 @@ public class CategoriaProdutoInserirServlet extends InserirServlet<CategoriaProd
     @Override
     public void inserirRegistroNoBanco(CategoriaProduto entidade) throws DaoException, OperacoesException {
         CategoriaProdutoDao dao = new CategoriaProdutoDao();
+
         dao.inserir(entidade);
     }
 

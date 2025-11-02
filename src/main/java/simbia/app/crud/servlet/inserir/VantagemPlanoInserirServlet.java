@@ -26,6 +26,7 @@ public class VantagemPlanoInserirServlet extends InserirServlet<VantagemPlano> {
             VantagemPlano registro = recuperarNovoRegistroNaRequisicao(requisicaoResposta);
             inserirRegistroNoBanco(registro);
 
+            requisicaoResposta.adicionarAtributoNaSessaoDaRequisicao("status", true);
             requisicaoResposta.redirecionarPara(enderecoDeRedirecionamento());
 
         } catch (NumberFormatException causa){

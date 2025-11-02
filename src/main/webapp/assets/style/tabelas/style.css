@@ -871,7 +871,7 @@ table tbody tr td:last-child {
 }
 
 #container-status{
-    position: absolute;
+    position: fixed;
 
     bottom: 0;
     right: 0;

@@ -33,34 +33,24 @@ public class VantagemInserirServlet extends InserirServlet<Vantagem> {
             Vantagem registro = recuperarNovoRegistroNaRequisicao(requisicaoResposta);
             inserirRegistroNoBanco(registro);
 
+            requisicaoResposta.adicionarAtributoNaSessaoDaRequisicao("status", true);
             requisicaoResposta.redirecionarPara(enderecoDeRedirecionamento());
 
         } catch (NaoHouveAlteracaoNoBancoDeDadosException causa) {
-            requisicaoResposta.adicionarAtributoNaRequisicao("mensagem", "Operação falhou! Tente novamente.");
-            requisicaoResposta.adicionarAtributoNaRequisicao("popupAdicionarAberto", false);
+            requisicaoResposta.adicionarAtributoNaSessaoDaRequisicao("status", false);
 
             requisicaoResposta.redirecionarPara(enderecoDeRedirecionamentoCasoErro());
 
         } catch (ViolacaoDeObrigatoriedadeException causa) {
-            requisicaoResposta.adicionarAtributoNaRequisicao("mensagem", "Campo obrigatório.");
-            requisicaoResposta.adicionarAtributoNaRequisicao("popupAdicionarAberto", true);
-            requisicaoResposta.adicionarAtributoNaRequisicao("dados", dados(requisicaoResposta));
-
             requisicaoResposta.redirecionarPara(enderecoDeRedirecionamentoCasoErro());
 
         } catch (ViolacaoDeUnicidadeException causa) {
-            requisicaoResposta.adicionarAtributoNaRequisicao("mensagem", "Campo já possui registro com esse valor.");
-            requisicaoResposta.adicionarAtributoNaRequisicao("popupAdicionarAberto", true);
-            requisicaoResposta.adicionarAtributoNaRequisicao("dados", dados(requisicaoResposta));
-
             requisicaoResposta.redirecionarPara(enderecoDeRedirecionamentoCasoErro());
 
         } catch (FalhaDeConexaoDriverInadequadoException | FalhaDeConexaoGeralException |
                  FalhaDeConexaoBancoDeDadosInexistenteException | FalhaDeConexaoQuedaRepentina |
                  FalhaDeConexaoSenhaIncorretaException causa) {
-            requisicaoResposta.adicionarAtributoNaRequisicao("mensagem", "Erro de conexão! Tente novamente.");
-            requisicaoResposta.adicionarAtributoNaRequisicao("popupAdicionarAberto", false);
-
+            requisicaoResposta.adicionarAtributoNaSessaoDaRequisicao("status", false);
             requisicaoResposta.redirecionarPara(enderecoDeRedirecionamentoCasoErro());
         }
     }

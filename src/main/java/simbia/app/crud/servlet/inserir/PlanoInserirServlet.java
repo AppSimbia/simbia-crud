@@ -35,20 +35,28 @@ public class PlanoInserirServlet extends InserirServlet<Plano> {
 
             inserirRegistroNoBanco(registro);
 
+            requisicaoResposta.adicionarAtributoNaSessaoDaRequisicao("status", true);
             requisicaoResposta.redirecionarPara(enderecoDeRedirecionamento());
 
         } catch (NumberFormatException causa) {
             requisicaoResposta.redirecionarPara(enderecoDeRedirecionamentoCasoErro());
+
         } catch (NaoHouveAlteracaoNoBancoDeDadosException causa) {
+            requisicaoResposta.adicionarAtributoNaSessaoDaRequisicao("status", false);
             requisicaoResposta.redirecionarPara(enderecoDeRedirecionamentoCasoErro());
+
         } catch (ViolacaoDeObrigatoriedadeException causa) {
             requisicaoResposta.redirecionarPara(enderecoDeRedirecionamentoCasoErro());
+
         } catch (ViolacaoDeUnicidadeException causa) {
             requisicaoResposta.redirecionarPara(enderecoDeRedirecionamentoCasoErro());
+
         } catch (FalhaDeConexaoDriverInadequadoException | FalhaDeConexaoGeralException |
                  FalhaDeConexaoBancoDeDadosInexistenteException | FalhaDeConexaoQuedaRepentina |
                  FalhaDeConexaoSenhaIncorretaException causa) {
+            requisicaoResposta.adicionarAtributoNaSessaoDaRequisicao("status", false);
             requisicaoResposta.redirecionarPara(enderecoDeRedirecionamentoCasoErro());
+
         }
     }
 
