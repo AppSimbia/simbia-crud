@@ -10,7 +10,7 @@ import simbia.app.crud.infra.servlet.abstractclasses.DeletarServlet;
  * Servlet para deletar um Administrador.
  * Mapeada para a URL /administrador/deletar e responde a requisições POST.
  */
-@WebServlet(name = "AdministradorDeletarServlet", urlPatterns = {"/administrador/deletar"})
+@WebServlet("/administrador/deletar")
 public class AdministradorDeletarServlet extends DeletarServlet {
 
     // Instancia o DAO específico para esta servlet
@@ -28,7 +28,7 @@ public class AdministradorDeletarServlet extends DeletarServlet {
 
     @Override
     public String enderecoDeDespache() {
-        return "../administrador.jsp";
+        return "/administrador/atualizar";
     }
 
     @Override

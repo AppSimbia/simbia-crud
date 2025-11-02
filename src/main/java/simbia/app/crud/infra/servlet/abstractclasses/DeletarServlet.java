@@ -23,7 +23,7 @@ public abstract class DeletarServlet extends HttpServlet {
      * Processa a requisição POST: extrai o ID, executa a deleção e redireciona.
      */
     @Override
-    protected void doPost(HttpServletRequest requisicao, HttpServletResponse resposta)
+    protected void doGet(HttpServletRequest requisicao, HttpServletResponse resposta)
             throws ServletException, IOException {
 
         RequisicaoResposta requisicaoResposta = new RequisicaoResposta(requisicao, resposta);
@@ -31,7 +31,7 @@ public abstract class DeletarServlet extends HttpServlet {
 
         try {
             // 1. Recuperar e validar o ID da requisição
-            String idParametro = requisicaoResposta.recuperarParametroDaRequisicao("id");
+            String idParametro = requisicaoResposta.recuperarParametroDaRequisicao("btnDeletar");
 
             long id = Long.parseLong(idParametro);
 

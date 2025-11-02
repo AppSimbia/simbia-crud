@@ -10,7 +10,7 @@ import simbia.app.crud.infra.servlet.abstractclasses.DeletarServlet;
  * Servlet para deletar um tipo de industria.
  * Mapeada para a URL /tipo-industria/deletar e responde a requisições POST.
  */
-@WebServlet(name = "TipoIndustriaDeletarServlet", urlPatterns = {"/tipo-industria/deletar"})
+@WebServlet("/tipo-industria/deletar")
 public class TipoIndustriaDeletarServlet extends DeletarServlet {
 
     // Instancia o DAO específico para esta servlet
@@ -28,7 +28,7 @@ public class TipoIndustriaDeletarServlet extends DeletarServlet {
 
     @Override
     public String enderecoDeDespache() {
-        return "../tipo-industria.jsp";
+        return "/tipo-industria/atualizar";
     }
 
     @Override

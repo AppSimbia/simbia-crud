@@ -10,7 +10,7 @@ import simbia.app.crud.infra.servlet.abstractclasses.DeletarServlet;
  * Servlet para deletar uma permissão.
  * Mapeada para a URL /permissao/deletar e responde a requisições POST.
  */
-@WebServlet(name = "TipoIndustriaDeletarServlet", urlPatterns = {"/permissao/deletar"})
+@WebServlet("/permissao/deletar")
 public class PermissaoDeletarServlet extends DeletarServlet {
 
     // Instancia o DAO específico para esta servlet
@@ -28,7 +28,7 @@ public class PermissaoDeletarServlet extends DeletarServlet {
 
     @Override
     public String enderecoDeDespache() {
-        return "../permissao.jsp";
+        return "/permissao/atualizar";
     }
 
     @Override

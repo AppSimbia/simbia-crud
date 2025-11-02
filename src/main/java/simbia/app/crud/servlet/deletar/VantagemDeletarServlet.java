@@ -10,7 +10,7 @@ import simbia.app.crud.infra.servlet.abstractclasses.DeletarServlet;
  * Servlet para deletar uma vantagem.
  * Mapeada para a URL /vantagem/deletar e responde a requisições POST.
  */
-@WebServlet(name = "VantagemDeletarServlet", urlPatterns = {"/vantagem/deletar"})
+@WebServlet("/vantagem/deletar")
 public class VantagemDeletarServlet extends DeletarServlet {
 
     // Instancia o DAO específico para esta servlet

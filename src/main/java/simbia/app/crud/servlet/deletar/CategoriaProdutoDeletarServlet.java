@@ -10,7 +10,7 @@ import simbia.app.crud.infra.servlet.abstractclasses.DeletarServlet;
  * Servlet para deletar uma categoria de produto.
  * Mapeada para a URL /categoria-produto/deletar e responde a requisições POST.
  */
-@WebServlet(name = "CategoriaProdutoDeletarServlet", urlPatterns = {"/categoria-produto/deletar"})
+@WebServlet("/categoria-produto/deletar")
 public class CategoriaProdutoDeletarServlet extends DeletarServlet {
 
     // Instancia o DAO específico para esta servlet
@@ -27,7 +27,7 @@ public class CategoriaProdutoDeletarServlet extends DeletarServlet {
 
     @Override
     public String enderecoDeDespache() {
-        return "../categoria-produto.jsp";
+        return "/categoria-produto/atualizar";
     }
 
     @Override

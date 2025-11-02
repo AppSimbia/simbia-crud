@@ -10,7 +10,7 @@ import simbia.app.crud.infra.servlet.abstractclasses.DeletarServlet;
  * Servlet para deletar um plano.
  * Mapeada para a URL /plano/deletar e responde a requisições POST.
  */
-@WebServlet(name = "PlanoDeletarServlet", urlPatterns = {"/plano/deletar"})
+@WebServlet("/plano/deletar")
 public class PlanoDeletarServlet extends DeletarServlet {
 
     // Instancia o DAO específico para esta servlet
@@ -28,7 +28,7 @@ public class PlanoDeletarServlet extends DeletarServlet {
 
     @Override
     public String enderecoDeDespache() {
-        return "../plano.jsp";
+        return "/plano/atualizar";
     }
 
     @Override
