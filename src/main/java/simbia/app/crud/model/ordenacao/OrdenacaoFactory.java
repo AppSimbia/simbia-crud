@@ -109,13 +109,13 @@ public class OrdenacaoFactory {
 
             case "porIdPlano":
                 return new OrdenacaoGenerica<>(
-                        plano -> plano.getIdPlano(),
+                        vantagemPlano -> vantagemPlano.getIdPlano(),
                         crescente,
                         "porIdPlano"
                 );
             case "porIdVantagem":
                 return new OrdenacaoGenerica<>(
-                        plano -> plano.getIdVantagem(),
+                        vantagemPlano -> vantagemPlano.getIdVantagem(),
                         crescente,
                         "porIdVantagem"
                 );
@@ -135,9 +135,9 @@ public class OrdenacaoFactory {
 
             case "porNome":
                 return new OrdenacaoGenerica<>(
-                        tipoIndustria -> tipoIndustria.getNomeTipoIndustria(),
+                        tipoIndustria -> tipoIndustria.getNomeTipoIndustria().toLowerCase(),
                         crescente,
-                        "porIdPlano"
+                        "porNome"
                 );
             default:
                 return criarParaTipoIndustria("porId", true);
@@ -154,7 +154,7 @@ public class OrdenacaoFactory {
 
             case "porNome":
                 return new OrdenacaoGenerica<>(
-                        categoriaProduto -> categoriaProduto.getNomeCategoria(),
+                        categoriaProduto -> categoriaProduto.getNomeCategoria().toLowerCase(),
                         crescente,
                         "porNome"
                 );

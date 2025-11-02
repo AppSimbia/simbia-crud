@@ -127,13 +127,13 @@
                     <form action="${pageContext.request.contextPath}/vantagem-plano/ordenar" method="GET">
                         <input type="hidden" name="tipoOrdenacao" value="porId">
                         <input type="hidden" name="ordem" value="<%=
-              (request.getAttribute("criterioOrdenacao") != null && request.getAttribute("criterioOrdenacao").equals("porNome")
+              (request.getAttribute("criterioOrdenacao") != null && request.getAttribute("criterioOrdenacao").equals("porId")
                 && request.getAttribute("ordemAtual") != null && request.getAttribute("ordemAtual").equals("asc"))
               ? "desc" : "asc"
             %>">
                         <button type="submit">
                             <i class="fa-solid <%=
-                (request.getAttribute("criterioOrdenacao") != null && request.getAttribute("criterioOrdenacao").equals("porNome"))
+                (request.getAttribute("criterioOrdenacao") != null && request.getAttribute("criterioOrdenacao").equals("porId"))
                   ? (request.getAttribute("ordemAtual").equals("asc") ? "fa-angle-up icone-ativo" : "fa-angle-down icone-ativo")
                   : "fa-angle-down"
               %>"></i>
@@ -148,13 +148,13 @@
                     <form action="${pageContext.request.contextPath}/vantagem-plano/ordenar" method="GET">
                         <input type="hidden" name="tipoOrdenacao" value="porIdPlano">
                         <input type="hidden" name="ordem" value="<%=
-              (request.getAttribute("criterioOrdenacao") != null && request.getAttribute("criterioOrdenacao").equals("porNome")
+              (request.getAttribute("criterioOrdenacao") != null && request.getAttribute("criterioOrdenacao").equals("porIdPlano")
                 && request.getAttribute("ordemAtual") != null && request.getAttribute("ordemAtual").equals("asc"))
               ? "desc" : "asc"
             %>">
                         <button type="submit">
                             <i class="fa-solid <%=
-                (request.getAttribute("criterioOrdenacao") != null && request.getAttribute("criterioOrdenacao").equals("porNome"))
+                (request.getAttribute("criterioOrdenacao") != null && request.getAttribute("criterioOrdenacao").equals("porIdPlano"))
                   ? (request.getAttribute("ordemAtual").equals("asc") ? "fa-angle-up icone-ativo" : "fa-angle-down icone-ativo")
                   : "fa-angle-down"
               %>"></i>
@@ -169,13 +169,13 @@
                     <form action="${pageContext.request.contextPath}/vantagem-plano/ordenar" method="GET">
                         <input type="hidden" name="tipoOrdenacao" value="porIdVantagem">
                         <input type="hidden" name="ordem" value="<%=
-              (request.getAttribute("criterioOrdenacao") != null && request.getAttribute("criterioOrdenacao").equals("porNome")
+              (request.getAttribute("criterioOrdenacao") != null && request.getAttribute("criterioOrdenacao").equals("porIdVantagem")
                 && request.getAttribute("ordemAtual") != null && request.getAttribute("ordemAtual").equals("asc"))
               ? "desc" : "asc"
             %>">
                         <button type="submit">
                             <i class="fa-solid <%=
-                (request.getAttribute("criterioOrdenacao") != null && request.getAttribute("criterioOrdenacao").equals("porNome"))
+                (request.getAttribute("criterioOrdenacao") != null && request.getAttribute("criterioOrdenacao").equals("porIdVantagem"))
                   ? (request.getAttribute("ordemAtual").equals("asc") ? "fa-angle-up icone-ativo" : "fa-angle-down icone-ativo")
                   : "fa-angle-down"
               %>"></i>

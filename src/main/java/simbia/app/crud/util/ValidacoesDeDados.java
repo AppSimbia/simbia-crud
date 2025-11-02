@@ -105,7 +105,9 @@ public class ValidacoesDeDados {
                 // Permissão
                 "porNomePermissao", "porDescricao",
                 // Plano/Vantagem
-                "porValor", "porTitulo"
+                "porValor", "porTitulo",
+                // VantagemPlano
+                "porIdPlano", "porIdVantagem"
         );
 
         if (!tiposValidos.contains(tipoOrdenacao)) {
