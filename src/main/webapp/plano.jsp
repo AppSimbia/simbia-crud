@@ -218,9 +218,47 @@
 </body>
 <script src="${pageContext.request.contextPath}/assets/js/script.js">
 </script>
+<script src="${pageContext.request.contextPath}/assets/js/script.js"></script>
+<script src="${pageContext.request.contextPath}/assets/js/validacao-popup.js"></script>
+
 <script>
+  <%
+  String erros = (String) session.getAttribute("erros");
+  String dados = (String) session.getAttribute("dados");
+  String popupAberto = (String) session.getAttribute("popupAberto");
+
+  if (popupAberto != null && popupAberto.equals("true")) {
+      session.removeAttribute("popupAberto");
+      session.removeAttribute("erros");
+      session.removeAttribute("dados");
+  %>
+  window.addEventListener('DOMContentLoaded', function() {
+    chamarPopUpAdicionar(
+            '${pageContext.request.contextPath}/assets/modals/popup-adicionar-plano.html',
+            '${pageContext.request.contextPath}/plano/inserir'
+    ).then(() => {
+      <%if (erros != null) {%>
+      setTimeout(() => exibirErrosValidacao('<%= erros.replace("'", "\\'") %>'), 150);
+      <%}%>
+      <%if (dados != null) {%>
+      setTimeout(() => preencherCamposFormulario('<%= dados %>'), 150);
+      <%}%>
+    });
+  });
+  <%}%>
+
   configPopUpAdicionar('${pageContext.request.contextPath}/assets/modals/popup-adicionar-plano.html', '${pageContext.request.contextPath}/plano/inserir');
-  configPopUpEditar('${pageContext.request.contextPath}/assets/modals/popup-alterar-plano.html', '${pageContext.request.contextPath}/plano/alterar', 'plano')
-  configPopUpDeletar('${pageContext.request.contextPath}/plano/deletar')
+  configPopUpEditar('${pageContext.request.contextPath}/assets/modals/popup-alterar-plano.html', '${pageContext.request.contextPath}/plano/alterar', 'plano');
+  configPopUpDeletar('${pageContext.request.contextPath}/plano/deletar');
+
+  <%
+  Boolean status = (Boolean) session.getAttribute("status");
+  if (status != null) {
+      session.removeAttribute("status");
+  %>
+  window.onload = function() {
+    mostrarStatus('<%= status ? "sucesso" : "erro" %>');
+  }
+  <% } %>
 </script>
 </html>
