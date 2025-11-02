@@ -239,7 +239,7 @@
   <%
   if (requisicaoResposta.existeSessaoDaRequisicao("status")){
   %>
-  chamarErro("")
+
   <%
   }
   %>

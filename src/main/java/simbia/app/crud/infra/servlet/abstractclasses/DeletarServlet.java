@@ -38,17 +38,18 @@ public abstract class DeletarServlet extends HttpServlet {
             // 2. Chamar a implementação do DAO para deletar
             chamarDaoParaDeletar(id);
 
+            requisicaoResposta.adicionarAtributoNaSessaoDaRequisicao("status", true);
+
             // 3. Sucesso: Redireciona para a servlet de registros
             requisicaoResposta.redirecionarPara(enderecoDeDespache());
 
         } catch (NaoHouveAlteracaoNoBancoDeDadosException causa) {
-            requisicaoResposta.adicionarAtributoNaRequisicao("erro", causa);
-            requisicaoResposta.despacharPara(paginaDeErro);
+            requisicaoResposta.adicionarAtributoNaSessaoDaRequisicao("status", false);
+            requisicaoResposta.despacharPara(enderecoDeDespacheCasoErro());
 
         } catch (DaoException causa){
-            causa.printStackTrace();
-            requisicaoResposta.adicionarAtributoNaRequisicao("erro", causa);
-            requisicaoResposta.despacharPara(paginaDeErro);
+            requisicaoResposta.adicionarAtributoNaSessaoDaRequisicao("status", false);
+            requisicaoResposta.despacharPara(enderecoDeDespacheCasoErro());
 
         }
     }

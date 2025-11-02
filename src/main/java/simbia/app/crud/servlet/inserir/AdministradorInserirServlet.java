@@ -1,6 +1,7 @@
 package simbia.app.crud.servlet.inserir;
 
 import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import simbia.app.crud.dao.AdministradorDao;
@@ -22,6 +23,7 @@ import java.io.IOException;
 /**
  * Servlet para inserir novos administradores no sistema.
  */
+@WebServlet()
 public class AdministradorInserirServlet extends InserirServlet<Administrador> {
 
     /**
