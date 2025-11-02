@@ -37,7 +37,6 @@ public class AdministradorInserirServlet extends InserirServlet<Administrador> {
         try{
             Administrador registro = recuperarNovoRegistroNaRequisicao(requisicaoResposta);
             inserirRegistroNoBanco(registro);
-            requisicaoResposta.adicionarAtributoNaSessaoDaRequisicao("status", "Operação concluída com sucesso!");
 
             requisicaoResposta.redirecionarPara(enderecoDeRedirecionamento());
 
