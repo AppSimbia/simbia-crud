@@ -4,93 +4,95 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import simbia.app.crud.dao.PermissaoDao;
+import simbia.app.crud.dao.VantagemPlanoDao;
 import simbia.app.crud.infra.dao.abstractclasses.DaoException;
 import simbia.app.crud.infra.dao.exception.errosDoBancoDeDados.ViolacaoDeUnicidadeException;
 import simbia.app.crud.infra.servlet.abstractclasses.EditarServlet;
 import simbia.app.crud.infra.servlet.abstractclasses.OperacoesException;
-import simbia.app.crud.infra.servlet.exception.validacaoDeDados.PadraoEmailErradoException;
-import simbia.app.crud.infra.servlet.exception.validacaoDeDados.PadraoNomeErradoException;
-import simbia.app.crud.model.dao.Permissao;
+import simbia.app.crud.model.dao.VantagemPlano;
 import simbia.app.crud.model.servlet.RequisicaoResposta;
 import simbia.app.crud.util.ValidacoesDeDados;
 
 import java.io.IOException;
 
-@WebServlet("/permissao/alterar")
-public class PermissaoEditarServlet extends EditarServlet<Permissao> {
+@WebServlet("/vantagem-plano/alterar")
+public class VantagemPlanoEditarServlet extends EditarServlet<VantagemPlano> {
     @Override
     protected void doPost(HttpServletRequest requisicao, HttpServletResponse resposta)
             throws ServletException, IOException {
+
         RequisicaoResposta requisicaoResposta = new RequisicaoResposta(requisicao, resposta);
 
         try {
             // Recupera dados do formulário
-            String nome = requisicaoResposta.recuperarParametroDaRequisicao("nome");
-            String descricao = requisicaoResposta.recuperarParametroDaRequisicao("descricao");
+            String idPlano = requisicaoResposta.recuperarParametroDaRequisicao("idPlano");
+            String idVantagem = requisicaoResposta.recuperarParametroDaRequisicao("idVantagem");
 
+            // VALIDAÇÃO UNIFICADA
             ValidacoesDeDados.ResultadoValidacao resultado =
-                    ValidacoesDeDados.validarNomeDescricao(nome, descricao, "Permissao");
+                    ValidacoesDeDados.validarVantagemPlano(idPlano, idVantagem);
 
             // Se houver erros, retorna para o popup
             if (resultado.temErros()) {
                 String errosJSON = resultado.toJSON();
                 requisicaoResposta.adicionarAtributoNaSessaoDaRequisicao("erros", errosJSON);
                 requisicaoResposta.adicionarAtributoNaSessaoDaRequisicao("dados",
-                        nome + ";" + descricao);
+                        idPlano + ";" + idVantagem);
                 requisicaoResposta.adicionarAtributoNaSessaoDaRequisicao("popupAberto", "true");
-                requisicaoResposta.redirecionarPara("/permissao.jsp");
+                requisicaoResposta.redirecionarPara("/vantagem-plano.jsp");
                 return;
             }
 
             // Se passou nas validações, insere no banco
-            Permissao permissao = new Permissao(nome, descricao);
-            PermissaoDao dao = new PermissaoDao();
-            dao.inserir(permissao);
+            VantagemPlano registro = new VantagemPlano(
+                    Long.parseLong(idVantagem),
+                    Long.parseLong(idPlano)
+            );
+            VantagemPlanoDao dao = new VantagemPlanoDao();
+            dao.inserir(registro);
 
             requisicaoResposta.adicionarAtributoNaSessaoDaRequisicao("status", true);
-            requisicaoResposta.redirecionarPara("/permissao/atualizar");
+            requisicaoResposta.redirecionarPara("/vantagem-plano/atualizar");
 
         } catch (ViolacaoDeUnicidadeException causa) {
-            // Trata erro de nome duplicado
-            String errosJSON = "{\"nome\":\"Esta permissão já está cadastrada\"}";
+            // Trata erro de chave duplicada
+            String errosJSON = "{\"combinação\":\"Esta combinação já existe\"}";
             requisicaoResposta.adicionarAtributoNaSessaoDaRequisicao("erros", errosJSON);
             requisicaoResposta.adicionarAtributoNaSessaoDaRequisicao("popupAberto", "true");
-            requisicaoResposta.redirecionarPara("/permissao.jsp");
+            requisicaoResposta.redirecionarPara("/vantagem-plano.jsp");
 
         } catch (DaoException causa) {
             causa.printStackTrace();
             requisicaoResposta.adicionarAtributoNaSessaoDaRequisicao("status", false);
-            requisicaoResposta.redirecionarPara("/permissao.jsp");
+            requisicaoResposta.redirecionarPara("/vantagem-plano.jsp");
         }
     }
 
     @Override
-    public void editarRegistroNoBanco(Permissao entidade) throws DaoException, OperacoesException {
-        PermissaoDao dao = new PermissaoDao();
+    public void editarRegistroNoBanco(VantagemPlano entidade) throws DaoException, OperacoesException {
+        VantagemPlanoDao dao = new VantagemPlanoDao();
 
         dao.atualizar(entidade);
     }
 
     @Override
-    public Permissao recuperarRegistroEmEdicaoNaRequisicao(RequisicaoResposta requisicaoResposta)
-            throws PadraoNomeErradoException, PadraoEmailErradoException {
-        String nome = requisicaoResposta.recuperarParametroDaRequisicao("nome");
-        String descricao = requisicaoResposta.recuperarParametroDaRequisicao("descricao");
+    public VantagemPlano recuperarRegistroEmEdicaoNaRequisicao(RequisicaoResposta requisicaoResposta) throws NumberFormatException{
+        String idPlano = requisicaoResposta.recuperarParametroDaRequisicao("id-plano");
+        String idVantagem = requisicaoResposta.recuperarParametroDaRequisicao("id-vantagem");
 
-        ValidacoesDeDados.validarDescricao("descricao");
-        ValidacoesDeDados.validarNome("nome");
+        ValidacoesDeDados.validarId(idPlano);
+        ValidacoesDeDados.validarId(idVantagem);
 
-        return new Permissao(nome, descricao);
+        return new VantagemPlano(Long.parseLong(idPlano), Long.parseLong(idVantagem));
     }
 
     @Override
     public String enderecoDeRedirecionamento() {
-        return "/permissao/atualizar";
+        return "/vantagem-plano/atualizar";
     }
 
     @Override
     public String enderecoDeRedirecionamentoCasoErro() {
-        return "/permissao.jsp";
+        return "/vantagem-plano.jsp";
     }
 }

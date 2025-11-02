@@ -200,7 +200,7 @@
 <script>
   // Configuração dos popups
   configPopUpAdicionar('${pageContext.request.contextPath}/assets/modals/popup-adicionar-vantagem.html', '${pageContext.request.contextPath}/vantagem/inserir');
-  configPopUpEditar('${pageContext.request.contextPath}/assets/modals/popup-alterar-vantagem.html', '${pageContext.request.contextPath}/vantagem/alterar', 'vantagem');
+  configPopUpEditar('${pageContext.request.contextPath}/assets/modals/popup-alterar-vantagem.html', '${pageContext.request.contextPath}/vantagem/alterar');
   configPopUpDeletar('${pageContext.request.contextPath}/vantagem/deletar');
 
   // Pop-up com erros e dados preenchidos
