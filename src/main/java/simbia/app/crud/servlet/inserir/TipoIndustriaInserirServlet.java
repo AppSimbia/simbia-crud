@@ -1,6 +1,7 @@
 package simbia.app.crud.servlet.inserir;
 
 import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import simbia.app.crud.dao.TipoIndustriaDao;
@@ -18,6 +19,7 @@ import simbia.app.crud.util.ValidacoesDeDados;
 
 import java.io.IOException;
 
+@WebServlet("/tipo-industria/inserir")
 public class TipoIndustriaInserirServlet extends InserirServlet<TipoIndustria> {
 
     @Override

@@ -49,6 +49,8 @@ public class PermissaoInserirServlet extends InserirServlet<Permissao> {
             requisicaoResposta.adicionarAtributoNaSessaoDaRequisicao("status", false);
             requisicaoResposta.redirecionarPara(enderecoDeRedirecionamentoCasoErro());
 
+        } catch (ViolacaoDeObrigatoriedadeException causa){
+            requisicaoResposta.redirecionarPara(enderecoDeRedirecionamentoCasoErro());
         }
     }
 
