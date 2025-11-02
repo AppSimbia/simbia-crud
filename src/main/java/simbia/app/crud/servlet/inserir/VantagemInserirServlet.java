@@ -28,35 +28,49 @@ import java.io.IOException;
 public class VantagemInserirServlet extends InserirServlet<Vantagem> {
 
     @Override
-    protected void doPost(HttpServletRequest requisicao, HttpServletResponse resposta) throws ServletException, IOException {
+    protected void doPost(HttpServletRequest requisicao, HttpServletResponse resposta)
+            throws ServletException, IOException {
         RequisicaoResposta requisicaoResposta = new RequisicaoResposta(requisicao, resposta);
 
-        try{
-            Vantagem registro = recuperarNovoRegistroNaRequisicao(requisicaoResposta);
-            inserirRegistroNoBanco(registro);
+        try {
+            // Recupera dados do formulário
+            String nome = requisicaoResposta.recuperarParametroDaRequisicao("nome");
+            String descricao = requisicaoResposta.recuperarParametroDaRequisicao("descricao");
+
+            // VALIDAÇÃO UNIFICADA - UMA LINHA!
+            ValidacoesDeDados.ResultadoValidacao resultado =
+                    ValidacoesDeDados.validarNomeDescricao(nome, descricao, "vantagem");
+
+            // Se houver erros, retorna para o popup
+            if (resultado.temErros()) {
+                String errosJSON = resultado.toJSON();
+                requisicaoResposta.adicionarAtributoNaSessaoDaRequisicao("erros", errosJSON);
+                requisicaoResposta.adicionarAtributoNaSessaoDaRequisicao("dados", nome + ";" + descricao);
+                requisicaoResposta.adicionarAtributoNaSessaoDaRequisicao("popupAberto", "true");
+                requisicaoResposta.redirecionarPara("/vantagem.jsp");
+                return;
+            }
+
+            // Se passou nas validações, insere no banco
+            Vantagem vantagem = new Vantagem(nome, descricao);
+            VantagemDao dao = new VantagemDao();
+            dao.inserir(vantagem);
+
             requisicaoResposta.adicionarAtributoNaSessaoDaRequisicao("status", true);
+            requisicaoResposta.redirecionarPara("/vantagem/atualizar");
 
-            requisicaoResposta.despacharPara(enderecoDeRedirecionamento());
+        } catch (ViolacaoDeUnicidadeException causa) {
+            // Trata erro de nome duplicado
+            String errosJSON = "{\"nome\":\"Esta vantagem já está cadastrada\"}";
+            requisicaoResposta.adicionarAtributoNaSessaoDaRequisicao("erros", errosJSON);
+            requisicaoResposta.adicionarAtributoNaSessaoDaRequisicao("popupAberto", "true");
+            requisicaoResposta.redirecionarPara("/vantagem.jsp");
 
-        } catch (NaoHouveAlteracaoNoBancoDeDadosException causa) {
+        } catch (DaoException causa) {
+            // Outros erros de banco
+            causa.printStackTrace();
             requisicaoResposta.adicionarAtributoNaSessaoDaRequisicao("status", false);
-            requisicaoResposta.redirecionarPara(enderecoDeRedirecionamentoCasoErro());
-
-        } catch (PadraoDescricaoErradoException causa){
-            requisicaoResposta.redirecionarPara(enderecoDeRedirecionamentoCasoErro());
-
-        } catch (PadraoNomeErradoException causa){
-            requisicaoResposta.redirecionarPara(enderecoDeRedirecionamentoCasoErro());
-
-        } catch(ViolacaoDeUnicidadeException causa){
-            requisicaoResposta.redirecionarPara(enderecoDeRedirecionamentoCasoErro());
-
-        } catch(FalhaDeConexaoDriverInadequadoException | FalhaDeConexaoGeralException |
-                 FalhaDeConexaoBancoDeDadosInexistenteException | FalhaDeConexaoQuedaRepentina |
-                 FalhaDeConexaoSenhaIncorretaException causa){
-            requisicaoResposta.adicionarAtributoNaSessaoDaRequisicao("status", false);
-            requisicaoResposta.redirecionarPara(enderecoDeRedirecionamentoCasoErro());
-
+            requisicaoResposta.redirecionarPara("/vantagem.jsp");
         }
     }
 

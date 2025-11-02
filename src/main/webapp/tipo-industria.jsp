@@ -197,21 +197,51 @@
     </table>
 </main>
 </body>
-<script src="${pageContext.request.contextPath}/assets/js/script.js">
-</script>
+<script src="${pageContext.request.contextPath}/assets/js/script.js"></script>
+<script src="${pageContext.request.contextPath}/assets/js/validacao-popup.js"></script>
+
 <script>
+    <%
+    String erros = (String) requisicaoResposta.recuperarAtributoDaSessao("erros");
+    String dados = (String) requisicaoResposta.recuperarAtributoDaSessao("dados");
+    String popupAberto = (String) requisicaoResposta.recuperarAtributoDaSessao("popupAberto");
+
+    if (popupAberto != null && popupAberto.equals("true")) {
+        requisicaoResposta.removerAtributoNaSessao("popupAberto");
+        requisicaoResposta.removerAtributoNaSessao("erros");
+        requisicaoResposta.removerAtributoNaSessao("dados");
+    %>
+    window.addEventListener('DOMContentLoaded', function() {
+        chamarPopUpAdicionar(
+            '${pageContext.request.contextPath}/assets/modals/popup-adicionar-tipoIndustria.html',
+            '${pageContext.request.contextPath}/tipo-industria/inserir'
+        ).then(() => {
+            <%if (erros != null) {%>
+            setTimeout(() => exibirErrosValidacao('<%= erros.replace("'", "\\'") %>'), 150);
+            <%}%>
+
+            <%if (dados != null) {%>
+            setTimeout(() => preencherCamposFormulario('<%= dados %>'), 150);
+            <%}%>
+        });
+    });
+    <%
+    }
+    %>
+
     configPopUpAdicionar('${pageContext.request.contextPath}/assets/modals/popup-adicionar-tipoIndustria.html', '${pageContext.request.contextPath}/tipo-industria/inserir');
-    configPopUpEditar('${pageContext.request.contextPath}/assets/modals/popup-alterar-tipoIndustria.html', '${pageContext.request.contextPath}/tipo-industria/alterar')
-    configPopUpDeletar('${pageContext.request.contextPath}/tipo-industria/deletar')
+    configPopUpEditar('${pageContext.request.contextPath}/assets/modals/popup-alterar-tipoIndustria.html', '${pageContext.request.contextPath}/tipo-industria/alterar', 'tipoindustria');
+    configPopUpDeletar('${pageContext.request.contextPath}/tipo-industria/deletar');
 
     <%
-  Boolean status = (Boolean) session.getAttribute("status");
-  if (status != null) {
-      requisicaoResposta.removerAtributoNaSessao("status");
-%>
+    Boolean status = (Boolean) session.getAttribute("status");
+    if (status != null) {
+        requisicaoResposta.removerAtributoNaSessao("status");
+    %>
     window.onload = function() {
         mostrarStatus('<%= status ? "sucesso" : "erro" %>');
     }
     <% } %>
 </script>
+
 </html>

@@ -197,21 +197,50 @@
   </table>
 </main>
 </body>
-<script src="${pageContext.request.contextPath}/assets/js/script.js">
-</script>
+<script src="${pageContext.request.contextPath}/assets/js/script.js"></script>
+<script src="${pageContext.request.contextPath}/assets/js/validacao-popup.js"></script>
+
 <script>
+  <%
+    String erros = (String) requisicaoResposta.recuperarAtributoDaSessao("erros");
+    String dados = (String) requisicaoResposta.recuperarAtributoDaSessao("dados");
+    String popupAberto = (String) requisicaoResposta.recuperarAtributoDaSessao("popupAberto");
+
+    if (popupAberto != null && popupAberto.equals("true")) {
+        requisicaoResposta.removerAtributoNaSessao("popupAberto");
+        requisicaoResposta.removerAtributoNaSessao("erros");
+        requisicaoResposta.removerAtributoNaSessao("dados");
+  %>
+  window.addEventListener('DOMContentLoaded', function() {
+    chamarPopUpAdicionar(
+            '${pageContext.request.contextPath}/assets/modals/popup-adicionar-permissao.html',
+            '${pageContext.request.contextPath}/permissao/inserir'
+    ).then(() => {
+      <% if (erros != null) { %>
+      setTimeout(() => exibirErrosValidacao('<%= erros.replace("'", "\\'") %>'), 150);
+      <% } %>
+      <% if (dados != null) { %>
+      setTimeout(() => preencherCamposFormulario('<%= dados %>'), 150);
+      <% } %>
+    });
+  });
+  <%
+    }
+  %>
+
   configPopUpAdicionar('${pageContext.request.contextPath}/assets/modals/popup-adicionar-permissao.html', '${pageContext.request.contextPath}/permissao/inserir');
-  configPopUpEditar('${pageContext.request.contextPath}/assets/modals/popup-alterar-permissao.html', '${pageContext.request.contextPath}/permissao/alterar')
-  configPopUpDeletar('${pageContext.request.contextPath}/permissao/deletar')
+  configPopUpEditar('${pageContext.request.contextPath}/assets/modals/popup-alterar-permissao.html', '${pageContext.request.contextPath}/permissao/alterar', 'permissao');
+  configPopUpDeletar('${pageContext.request.contextPath}/permissao/deletar');
 
   <%
   Boolean status = (Boolean) session.getAttribute("status");
   if (status != null) {
       requisicaoResposta.removerAtributoNaSessao("status");
-%>
+  %>
   window.onload = function() {
     mostrarStatus('<%= status ? "sucesso" : "erro" %>');
   }
   <% } %>
 </script>
+
 </html>

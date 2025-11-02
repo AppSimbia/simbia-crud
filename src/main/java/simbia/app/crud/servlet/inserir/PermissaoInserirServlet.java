@@ -23,34 +23,48 @@ import java.io.IOException;
 public class PermissaoInserirServlet extends InserirServlet<Permissao> {
 
     @Override
-    protected void doPost(HttpServletRequest requisicao, HttpServletResponse resposta) throws ServletException, IOException {
+    protected void doPost(HttpServletRequest requisicao, HttpServletResponse resposta)
+            throws ServletException, IOException {
         RequisicaoResposta requisicaoResposta = new RequisicaoResposta(requisicao, resposta);
 
-        try{
-            Permissao registro = recuperarNovoRegistroNaRequisicao(requisicaoResposta);
-            inserirRegistroNoBanco(registro);
+        try {
+            // Recupera dados do formulário
+            String nome = requisicaoResposta.recuperarParametroDaRequisicao("nome");
+            String descricao = requisicaoResposta.recuperarParametroDaRequisicao("descricao");
+
+            ValidacoesDeDados.ResultadoValidacao resultado =
+                    ValidacoesDeDados.validarNomeDescricao(nome, descricao, "Permissao");
+
+            // Se houver erros, retorna para o popup
+            if (resultado.temErros()) {
+                String errosJSON = resultado.toJSON();
+                requisicaoResposta.adicionarAtributoNaSessaoDaRequisicao("erros", errosJSON);
+                requisicaoResposta.adicionarAtributoNaSessaoDaRequisicao("dados",
+                        nome + ";" + descricao);
+                requisicaoResposta.adicionarAtributoNaSessaoDaRequisicao("popupAberto", "true");
+                requisicaoResposta.redirecionarPara("/permissao.jsp");
+                return;
+            }
+
+            // Se passou nas validações, insere no banco
+            Permissao permissao = new Permissao(nome, descricao);
+            PermissaoDao dao = new PermissaoDao();
+            dao.inserir(permissao);
+
             requisicaoResposta.adicionarAtributoNaSessaoDaRequisicao("status", true);
+            requisicaoResposta.redirecionarPara("/permissao/atualizar");
 
-            requisicaoResposta.despacharPara(enderecoDeRedirecionamento());
+        } catch (ViolacaoDeUnicidadeException causa) {
+            // Trata erro de nome duplicado
+            String errosJSON = "{\"nome\":\"Esta permissão já está cadastrada\"}";
+            requisicaoResposta.adicionarAtributoNaSessaoDaRequisicao("erros", errosJSON);
+            requisicaoResposta.adicionarAtributoNaSessaoDaRequisicao("popupAberto", "true");
+            requisicaoResposta.redirecionarPara("/permissao.jsp");
 
-        } catch (NaoHouveAlteracaoNoBancoDeDadosException causa) {
+        } catch (DaoException causa) {
+            causa.printStackTrace();
             requisicaoResposta.adicionarAtributoNaSessaoDaRequisicao("status", false);
-            requisicaoResposta.redirecionarPara(enderecoDeRedirecionamentoCasoErro());
-
-        } catch (PadraoDescricaoErradoException causa){
-            requisicaoResposta.redirecionarPara(enderecoDeRedirecionamentoCasoErro());
-
-        } catch (PadraoNomeErradoException causa){
-            requisicaoResposta.redirecionarPara(enderecoDeRedirecionamentoCasoErro());
-
-        } catch (FalhaDeConexaoDriverInadequadoException | FalhaDeConexaoGeralException |
-                 FalhaDeConexaoBancoDeDadosInexistenteException | FalhaDeConexaoQuedaRepentina |
-                 FalhaDeConexaoSenhaIncorretaException causa){
-            requisicaoResposta.adicionarAtributoNaSessaoDaRequisicao("status", false);
-            requisicaoResposta.redirecionarPara(enderecoDeRedirecionamentoCasoErro());
-
-        } catch (ViolacaoDeObrigatoriedadeException causa){
-            requisicaoResposta.redirecionarPara(enderecoDeRedirecionamentoCasoErro());
+            requisicaoResposta.redirecionarPara("/permissao.jsp");
         }
     }
 

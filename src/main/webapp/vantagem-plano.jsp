@@ -213,18 +213,23 @@
     </table>
 </main>
 </body>
-<script src="${pageContext.request.contextPath}/assets/js/script.js">
-</script>
+<script src="${pageContext.request.contextPath}/assets/js/script.js"></script>
 <script>
-    configPopUpAdicionar('${pageContext.request.contextPath}/assets/modals/popup-adicionar-vantagemPlano.html', '${pageContext.request.contextPath}/vantagem-plano/inserir');
-    configPopUpEditar('${pageContext.request.contextPath}/assets/modals/popup-alterar-vantagemPlano.html', '${pageContext.request.contextPath}/vantagem-plano/alterar', 'vantagemplano')
-    configPopUpDeletar('${pageContext.request.contextPath}/vantagem-plano/deletar')
+    configPopUpAdicionar(
+        '${pageContext.request.contextPath}/assets/modals/popup-adicionar-vantagemPlano.html',
+        '${pageContext.request.contextPath}/vantagem-plano/inserir'
+    );
+    configPopUpEditar(
+        '${pageContext.request.contextPath}/assets/modals/popup-alterar-vantagemPlano.html',
+        '${pageContext.request.contextPath}/vantagem-plano/alterar',
+        'vantagemplano'
+    );
+    configPopUpDeletar('${pageContext.request.contextPath}/vantagem-plano/deletar');
 
-    <%
-  Boolean status = (Boolean) session.getAttribute("status");
-  if (status != null) {
-      requisicaoResposta.removerAtributoNaSessao("status");
-%>
+    <% Boolean status = (Boolean) session.getAttribute("status");
+       if (status != null) {
+           requisicaoResposta.removerAtributoNaSessao("status");
+    %>
     window.onload = function() {
         mostrarStatus('<%= status ? "sucesso" : "erro" %>');
     }

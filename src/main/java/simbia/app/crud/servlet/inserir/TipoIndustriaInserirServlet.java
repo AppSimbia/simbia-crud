@@ -23,32 +23,50 @@ import java.io.IOException;
 public class TipoIndustriaInserirServlet extends InserirServlet<TipoIndustria> {
 
     @Override
-    protected void doPost(HttpServletRequest requisicao, HttpServletResponse resposta) throws ServletException, IOException {
+    protected void doPost(HttpServletRequest requisicao, HttpServletResponse resposta)
+            throws ServletException, IOException {
+
         RequisicaoResposta requisicaoResposta = new RequisicaoResposta(requisicao, resposta);
 
-        try{
-            TipoIndustria registro = recuperarNovoRegistroNaRequisicao(requisicaoResposta);
-            inserirRegistroNoBanco(registro);
+        try {
+            // Recupera dados do formulário
+            String nome = requisicaoResposta.recuperarParametroDaRequisicao("nome");
+            String descricao = requisicaoResposta.recuperarParametroDaRequisicao("descricao");
+
+            // VALIDAÇÃO UNIFICADA - UMA LINHA!
+            ValidacoesDeDados.ResultadoValidacao resultado =
+                    ValidacoesDeDados.validarNomeDescricao(nome, descricao, "TipoIndustria");
+
+            // Se houver erros, retorna para o popup
+            if (resultado.temErros()) {
+                String errosJSON = resultado.toJSON();
+                requisicaoResposta.adicionarAtributoNaSessaoDaRequisicao("erros", errosJSON);
+                requisicaoResposta.adicionarAtributoNaSessaoDaRequisicao("dados",
+                        nome + ";" + descricao);
+                requisicaoResposta.adicionarAtributoNaSessaoDaRequisicao("popupAberto", "true");
+                requisicaoResposta.redirecionarPara("/tipo-industria.jsp");
+                return;
+            }
+
+            // Se passou nas validações, cria objeto e insere no banco
+            TipoIndustria tipoIndustria = new TipoIndustria(nome, descricao);
+            TipoIndustriaDao dao = new TipoIndustriaDao();
+            dao.inserir(tipoIndustria);
+
             requisicaoResposta.adicionarAtributoNaSessaoDaRequisicao("status", true);
+            requisicaoResposta.redirecionarPara("/tipo-industria/atualizar");
 
-            requisicaoResposta.despacharPara(enderecoDeRedirecionamento());
+        } catch (ViolacaoDeUnicidadeException causa) {
+            // Trata erro de nome duplicado
+            String errosJSON = "{\"nome\":\"Este nome já está cadastrado\"}";
+            requisicaoResposta.adicionarAtributoNaSessaoDaRequisicao("erros", errosJSON);
+            requisicaoResposta.adicionarAtributoNaSessaoDaRequisicao("popupAberto", "true");
+            requisicaoResposta.redirecionarPara("/tipo-industria.jsp");
 
-        } catch (NaoHouveAlteracaoNoBancoDeDadosException causa) {
+        } catch (DaoException causa) {
+            causa.printStackTrace();
             requisicaoResposta.adicionarAtributoNaSessaoDaRequisicao("status", false);
-            requisicaoResposta.redirecionarPara(enderecoDeRedirecionamentoCasoErro());
-
-        } catch (PadraoDescricaoErradoException causa){
-            requisicaoResposta.redirecionarPara(enderecoDeRedirecionamentoCasoErro());
-
-        } catch (PadraoNomeErradoException causa){
-            requisicaoResposta.redirecionarPara(enderecoDeRedirecionamentoCasoErro());
-
-        } catch (FalhaDeConexaoDriverInadequadoException | FalhaDeConexaoGeralException |
-                 FalhaDeConexaoBancoDeDadosInexistenteException | FalhaDeConexaoQuedaRepentina |
-                 FalhaDeConexaoSenhaIncorretaException causa){
-            requisicaoResposta.adicionarAtributoNaSessaoDaRequisicao("status", false);
-            requisicaoResposta.redirecionarPara(enderecoDeRedirecionamentoCasoErro());
-
+            requisicaoResposta.redirecionarPara("/tipo-industria.jsp");
         }
     }
 

@@ -194,18 +194,47 @@
   </table>
 </main>
 </body>
-<script src="${pageContext.request.contextPath}/assets/js/script.js">
-</script>
-<script>
-  configPopUpAdicionar('${pageContext.request.contextPath}/assets/modals/popup-adicionar-vantagem.html', '${pageContext.request.contextPath}/vantagem/inserir');
-  configPopUpEditar('${pageContext.request.contextPath}/assets/modals/popup-alterar-vantagem.html', '${pageContext.request.contextPath}/vantagem/alterar')
-  configPopUpDeletar('${pageContext.request.contextPath}/vantagem/deletar')
+<script src="${pageContext.request.contextPath}/assets/js/script.js"></script>
+<script src="${pageContext.request.contextPath}/assets/js/validacao-popup.js"></script>
 
+<script>
+  // Configuração dos popups
+  configPopUpAdicionar('${pageContext.request.contextPath}/assets/modals/popup-adicionar-vantagem.html', '${pageContext.request.contextPath}/vantagem/inserir');
+  configPopUpEditar('${pageContext.request.contextPath}/assets/modals/popup-alterar-vantagem.html', '${pageContext.request.contextPath}/vantagem/alterar', 'vantagem');
+  configPopUpDeletar('${pageContext.request.contextPath}/vantagem/deletar');
+
+  // Pop-up com erros e dados preenchidos
   <%
-  Boolean status = (Boolean) session.getAttribute("status");
-  if (status != null) {
-      requisicaoResposta.removerAtributoNaSessao("status");
-%>
+    String erros = (String) requisicaoResposta.recuperarAtributoDaSessao("erros");
+    String dados = (String) requisicaoResposta.recuperarAtributoDaSessao("dados");
+    String popupAberto = (String) requisicaoResposta.recuperarAtributoDaSessao("popupAberto");
+
+    if (popupAberto != null && popupAberto.equals("true")) {
+        requisicaoResposta.removerAtributoNaSessao("popupAberto");
+        requisicaoResposta.removerAtributoNaSessao("erros");
+        requisicaoResposta.removerAtributoNaSessao("dados");
+  %>
+  window.addEventListener('DOMContentLoaded', function() {
+    chamarPopUpAdicionar(
+            '${pageContext.request.contextPath}/assets/modals/popup-adicionar-vantagem.html',
+            '${pageContext.request.contextPath}/vantagem/inserir'
+    ).then(() => {
+      <% if (erros != null) { %>
+      setTimeout(() => exibirErrosValidacao('<%= erros.replace("'", "\\'") %>'), 150);
+      <% } %>
+      <% if (dados != null) { %>
+      setTimeout(() => preencherCamposFormulario('<%= dados %>'), 150);
+      <% } %>
+    });
+  });
+  <% } %>
+
+  // Status de operação
+  <%
+    Boolean status = (Boolean) session.getAttribute("status");
+    if (status != null) {
+        requisicaoResposta.removerAtributoNaSessao("status");
+  %>
   window.onload = function() {
     mostrarStatus('<%= status ? "sucesso" : "erro" %>');
   }
