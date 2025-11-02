@@ -12,6 +12,7 @@ import simbia.app.crud.infra.servlet.abstractclasses.InserirServlet;
 import simbia.app.crud.infra.servlet.abstractclasses.OperacoesException;
 import simbia.app.crud.model.dao.CategoriaProduto;
 import simbia.app.crud.model.servlet.RequisicaoResposta;
+import simbia.app.crud.util.ValidacoesDeDados;
 
 import java.io.IOException;
 
@@ -26,31 +27,47 @@ public class CategoriaProdutoInserirServlet extends InserirServlet<CategoriaProd
      * Valida os dados, insere no banco e trata possíveis erros.
      */
     @Override
-    protected void doPost(HttpServletRequest requisicao, HttpServletResponse resposta) throws ServletException, IOException {
+    protected void doPost(HttpServletRequest requisicao, HttpServletResponse resposta)
+            throws ServletException, IOException {
         RequisicaoResposta requisicaoResposta = new RequisicaoResposta(requisicao, resposta);
 
-        try{
-            CategoriaProduto registro = recuperarNovoRegistroNaRequisicao(requisicaoResposta);
-            inserirRegistroNoBanco(registro);
+        try {
+            // Recupera dados do formulário
+            String nome = requisicaoResposta.recuperarParametroDaRequisicao("nome");
+            String descricao = requisicaoResposta.recuperarParametroDaRequisicao("descricao");
+
+            // VALIDAÇÃO UNIFICADA - Nome + Descrição
+            ValidacoesDeDados.ResultadoValidacao resultado =
+                    ValidacoesDeDados.validarNomeDescricao(nome, descricao, "CategoriaProduto");
+
+            // Se houver erros, retorna para o popup
+            if (resultado.temErros()) {
+                requisicaoResposta.adicionarAtributoNaSessaoDaRequisicao("erros", resultado.toJSON());
+                requisicaoResposta.adicionarAtributoNaSessaoDaRequisicao("dados", nome + ";" + descricao);
+                requisicaoResposta.adicionarAtributoNaSessaoDaRequisicao("popupAberto", "true");
+                requisicaoResposta.redirecionarPara("/categoria-produto.jsp");
+                return;
+            }
+
+            // Se passou nas validações, insere no banco
+            CategoriaProduto categoria = new CategoriaProduto(nome, descricao);
+            CategoriaProdutoDao dao = new CategoriaProdutoDao();
+            dao.inserir(categoria);
 
             requisicaoResposta.adicionarAtributoNaSessaoDaRequisicao("status", true);
-            requisicaoResposta.despacharPara(enderecoDeRedirecionamento());
-
-        } catch (NaoHouveAlteracaoNoBancoDeDadosException causa) {
-            requisicaoResposta.adicionarAtributoNaSessaoDaRequisicao("status", false);
-            requisicaoResposta.redirecionarPara(enderecoDeRedirecionamentoCasoErro());
-
-        } catch (ViolacaoDeObrigatoriedadeException causa) {
-            requisicaoResposta.redirecionarPara(enderecoDeRedirecionamentoCasoErro());
+            requisicaoResposta.redirecionarPara("/categoria-produto/atualizar");
 
         } catch (ViolacaoDeUnicidadeException causa) {
-            requisicaoResposta.redirecionarPara(enderecoDeRedirecionamentoCasoErro());
+            // Trata erro de nome duplicado
+            String errosJSON = "{\"nome\":\"Esta categoria já está cadastrada\"}";
+            requisicaoResposta.adicionarAtributoNaSessaoDaRequisicao("erros", errosJSON);
+            requisicaoResposta.adicionarAtributoNaSessaoDaRequisicao("popupAberto", "true");
+            requisicaoResposta.redirecionarPara("/categoria-produto.jsp");
 
-        } catch (FalhaDeConexaoDriverInadequadoException | FalhaDeConexaoGeralException | FalhaDeConexaoBancoDeDadosInexistenteException
-                 | FalhaDeConexaoQuedaRepentina | FalhaDeConexaoSenhaIncorretaException causa) {
+        } catch (DaoException causa) {
+            causa.printStackTrace();
             requisicaoResposta.adicionarAtributoNaSessaoDaRequisicao("status", false);
-            requisicaoResposta.redirecionarPara(enderecoDeRedirecionamentoCasoErro());
-
+            requisicaoResposta.redirecionarPara("/categoria-produto.jsp");
         }
     }
 

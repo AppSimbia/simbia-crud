@@ -19,30 +19,53 @@ import java.io.IOException;
 @WebServlet("/vantagem-plano/inserir")
 public class VantagemPlanoInserirServlet extends InserirServlet<VantagemPlano> {
     @Override
-    protected void doPost(HttpServletRequest requisicao, HttpServletResponse resposta) throws ServletException, IOException {
+    protected void doPost(HttpServletRequest requisicao, HttpServletResponse resposta)
+            throws ServletException, IOException {
+
         RequisicaoResposta requisicaoResposta = new RequisicaoResposta(requisicao, resposta);
 
-        try{
-            VantagemPlano registro = recuperarNovoRegistroNaRequisicao(requisicaoResposta);
-            inserirRegistroNoBanco(registro);
+        try {
+            // Recupera dados do formulário
+            String idPlano = requisicaoResposta.recuperarParametroDaRequisicao("idPlano");
+            String idVantagem = requisicaoResposta.recuperarParametroDaRequisicao("idVantagem");
+
+            // VALIDAÇÃO UNIFICADA
+            ValidacoesDeDados.ResultadoValidacao resultado =
+                    ValidacoesDeDados.validarVantagemPlano(idPlano, idVantagem);
+
+            // Se houver erros, retorna para o popup
+            if (resultado.temErros()) {
+                String errosJSON = resultado.toJSON();
+                requisicaoResposta.adicionarAtributoNaSessaoDaRequisicao("erros", errosJSON);
+                requisicaoResposta.adicionarAtributoNaSessaoDaRequisicao("dados",
+                        idPlano + ";" + idVantagem);
+                requisicaoResposta.adicionarAtributoNaSessaoDaRequisicao("popupAberto", "true");
+                requisicaoResposta.redirecionarPara("/vantagem-plano.jsp");
+                return;
+            }
+
+            // Se passou nas validações, insere no banco
+            VantagemPlano registro = new VantagemPlano(
+                    Long.parseLong(idVantagem),
+                    Long.parseLong(idPlano)
+            );
+            VantagemPlanoDao dao = new VantagemPlanoDao();
+            dao.inserir(registro);
 
             requisicaoResposta.adicionarAtributoNaSessaoDaRequisicao("status", true);
-            requisicaoResposta.redirecionarPara(enderecoDeRedirecionamento());
+            requisicaoResposta.redirecionarPara("/vantagem-plano/atualizar");
 
-        } catch (NumberFormatException causa){
-            requisicaoResposta.redirecionarPara(enderecoDeRedirecionamentoCasoErro());
+        } catch (ViolacaoDeUnicidadeException causa) {
+            // Trata erro de chave duplicada
+            String errosJSON = "{\"combinação\":\"Esta combinação já existe\"}";
+            requisicaoResposta.adicionarAtributoNaSessaoDaRequisicao("erros", errosJSON);
+            requisicaoResposta.adicionarAtributoNaSessaoDaRequisicao("popupAberto", "true");
+            requisicaoResposta.redirecionarPara("/vantagem-plano.jsp");
 
-        } catch (ViolacaoDeRegistroDeChaveEstrangeiraException causa){
-            requisicaoResposta.redirecionarPara(enderecoDeRedirecionamentoCasoErro());
-
-        } catch (NaoHouveAlteracaoNoBancoDeDadosException causa) {
-            requisicaoResposta.redirecionarPara(enderecoDeRedirecionamentoCasoErro());
-
-        } catch (FalhaDeConexaoDriverInadequadoException | FalhaDeConexaoGeralException |
-                 FalhaDeConexaoQuedaRepentina | FalhaDeConexaoBancoDeDadosInexistenteException |
-                 FalhaDeConexaoSenhaIncorretaException causa){
-            requisicaoResposta.redirecionarPara(enderecoDeRedirecionamentoCasoErro());
-
+        } catch (DaoException causa) {
+            causa.printStackTrace();
+            requisicaoResposta.adicionarAtributoNaSessaoDaRequisicao("status", false);
+            requisicaoResposta.redirecionarPara("/vantagem-plano.jsp");
         }
     }
 

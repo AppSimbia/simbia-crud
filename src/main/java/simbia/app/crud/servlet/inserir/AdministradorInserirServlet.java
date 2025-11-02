@@ -77,6 +77,7 @@ public class AdministradorInserirServlet extends InserirServlet<Administrador> {
             requisicaoResposta.redirecionarPara("/administrador.jsp");
         }
     }
+
     /**
      * Insere o administrador no banco de dados usando o DAO.
      */

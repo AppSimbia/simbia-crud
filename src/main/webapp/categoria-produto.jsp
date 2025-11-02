@@ -11,15 +11,13 @@
   RequisicaoResposta requisicaoResposta = new RequisicaoResposta(request, response);
   List<CategoriaProduto> registros = new ArrayList<>();
 
-  try{
+  try {
     ValidacoesDeDados.validarSeAdministradorEstaAtutenticado(requisicaoResposta);
     registros = UtilitariosJSP.recuperarRegistrosDaRequisicao(requisicaoResposta, "categoriaproduto");
-
-  } catch (UsuarioNaoAutenticadoException causa){
+  } catch (UsuarioNaoAutenticadoException e) {
     requisicaoResposta.despacharPara("/assets/paginas-de-erro/erro-autenticacao.html");
     return;
-
-  } catch (RequisicaoSemRegistrosException causa){
+  } catch (RequisicaoSemRegistrosException e) {
     requisicaoResposta.despacharPara("/categoria-produto/registros");
     return;
   }
@@ -29,9 +27,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css"
-        integrity="sha512-DxV+EoADOkOygM4IR9yXP8Sb2qwgidEmeqAEmDKIOfPRQZOWbXCzLC6vjbZyy0vPisbH2SyW27+ddLVCN+OMzQ=="
-        crossorigin="anonymous" referrerpolicy="no-referrer"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css">
   <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/style/tabelas/style.css">
   <link rel="icon" href="${pageContext.request.contextPath}/assets/elements/logo-bolinha.svg">
   <title>Simbia - Categoria Produto</title>
@@ -39,75 +35,36 @@
 <body>
 <div id="container-geral-popup"></div>
 <div id="container-status"></div>
-<!-- MENU LATERAL -->
+
 <img src="${pageContext.request.contextPath}/assets/elements/icon-simbia.svg" alt="logo-simbia">
 <aside>
   <h1>Tabelas</h1>
-
   <hr>
   <nav>
     <ul>
-      <a href="${pageContext.request.contextPath}/administrador.jsp">
-        <li>
-          <i class="fa-solid fa-user-shield"></i>
-          <p>Administrador</p>
-        </li>
-      </a>
-      <a href="${pageContext.request.contextPath}/permissao.jsp">
-        <li>
-          <i class="fa-solid fa-key"></i>
-          <p>Permissão</p>
-        </li>
-      </a>
-      <a href="${pageContext.request.contextPath}/vantagem.jsp">
-        <li>
-          <i class="fa-solid fa-hand-sparkles"></i>
-          <p>Vantagem</p>
-        </li>
-      </a>
-      <a href="${pageContext.request.contextPath}/plano.jsp">
-        <li>
-          <i class="fa-solid fa-dollar-sign"></i>
-          <p>Plano</p>
-        </li>
-      </a>
-      <a href="${pageContext.request.contextPath}/vantagem-plano.jsp">
-        <li>
-          <i class="fa-solid fa-square-check"></i>
-          <p>Vantagem plano</p>
-        </li>
-      </a>
-      <a href="${pageContext.request.contextPath}/tipo-industria.jsp">
-        <li>
-          <i class="fa-solid fa-layer-group"></i>
-          <p>Tipo Indústria</p>
-        </li>
-      </a>
-      <li class="ativo">
-        <i class="fa-solid fa-box-archive"></i>
-        <p>Categoria Produto</p>
-      </li>
-      <li>
-        <i class="fa-solid fa-store"></i>
-        <p>Dados BI</p>
-      </li>
+      <a href="${pageContext.request.contextPath}/administrador.jsp"><li><i class="fa-solid fa-user-shield"></i><p>Administrador</p></li></a>
+      <a href="${pageContext.request.contextPath}/permissao.jsp"><li><i class="fa-solid fa-key"></i><p>Permissão</p></li></a>
+      <a href="${pageContext.request.contextPath}/vantagem.jsp"><li><i class="fa-solid fa-hand-sparkles"></i><p>Vantagem</p></li></a>
+      <a href="${pageContext.request.contextPath}/plano.jsp"><li><i class="fa-solid fa-dollar-sign"></i><p>Plano</p></li></a>
+      <a href="${pageContext.request.contextPath}/vantagem-plano.jsp"><li><i class="fa-solid fa-square-check"></i><p>Vantagem plano</p></li></a>
+      <a href="${pageContext.request.contextPath}/tipo-industria.jsp"><li><i class="fa-solid fa-layer-group"></i><p>Tipo Indústria</p></li></a>
+      <li class="ativo"><i class="fa-solid fa-box-archive"></i><p>Categoria Produto</p></li>
+      <li><i class="fa-solid fa-store"></i><p>Dados BI</p></li>
     </ul>
   </nav>
 </aside>
+
 <main>
-  <!-- TOPO DA PÁGINA -->
   <header>
     <h1>Categoria Produto</h1>
     <div>
       <a href="<%=request.getContextPath()%>/categoria-produto/atualizar" class="atualizar">
-        <button name="atualizar">
-          <img src="${pageContext.request.contextPath}/assets/elements/icon-atualizar.svg" alt="icon-atualizar">
-          Atualizar
-        </button>
+        <button name="atualizar"><img src="${pageContext.request.contextPath}/assets/elements/icon-atualizar.svg" alt="icon-atualizar">Atualizar</button>
       </a>
-      <button class="btnAdicionar" id="btnAdicionar"><img src="${pageContext.request.contextPath}/assets/elements/icon-adicionar.svg" alt="icone-adicionar">Adicionar registro</button>
+      <button class="btnAdicionar" id="btnAdicionar">
+        <img src="${pageContext.request.contextPath}/assets/elements/icon-adicionar.svg" alt="icone-adicionar">Adicionar registro
+      </button>
     </div>
-
   </header>
 
   <hr>
@@ -117,7 +74,6 @@
     <button type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
   </form>
 
-  <!-- TABELA -->
   <table>
     <thead>
     <tr>
@@ -126,91 +82,101 @@
           <p>ID</p>
           <form action="${pageContext.request.contextPath}/categoria-produto/ordenar" method="GET">
             <input type="hidden" name="tipoOrdenacao" value="porId">
-            <input type="hidden" name="ordem" value="<%=
-              (request.getAttribute("criterioOrdenacao") != null && request.getAttribute("criterioOrdenacao").equals("porId")
-                && request.getAttribute("ordemAtual") != null && request.getAttribute("ordemAtual").equals("asc"))
-              ? "desc" : "asc"
-            %>">
-            <button type="submit">
-              <i class="fa-solid <%=
-                (request.getAttribute("criterioOrdenacao") != null && request.getAttribute("criterioOrdenacao").equals("porId"))
-                  ? (request.getAttribute("ordemAtual").equals("asc") ? "fa-angle-up icone-ativo" : "fa-angle-down icone-ativo")
-                  : "fa-angle-down"
-              %>"></i>
-            </button>
+            <input type="hidden" name="ordem" value="<%= (request.getAttribute("criterioOrdenacao") != null && request.getAttribute("criterioOrdenacao").equals("porId") && request.getAttribute("ordemAtual") != null && request.getAttribute("ordemAtual").equals("asc")) ? "desc" : "asc" %>">
+            <button type="submit"><i class="fa-solid <%= (request.getAttribute("criterioOrdenacao") != null && request.getAttribute("criterioOrdenacao").equals("porId")) ? (request.getAttribute("ordemAtual").equals("asc") ? "fa-angle-up icone-ativo" : "fa-angle-down icone-ativo") : "fa-angle-down" %>"></i></button>
           </form>
         </div>
-
       </th>
       <th>
         <div>
           <p>NOME</p>
           <form action="${pageContext.request.contextPath}/categoria-produto/ordenar" method="GET">
             <input type="hidden" name="tipoOrdenacao" value="porNome">
-            <input type="hidden" name="ordem" value="<%=
-              (request.getAttribute("criterioOrdenacao") != null && request.getAttribute("criterioOrdenacao").equals("porNome")
-                && request.getAttribute("ordemAtual") != null && request.getAttribute("ordemAtual").equals("asc"))
-              ? "desc" : "asc"
-            %>">
-            <button type="submit">
-              <i class="fa-solid <%=
-                (request.getAttribute("criterioOrdenacao") != null && request.getAttribute("criterioOrdenacao").equals("porNome"))
-                  ? (request.getAttribute("ordemAtual").equals("asc") ? "fa-angle-up icone-ativo" : "fa-angle-down icone-ativo")
-                  : "fa-angle-down"
-              %>"></i>
-            </button>
+            <input type="hidden" name="ordem" value="<%= (request.getAttribute("criterioOrdenacao") != null && request.getAttribute("criterioOrdenacao").equals("porNome") && request.getAttribute("ordemAtual") != null && request.getAttribute("ordemAtual").equals("asc")) ? "desc" : "asc" %>">
+            <button type="submit"><i class="fa-solid <%= (request.getAttribute("criterioOrdenacao") != null && request.getAttribute("criterioOrdenacao").equals("porNome")) ? (request.getAttribute("ordemAtual").equals("asc") ? "fa-angle-up icone-ativo" : "fa-angle-down icone-ativo") : "fa-angle-down" %>"></i></button>
           </form>
         </div>
-
       </th>
       <th>
-        <div>
-          <p>DESCRIÇÃO</p>
-        </div>
-
+        <p>DESCRIÇÃO</p>
       </th>
+      <th><p>AÇÕES</p></th>
     </tr>
     </thead>
     <tbody>
-    <% for (CategoriaProduto registro : registros){ %>
+    <% for (CategoriaProduto registro : registros) { %>
     <tr>
-      <td class="id"><%=registro.getIdCategoriaProduto()%></td>
-      <td><%=registro.getNomeCategoria()%></td>
-      <td><%=registro.getDescricao()%></td>
-
+      <td class="id"><%= registro.getIdCategoriaProduto() %></td>
+      <td><%= registro.getNomeCategoria() %></td>
+      <td><%= registro.getDescricao() %></td>
       <td class="acoes">
         <div>
           <button name="editar" value="<%=registro.getIdCategoriaProduto()%>;<%=registro.getNomeCategoria()%>;<%=registro.getDescricao()%>">
             <img src="${pageContext.request.contextPath}/assets/elements/editar.svg">
           </button>
-          <button value="<%=registro.getIdCategoriaProduto()%>" name="apagar">
+          <button name="apagar" value="<%= registro.getIdCategoriaProduto() %>">
             <img src="${pageContext.request.contextPath}/assets/elements/apagar.svg" alt="Apagar">
           </button>
         </div>
       </td>
     </tr>
-    <%
-      }
-    %>
+    <% } %>
     </tbody>
   </table>
 </main>
-</body>
-<script src="${pageContext.request.contextPath}/assets/js/script.js">
-</script>
+
+<script src="${pageContext.request.contextPath}/assets/js/script.js"></script>
+<script src="${pageContext.request.contextPath}/assets/js/validacao-popup.js"></script>
+
 <script>
-  configPopUpAdicionar('${pageContext.request.contextPath}/assets/modals/popup-adicionar-categoriaProduto.html', '${pageContext.request.contextPath}/categoria-produto/inserir');
-  configPopUpEditar('${pageContext.request.contextPath}/assets/modals/popup-alterar-categoriaProduto.html', '${pageContext.request.contextPath}/categoria-produto/alterar')
-  configPopUpDeletar('${pageContext.request.contextPath}/categoria-produto/deletar')
+  <%
+    String erros = (String) requisicaoResposta.recuperarAtributoDaSessao("erros");
+    String dados = (String) requisicaoResposta.recuperarAtributoDaSessao("dados");
+    String popupAberto = (String) requisicaoResposta.recuperarAtributoDaSessao("popupAberto");
+
+    if ("true".equals(popupAberto)) {
+        requisicaoResposta.removerAtributoNaSessao("popupAberto");
+        requisicaoResposta.removerAtributoNaSessao("erros");
+        requisicaoResposta.removerAtributoNaSessao("dados");
+  %>
+  window.addEventListener('DOMContentLoaded', function() {
+    chamarPopUpAdicionar(
+            '${pageContext.request.contextPath}/assets/modals/popup-adicionar-categoriaProduto.html',
+            '${pageContext.request.contextPath}/categoria-produto/inserir'
+    ).then(() => {
+      <% if (erros != null) { %>
+      setTimeout(() => exibirErrosValidacao('<%= erros.replace("'", "\\'") %>'), 150);
+      <% } %>
+
+      <% if (dados != null) { %>
+      // Converte a string JSON em objeto
+      const dadosFormulario = JSON.parse('<%= dados.replace("\\", "\\\\").replace("'", "\\'") %>');
+      setTimeout(() => preencherCamposFormulario(dadosFormulario), 150);
+      <% } %>
+    });
+  });
+  <% } %>
+
+  configPopUpAdicionar(
+          '${pageContext.request.contextPath}/assets/modals/popup-adicionar-categoriaProduto.html',
+          '${pageContext.request.contextPath}/categoria-produto/inserir'
+  );
+  configPopUpEditar(
+          '${pageContext.request.contextPath}/assets/modals/popup-alterar-categoriaProduto.html',
+          '${pageContext.request.contextPath}/categoria-produto/alterar'
+  );
+  configPopUpDeletar('${pageContext.request.contextPath}/categoria-produto/deletar');
 
   <%
-  Boolean status = (Boolean) session.getAttribute("status");
-  if (status != null) {
-      requisicaoResposta.removerAtributoNaSessao("status");
-%>
+    Boolean status = (Boolean) session.getAttribute("status");
+    if (status != null) {
+        requisicaoResposta.removerAtributoNaSessao("status");
+  %>
   window.onload = function() {
     mostrarStatus('<%= status ? "sucesso" : "erro" %>');
   }
   <% } %>
 </script>
+
+</body>
 </html>
