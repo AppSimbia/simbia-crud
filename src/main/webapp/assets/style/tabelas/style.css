@@ -420,7 +420,6 @@ table tbody tr td:last-child {
     margin-top: 30px;
     margin-bottom: 20px;
 
-    letter-spacing: 2px;
     font-size: 32px;
 
     color: var(--navy);
@@ -618,7 +617,6 @@ table tbody tr td:last-child {
 
     #container-geral-popup h2 {
         font-size: 24px;
-        letter-spacing: 1px;
         text-align: center;
 
         margin-bottom: 20px;
@@ -689,9 +687,8 @@ table tbody tr td:last-child {
     #container-geral-popup .pErro {
         margin-bottom: -10px;
     }
-
 }
-/* estilização popups de confirmação */
+
 #container-geral-popup-confirmacao{
     width: 100vw;
     height: 100vh;
@@ -766,18 +763,14 @@ table tbody tr td:last-child {
 
     margin-top: 30px;
 }
-
-
 #container-geral-popup-confirmacao #btnCancel{
     background-color: var(--light-gray);
     box-shadow: none
 }
-
 #container-geral-popup-confirmacao #btnDel{
     background-color: red;
     box-shadow: 0px 0px 70px rgba(255, 0, 0, 0.189);
 }
-
 #container-geral-popup-confirmacao #btnAlt:hover{
     background-color: var(--dark-cyan);
     transform: scale(1.03);
@@ -793,69 +786,69 @@ table tbody tr td:last-child {
     transform: scale(1.03);
 }
 
-.btn-container{
+#container-geral-popup-confirmacao #content-popup-confirmacao .btn-container{
     display: flex;
     justify-content: center;
     gap: 10px;
 }
 
-@media (max-width: 1200px) {
-    #content-popup-confirmacao {
-        width: 80vw;
-        padding: 40px;
-    }
-
-    #container-geral-popup-confirmacao #content-popup-confirmacao {
-        width: 300px;
-        height: 390px;
-        padding: 50px;
-    }
-
-    .btn-container {
-        flex-direction: column;
-        align-items: center;
-        gap: 10px;
-    }
-
+@media (max-width: 1600px) {
     #content-popup-confirmacao button {
-        width: 300px;
-    }
+        width: 160px;
 
-    #content-popup-confirmacao #btnCancel {
-        margin-bottom: -20px;
+    }
+    #container-geral-popup-confirmacao #content-popup-confirmacao{
+        display: block;
+        margin-top: 10px;
     }
 }
 
+@media (max-width: 1100px) {
+    #container-geral-popup-confirmacao #content-popup-confirmacao {
+        width: 350px;
+        height: 500px;
+    }
+    #content-popup-confirmacao button {
+        width: 250px;
+    }
+    #container-geral-popup-confirmacao #content-popup-confirmacao .btn-container{
+        display: block;
+    }
+    #container-geral-popup-confirmacao #content-popup-confirmacao button{
+        width: 100%;
+        display: block;
+    }
+    #container-geral-popup-confirmacao #content-popup-confirmacao #btnDel{
+        width: 250px;
+    }
+}
 @media (max-width: 900px) {
     #container-geral-popup-confirmacao #content-popup-confirmacao {
-        width: 300px;
-        height: 390px;
-        padding: 50px;
+        width: 350px;
+        height: 500px;
     }
 
-    .btn-container {
+    #container-geral-popup-confirmacao #content-popup-confirmacao .btn-container {
         flex-direction: column;
         align-items: center;
         gap: 10px;
     }
 
     #content-popup-confirmacao button {
-        width: 300px;
+        width: 250px;
     }
 
     #content-popup-confirmacao #btnCancel {
         margin-bottom: -20px;
     }
 }
-
 @media (max-width: 600px) {
     #container-geral-popup-confirmacao #content-popup-confirmacao {
-        width: 250px;
-        height: 390px;
-
+        width: 350px;
+        height: 500px;
     }
 
-    .btn-container {
+    #container-geral-popup-confirmacao #content-popup-confirmacao .btn-container {
         flex-direction: column;
         align-items: center;
         gap: 10px;
@@ -863,7 +856,6 @@ table tbody tr td:last-child {
 
     #content-popup-confirmacao button {
         width: 250px;
-
     }
 
     #content-popup-confirmacao #btnCancel {
