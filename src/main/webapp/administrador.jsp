@@ -232,7 +232,7 @@
 </body>
 <script src="${pageContext.request.contextPath}/assets/js/script.js"></script>
 <script>
-  configPopUpAdicionar('${pageContext.request.contextPath}/assets/modals/popup-adicionar-admin.html', '${pageContext.request.contextPath}/administrador/adicionar')
+  configPopUpAdicionar('${pageContext.request.contextPath}/assets/modals/popup-adicionar-admin.html', '${pageContext.request.contextPath}/administrador/inserir')
   configPopUpEditar('${pageContext.request.contextPath}/assets/modals/popup-alterar-admin.html', '${pageContext.request.contextPath}/administrador/alterar', 'administrador')
   configPopUpDeletar('${pageContext.request.contextPath}/administrador/deletar')
 

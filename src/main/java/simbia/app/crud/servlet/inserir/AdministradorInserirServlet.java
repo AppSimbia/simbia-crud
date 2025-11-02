@@ -23,7 +23,7 @@ import java.io.IOException;
 /**
  * Servlet para inserir novos administradores no sistema.
  */
-@WebServlet()
+@WebServlet("/administrador/inserir")
 public class AdministradorInserirServlet extends InserirServlet<Administrador> {
 
     /**
@@ -142,7 +142,7 @@ public class AdministradorInserirServlet extends InserirServlet<Administrador> {
      */
     @Override
     public String enderecoDeDespache() {
-        return "/crud/administrador/atualizar";
+        return "../administrador/atualizar";
     }
 
     /**
@@ -150,7 +150,7 @@ public class AdministradorInserirServlet extends InserirServlet<Administrador> {
      */
     @Override
     public String enderecoDeDespacheCasoErro() {
-        return "/crud/administrador.jsp";
+        return "../administrador.jsp";
     }
 
     /**
