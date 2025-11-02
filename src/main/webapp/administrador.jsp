@@ -204,7 +204,7 @@
       <td class="id"><%= registro.getIdAdministrador() %></td>
       <td><%= registro.getNome() %></td>
       <td><%= registro.getEmail() %></td>
-      <td>[SENHA PROTEGIDA]</td>
+      <td>●●●●●●●●●●</td>
       <td class="acoes">
         <div>
           <!-- editar: NÃO submete formulário -->
@@ -234,5 +234,13 @@
   configPopUpAdicionar('/crud/assets/modals/popup-adicionar-admin.html', '/crud/administrador/adicionar')
   configPopUpEditar('/crud/assets/modals/popup-alterar-admin.html', '/crud/administrador/alterar', 'administrador')
   configPopUpDeletar('/crud/adiministrador/deletar')
+
+  <%
+  if (requisicaoResposta.existeSessaoDaRequisicao("status")){
+  %>
+  chamarErro("")
+  <%
+  }
+  %>
 </script>
 </html>

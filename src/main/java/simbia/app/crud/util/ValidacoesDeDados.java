@@ -1,11 +1,9 @@
 package simbia.app.crud.util;
 
 import simbia.app.crud.infra.dao.exception.errosDeOperacao.NaoHouveAlteracaoNoBancoDeDadosException;
-import simbia.app.crud.infra.servlet.exception.operacao.EmailOuSenhaErradosException;
-import simbia.app.crud.infra.servlet.exception.operacao.RequisicaoSemRegistrosException;
-import simbia.app.crud.infra.servlet.exception.operacao.RequisicaoSemTipoOrdenacaoException;
-import simbia.app.crud.infra.servlet.exception.operacao.UsuarioNaoAutenticadoException;
+import simbia.app.crud.infra.servlet.exception.operacao.*;
 import simbia.app.crud.infra.servlet.exception.validacaoDeDados.PadraoEmailErradoException;
+import simbia.app.crud.infra.servlet.exception.validacaoDeDados.PadraoNomeErradoException;
 import simbia.app.crud.infra.servlet.exception.validacaoDeDados.PadraoSenhaErradoException;
 import simbia.app.crud.model.servlet.RequisicaoResposta;
 
@@ -23,6 +21,7 @@ public class ValidacoesDeDados {
     // Atributos > Constantes > Expressões Regulares
     private static final String REGEX_EMAIL = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$";
     private static final String REGEX_SENHA = "(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*()_+=\\[\\]{}|;:'\",.<>?/~`\\\\-]).{8,200}";
+    private static final String REGEX_NOME = "^[a-zA-ZáàâãéèêíïóôõöúçñÁÀÂÃÉÈÊÍÏÓÔÕÖÚÇÑ'\\-\\s]+$";
 
     // Métodos de Validação
 
@@ -46,6 +45,18 @@ public class ValidacoesDeDados {
     public static void validarSenha(String senha) throws PadraoSenhaErradoException {
         if (senha == null || !senha.matches(REGEX_SENHA)) {
             throw new PadraoSenhaErradoException();
+        }
+    }
+
+    public static void validarRepeticaoSenha(String senha, String repetirSenha) throws SenhasDiferentesException {
+        if (!senha.equals(repetirSenha)) {
+            throw new SenhasDiferentesException();
+        }
+    }
+
+    public static void validarNome(String nome) throws PadraoNomeErradoException {
+        if (nome == null || !nome.matches(REGEX_NOME)) {
+            throw new PadraoNomeErradoException();
         }
     }
 
