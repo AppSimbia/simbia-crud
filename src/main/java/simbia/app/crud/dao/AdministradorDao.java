@@ -23,6 +23,7 @@ public class AdministradorDao extends DaoManipuladorDeSenhasEmails<Administrador
 //atributos>constantes>comandos-sql
     private static final String COMANDO_INSERIR = "INSERT INTO administrador(cemail, csenha, cnome) VALUES (?, ?, ?)";
     private static final String COMANDO_ATUALIZAR = "UPDATE administrador SET cemail=?, csenha=?, cnome=? WHERE idadministrador=?";
+    private static final String COMANDO_ATUALIZAR_SEM_SENHA = "UPDATE administrador SET cemail=?, cnome=? WHERE idadministrador=?";
     private static final String COMANDO_DELETAR = "DELETE FROM administrador WHERE idadministrador=?";
     private static final String CONSULTA_RECUPERAR_PELO_ID = "SELECT * FROM administrador WHERE idadministrador=?";
     private static final String CONSULTA_RECUPERAR_TUDO = "SELECT * FROM administrador";
@@ -81,7 +82,28 @@ public class AdministradorDao extends DaoManipuladorDeSenhasEmails<Administrador
     }
 
     @Override
-    public void AtualizarSerializandoSenha(Administrador administrador) {
+    public void atualizarSemSenha(Administrador administrador) throws NaoHouveAlteracaoNoBancoDeDadosException, DaoException {
+        boolean sucessoDaOperacao = false;
+        Connection conexao = ManipuladorConexao.conectar();
+        try {
+            PreparedStatement comandoAtualizar = conexao.prepareStatement(COMANDO_ATUALIZAR_SEM_SENHA);
+            comandoAtualizar.setString(1, administrador.getEmail());
+            comandoAtualizar.setString(2, administrador.getNome());
+            comandoAtualizar.setLong(3, administrador.getIdAdministrador());
+
+            sucessoDaOperacao = houveAlteracaoNoBanco(comandoAtualizar.executeUpdate());
+
+            ValidacoesDeDados.validarSucessoDeOperacao(sucessoDaOperacao);
+
+        } catch (SQLException causa) {
+            throw gerarExceptionEspecializadaPorSQLException(causa);
+        }finally {
+            ManipuladorConexao.desconectar(conexao);
+        }
+    }
+
+    @Override
+    public void atualizarSerializandoSenha(Administrador administrador) {
         boolean sucessoDaOperacao = false;
         Connection conexao = ManipuladorConexao.conectar();
         try {

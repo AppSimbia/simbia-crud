@@ -171,6 +171,7 @@ async function chamarPopUpEditar(enderecoPopUpEditar, enderecoServletEditar, inf
             document.querySelector('#display-fechar-add-admin p').innerText = "ID:" + informacoes[0]
             document.getElementsByName("nome")[0].value = informacoes[2]
             document.getElementsByName("email")[0].value = informacoes[1]
+            document.getElementsByName("id")[0].value = informacoes[0]
 
         } else if (tabela == 'plano'){
             const informacoes = info.split(';')
@@ -179,6 +180,7 @@ async function chamarPopUpEditar(enderecoPopUpEditar, enderecoServletEditar, inf
             document.querySelector('#display-fechar-add-admin p').innerText = "ID:" + informacoes[0]
             document.getElementsByName("nome")[0].value = informacoes[1]
             document.getElementsByName("valor")[0].value = informacoes[2]
+            document.getElementsByName("id")[0].value = informacoes[0]
 
             if (informacoes[3] == 'true'){
                 document.querySelector('[value="ativo"]').checked = true
@@ -193,6 +195,7 @@ async function chamarPopUpEditar(enderecoPopUpEditar, enderecoServletEditar, inf
             document.querySelector('#display-fechar-add-admin p').innerText = "ID:" + informacoes[0]
             document.querySelector('#id-plano').value = informacoes[2]
             document.querySelector("#id-vantagem").value = informacoes[1]
+            document.getElementsByName("id")[0].value = informacoes[0]
 
             console.log(document.querySelector('#id-plano'))
             console.log(document.querySelector('#id-vantagem'))
@@ -203,6 +206,7 @@ async function chamarPopUpEditar(enderecoPopUpEditar, enderecoServletEditar, inf
             document.querySelector('#display-fechar-add-admin p').innerText = "ID:" + informacoes[0]
             document.getElementsByName("nome")[0].value = informacoes[1]
             document.getElementsByTagName('textarea')[0].value = informacoes[2]
+            document.getElementsByName("id")[0].value = informacoes[0]
         }
 
     } catch (error){

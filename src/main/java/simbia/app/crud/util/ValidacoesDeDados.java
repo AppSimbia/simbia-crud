@@ -207,6 +207,28 @@ public class ValidacoesDeDados {
         return resultado;
     }
 
+    public static ResultadoValidacao validarAdministradorSemSenha(String nome, String email) {
+        ResultadoValidacao resultado = new ResultadoValidacao();
+
+        // Valida nome
+        if (nome == null || nome.trim().isEmpty()) {
+            resultado.adicionarErro("nome", "Nome é obrigatório");
+        } else if (!nome.matches(REGEX_NOME)) {
+            resultado.adicionarErro("nome", "Nome deve conter apenas letras e espaços");
+        } else if (nome.length() < 3 || nome.length() > 100) {
+            resultado.adicionarErro("nome", "Nome deve ter entre 3 e 100 caracteres");
+        }
+
+        // Valida email
+        if (email == null || email.trim().isEmpty()) {
+            resultado.adicionarErro("email", "Email é obrigatório");
+        } else if (!email.matches(REGEX_EMAIL)) {
+            resultado.adicionarErro("email", "Email inválido");
+        }
+
+        return resultado;
+    }
+
     /**
      * Valida campos de Plano para inserção
      */

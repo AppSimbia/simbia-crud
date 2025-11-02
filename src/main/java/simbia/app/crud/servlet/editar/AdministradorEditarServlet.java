@@ -1,4 +1,4 @@
-package simbia.app.crud.servlet.inserir;
+package simbia.app.crud.servlet.editar;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -6,8 +6,8 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import simbia.app.crud.dao.AdministradorDao;
 import simbia.app.crud.infra.dao.abstractclasses.DaoException;
-import simbia.app.crud.infra.dao.exception.errosDoBancoDeDados.*;
-import simbia.app.crud.infra.servlet.abstractclasses.InserirServlet;
+import simbia.app.crud.infra.dao.exception.errosDoBancoDeDados.ViolacaoDeUnicidadeException;
+import simbia.app.crud.infra.servlet.abstractclasses.EditarServlet;
 import simbia.app.crud.infra.servlet.abstractclasses.OperacoesException;
 import simbia.app.crud.infra.servlet.exception.operacao.SenhasDiferentesException;
 import simbia.app.crud.infra.servlet.exception.validacaoDeDados.PadraoEmailErradoException;
@@ -19,11 +19,8 @@ import simbia.app.crud.util.ValidacoesDeDados;
 
 import java.io.IOException;
 
-/**
- * Servlet para inserir novos administradores no sistema.
- */
-@WebServlet("/administrador/inserir")
-public class AdministradorInserirServlet extends InserirServlet<Administrador> {
+@WebServlet("/administrador/alterar")
+public class AdministradorEditarServlet extends EditarServlet<Administrador> {
 
     /**
      * Processa a requisição POST para inserir um administrador.
@@ -41,25 +38,40 @@ public class AdministradorInserirServlet extends InserirServlet<Administrador> {
             String senha = requisicaoResposta.recuperarParametroDaRequisicao("senha");
             String repetirSenha = requisicaoResposta.recuperarParametroDaRequisicao("repetir-senha");
 
-            // VALIDAÇÃO UNIFICADA - UMA LINHA!
-            ValidacoesDeDados.ResultadoValidacao resultado =
-                    ValidacoesDeDados.validarAdministrador(nome, email, senha, repetirSenha);
+            // VALIDAÇÃO VERIFICA SE REGISTRO TERA SENHA EDITADA OU NAO
+            if (!(senha == null) && !(repetirSenha == null)){
+                if (!senha.trim().isEmpty() && !repetirSenha.trim().isEmpty()){
+                    ValidacoesDeDados.ResultadoValidacao resultado =
+                            ValidacoesDeDados.validarAdministrador(nome, email, senha, repetirSenha);
 
-            // Se houver erros, retorna para o popup
-            if (resultado.temErros()) {
-                String errosJSON = resultado.toJSON();
-                requisicaoResposta.adicionarAtributoNaSessaoDaRequisicao("erros", errosJSON);
-                requisicaoResposta.adicionarAtributoNaSessaoDaRequisicao("dados",
-                        nome + ";" + email + ";" + senha + ";" + repetirSenha);
-                requisicaoResposta.adicionarAtributoNaSessaoDaRequisicao("popupAberto", "true");
-                requisicaoResposta.redirecionarPara("/administrador.jsp");
-                return;
+                    // Se houver erros, retorna para o popup
+                    if (resultado.temErros()) {
+                        String errosJSON = resultado.toJSON();
+                        requisicaoResposta.adicionarAtributoNaSessaoDaRequisicao("erros", errosJSON);
+                        requisicaoResposta.adicionarAtributoNaSessaoDaRequisicao("dados",
+                                nome + ";" + email + ";" + senha + ";" + repetirSenha);
+                        requisicaoResposta.adicionarAtributoNaSessaoDaRequisicao("popupAberto", "true");
+                        requisicaoResposta.redirecionarPara("/administrador.jsp");
+                        return;
+                    }
+                }
+            }else{
+                ValidacoesDeDados.ResultadoValidacao resultado = ValidacoesDeDados.validarAdministradorSemSenha(nome, email);
+
+                // Se houver erros, retorna para o popup
+                if (resultado.temErros()) {
+                    String errosJSON = resultado.toJSON();
+                    requisicaoResposta.adicionarAtributoNaSessaoDaRequisicao("erros", errosJSON);
+                    requisicaoResposta.adicionarAtributoNaSessaoDaRequisicao("dados",
+                            nome + ";" + email + ";" + senha + ";" + repetirSenha);
+                    requisicaoResposta.adicionarAtributoNaSessaoDaRequisicao("popupAberto", "true");
+                    requisicaoResposta.redirecionarPara("/administrador.jsp");
+                    return;
+                }
             }
 
             // Se passou nas validações, insere no banco
-            Administrador admin = new Administrador(email, senha, nome);
-            AdministradorDao dao = new AdministradorDao();
-            dao.inserir(admin);
+            editarRegistroNoBanco(recuperarRegistroEmEdicaoNaRequisicao(requisicaoResposta));
 
             requisicaoResposta.adicionarAtributoNaSessaoDaRequisicao("status", true);
             requisicaoResposta.redirecionarPara("/administrador/atualizar");
@@ -78,33 +90,43 @@ public class AdministradorInserirServlet extends InserirServlet<Administrador> {
         }
     }
     /**
-     * Insere o administrador no banco de dados usando o DAO.
+     * edita o administrador no banco de dados usando o DAO.
      */
     @Override
-    public void inserirRegistroNoBanco(Administrador entidade) throws DaoException, OperacoesException {
+    public void editarRegistroNoBanco(Administrador entidade) throws DaoException, OperacoesException {
         AdministradorDao dao = new AdministradorDao();
-        dao.inserir(entidade);
+        if (entidade.getSenha() == null){
+            dao.atualizarSemSenha(entidade);
+        }else{
+            dao.atualizarSerializandoSenha(entidade);
+        }
     }
 
     /**
      * Recupera e valida os dados do formulário de cadastro.
-     * Retorna um objeto Administrador pronto para ser inserido.
+     * Retorna um objeto Administrador pronto para ser editado.
      */
     @Override
-    public Administrador recuperarNovoRegistroNaRequisicao(RequisicaoResposta requisicaoResposta)
+    public Administrador recuperarRegistroEmEdicaoNaRequisicao(RequisicaoResposta requisicaoResposta)
             throws PadraoNomeErradoException, PadraoEmailErradoException,
             PadraoSenhaErradoException, SenhasDiferentesException {
         String nome = requisicaoResposta.recuperarParametroDaRequisicao("nome");
         String email = requisicaoResposta.recuperarParametroDaRequisicao("email");
         String senha = requisicaoResposta.recuperarParametroDaRequisicao("senha");
         String repetirSenha = requisicaoResposta.recuperarParametroDaRequisicao("repetir-senha");
+        String idStr = requisicaoResposta.recuperarParametroDaRequisicao("id");
 
-        ValidacoesDeDados.validarNome(nome);
-        ValidacoesDeDados.validarEmail(email);
-        ValidacoesDeDados.validarSenha(senha);
-        ValidacoesDeDados.validarRepeticaoSenha(senha, repetirSenha);
+        System.out.println(idStr);
 
-        return new Administrador(email, senha, nome);
+        long id = Long.parseLong(idStr);
+
+
+        if (!(senha == null) && !(repetirSenha == null)){
+            if (!senha.trim().isEmpty() && !repetirSenha.trim().isEmpty()){
+                return new Administrador(id, email, senha, nome);
+            }
+        }
+        return new Administrador(email, nome, id);
     }
 
     /**

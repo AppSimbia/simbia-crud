@@ -67,6 +67,18 @@ public class Administrador {
         this.senha = senha;
     }
 
+    /**
+     * Construtor da entidade Administrador sem a {@code primary key} e o nome.
+     * @param email Email do administrador
+     * @param nome nome do administrador
+     * @param idAdministrador ID único do administrador
+     */
+    public Administrador (String email, String nome, long idAdministrador){
+        this.nome = nome;
+        this.email = email;
+        this.idAdministrador = idAdministrador;
+    }
+
     public Administrador(){}
 
 //toString

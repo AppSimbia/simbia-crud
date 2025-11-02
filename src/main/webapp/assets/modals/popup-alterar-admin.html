@@ -9,6 +9,7 @@
             </div>
 
             <form action="" method="post">
+                <input type="hidden" name="id" id="admin-id">
                 <div class="display-input-input">
                     <div>
                         <label for="nome-admin">Novo nome</label>
@@ -26,17 +27,17 @@
                 <div class="display-input-input">
                     <div>
                         <label for="senha">Nova senha</label>
-                        <input type="password" name="senha" id="senha" placeholder="Deixe em branco se igual." required>
+                        <input type="password" name="senha" id="senha" placeholder="Deixe em branco se igual.">
                         <p class="pExplicarRegex"> A senha precisa ter pelo menos 1 caracter minúsculo, maiúsculo, numérico e especial.</p>
                         <p name="erro-senha-padrao" class="pErro"></p>
                     </div>
                     <div>
                         <label for="repetir-senha">Repetir nova senha</label>
-                        <input type="password" name="repetir-senha" id="repetir-senha" placeholder="Deixe em branco se igual." required>
+                        <input type="password" name="repetir-senha" id="repetir-senha" placeholder="Deixe em branco se igual.">
                         <p name="erro-senha-repetida" class="pErro"></p>
                     </div>
                 </div>
-                <button name="btnSalvar" id="btnAdd">Salvar</button>
+                <button name="btnSalvar"  id="btnAdd">Salvar</button>
             </form>
         </div>
     </div>
