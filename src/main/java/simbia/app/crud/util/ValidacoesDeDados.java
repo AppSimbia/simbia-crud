@@ -7,11 +7,10 @@ import simbia.app.crud.infra.servlet.exception.validacaoDeDados.PadraoNomeErrado
 import simbia.app.crud.infra.servlet.exception.validacaoDeDados.PadraoSenhaErradoException;
 import simbia.app.crud.model.servlet.RequisicaoResposta;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.List;
-import java.util.Optional;
-import java.util.Arrays;
+import java.util.*;
 
 /**
  * Classe utilitária de validações de dados
@@ -23,10 +22,13 @@ public class ValidacoesDeDados {
     private static final String REGEX_SENHA = "(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*()_+=\\[\\]{}|;:'\",.<>?/~`\\\\-]).{8,200}";
     private static final String REGEX_NOME = "^[a-zA-ZáàâãéèêíïóôõöúçñÁÀÂÃÉÈÊÍÏÓÔÕÖÚÇÑ'\\-\\s]+$";
 
-    // Métodos de Validação
+    // ============================================
+    // MÉTODOS DE VALIDAÇÃO INDIVIDUAL
+    // ============================================
 
     /**
      * Valida se o email segue o padrão correto
+     *
      * @param email Email a ser validado
      * @throws PadraoEmailErradoException se o padrão estiver incorreto
      */
@@ -38,9 +40,6 @@ public class ValidacoesDeDados {
 
     /**
      * Valida se a senha segue os requisitos de segurança
-     * Requisitos: 8-200 caracteres, maiúscula, minúscula, número e caractere especial
-     * @param senha Senha a ser validada
-     * @throws PadraoSenhaErradoException se não atender aos requisitos
      */
     public static void validarSenha(String senha) throws PadraoSenhaErradoException {
         if (senha == null || !senha.matches(REGEX_SENHA)) {
@@ -60,11 +59,6 @@ public class ValidacoesDeDados {
         }
     }
 
-    /**
-     * Valida se existe um registro correspondente no banco
-     * @param retornoBanco Optional com o resultado da consulta
-     * @throws EmailOuSenhaErradosException se não encontrar registro
-     */
     public static <T> void validarSeExisteRegistroCorrespondenteNoBanco(Optional<T> retornoBanco)
             throws EmailOuSenhaErradosException {
         if (retornoBanco.isEmpty()) {
@@ -72,11 +66,6 @@ public class ValidacoesDeDados {
         }
     }
 
-    /**
-     * Valida se o administrador está autenticado na sessão
-     * @param requisicaoResposta Objeto com dados da requisição
-     * @throws UsuarioNaoAutenticadoException se não estiver autenticado
-     */
     public static void validarSeAdministradorEstaAtutenticado(RequisicaoResposta requisicaoResposta)
             throws UsuarioNaoAutenticadoException {
         if (!requisicaoResposta.existeSessaoDaRequisicao("administradorAutenticado")) {
@@ -84,11 +73,6 @@ public class ValidacoesDeDados {
         }
     }
 
-    /**
-     * Valida se a lista de registros não está vazia
-     * @param registros Lista a ser validada
-     * @throws RequisicaoSemRegistrosException se lista for nula ou vazia
-     */
     public static <T> void validarRegistros(List<T> registros)
             throws RequisicaoSemRegistrosException {
         if (registros == null || registros.isEmpty()) {
@@ -96,28 +80,16 @@ public class ValidacoesDeDados {
         }
     }
 
-    /**
-     * Valida se o tipo de ordenação é válido
-     * @param tipoOrdenacao String com o tipo (ex: "porId", "porNome")
-     * @throws RequisicaoSemTipoOrdenacaoException se inválido ou nulo
-     */
     public static void validarTipoDeOrdenacao(String tipoOrdenacao)
             throws RequisicaoSemTipoOrdenacaoException {
-
-        // Verifica se foi fornecido
         if (tipoOrdenacao == null || tipoOrdenacao.trim().isEmpty()) {
             throw new RequisicaoSemTipoOrdenacaoException();
         }
 
-        // Lista de tipos válidos para todas as entidades
         List<String> tiposValidos = Arrays.asList(
-                // Administrador
                 "porId", "porNome", "porEmail",
-                // Permissão
                 "porNomePermissao", "porDescricao",
-                // Plano/Vantagem
                 "porValor", "porTitulo",
-                // VantagemPlano
                 "porIdPlano", "porIdVantagem"
         );
 
@@ -125,11 +97,7 @@ public class ValidacoesDeDados {
             throw new RequisicaoSemTipoOrdenacaoException();
         }
     }
-    /**
-     * Valida se uma operação no banco foi bem-sucedida
-     * @param sucesso resultado da operação
-     * @throws NaoHouveAlteracaoNoBancoDeDadosException se falhou
-     */
+
     public static void validarSucessoDeOperacao(boolean sucesso)
             throws NaoHouveAlteracaoNoBancoDeDadosException {
         if (!sucesso) {
@@ -137,13 +105,179 @@ public class ValidacoesDeDados {
         }
     }
 
+    // ============================================
+    // VALIDAÇÃO EM LOTE PARA POPUPS
+    // ============================================
+
     /**
-     * Retorna data/hora atual formatada para logs
-     * @return String no formato "dd/MM/yyyy HH:mm:ss"
+     * Classe interna para armazenar erros de validação
      */
-    private static String obterDataHoraAtual() {
-        LocalDateTime agora = LocalDateTime.now();
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
-        return agora.format(formatter);
+    public static class ResultadoValidacao {
+        private Map<String, String> erros = new HashMap<>();
+
+        public void adicionarErro(String campo, String mensagem) {
+            erros.put(campo, mensagem);
+        }
+
+        public boolean temErros() {
+            return !erros.isEmpty();
+        }
+
+        public Map<String, String> getErros() {
+            return erros;
+        }
+
+        /**
+         * Converte erros para JSON que o JavaScript pode consumir
+         * Formato: {"campo":"mensagem","campo2":"mensagem2"}
+         */
+        public String toJSON() {
+            if (erros.isEmpty()) return "{}";
+
+            StringBuilder json = new StringBuilder("{");
+            int i = 0;
+            for (Map.Entry<String, String> entry : erros.entrySet()) {
+                if (i > 0) json.append(",");
+                json.append("\"").append(entry.getKey()).append("\":\"")
+                        .append(entry.getValue().replace("\"", "\\\"")).append("\"");
+                i++;
+            }
+            json.append("}");
+            return json.toString();
+        }
+    }
+
+    /**
+     * Valida campos de Administrador para inserção
+     */
+    public static ResultadoValidacao validarAdministrador(String nome, String email, String senha, String repetirSenha) {
+        ResultadoValidacao resultado = new ResultadoValidacao();
+
+        // Valida nome
+        if (nome == null || nome.trim().isEmpty()) {
+            resultado.adicionarErro("nome", "Nome é obrigatório");
+        } else if (!nome.matches(REGEX_NOME)) {
+            resultado.adicionarErro("nome", "Nome deve conter apenas letras e espaços");
+        } else if (nome.length() < 3 || nome.length() > 100) {
+            resultado.adicionarErro("nome", "Nome deve ter entre 3 e 100 caracteres");
+        }
+
+        // Valida email
+        if (email == null || email.trim().isEmpty()) {
+            resultado.adicionarErro("email", "Email é obrigatório");
+        } else if (!email.matches(REGEX_EMAIL)) {
+            resultado.adicionarErro("email", "Email inválido");
+        }
+
+        // Valida senha
+        if (senha == null || senha.trim().isEmpty()) {
+            resultado.adicionarErro("senha", "Senha é obrigatória");
+        } else if (!senha.matches(REGEX_SENHA)) {
+            resultado.adicionarErro("senha", "Senha deve ter ao menos 1 caractere minúsculo, maiúsculo, numérico e especial");
+        }
+
+        // Valida repetição de senha
+        if (repetirSenha == null || repetirSenha.trim().isEmpty()) {
+            resultado.adicionarErro("repetir-senha", "Repita a senha");
+        } else if (senha != null && !senha.equals(repetirSenha)) {
+            resultado.adicionarErro("repetir-senha", "As senhas não correspondem");
+        }
+
+        return resultado;
+    }
+
+    /**
+     * Valida campos de Plano para inserção
+     */
+    public static ResultadoValidacao validarPlano(String nome, String valorStr, String status) {
+        ResultadoValidacao resultado = new ResultadoValidacao();
+
+        // Valida nome
+        if (nome == null || nome.trim().isEmpty()) {
+            resultado.adicionarErro("nome", "Nome do plano é obrigatório");
+        } else if (nome.length() < 2 || nome.length() > 50) {
+            resultado.adicionarErro("nome", "Nome deve ter entre 2 e 50 caracteres");
+        }
+
+        // Valida valor
+        if (valorStr == null || valorStr.trim().isEmpty()) {
+            resultado.adicionarErro("valor", "Valor é obrigatório");
+        } else {
+            try {
+                BigDecimal valor = new BigDecimal(valorStr);
+                if (valor.compareTo(BigDecimal.ZERO) < 0) {
+                    resultado.adicionarErro("valor", "Valor deve ser positivo");
+                }
+            } catch (NumberFormatException e) {
+                resultado.adicionarErro("valor", "Valor inválido");
+            }
+        }
+
+        // Valida status
+        if (status == null || status.trim().isEmpty()) {
+            resultado.adicionarErro("status", "Status é obrigatório");
+        }
+
+        return resultado;
+    }
+
+    /**
+     * Valida campos genéricos com nome e descrição (Permissão, Vantagem, TipoIndustria, CategoriaProduto)
+     */
+    public static ResultadoValidacao validarNomeDescricao(String nome, String descricao, String tipoEntidade) {
+        ResultadoValidacao resultado = new ResultadoValidacao();
+
+        // Valida nome
+        if (nome == null || nome.trim().isEmpty()) {
+            resultado.adicionarErro("nome", "Nome é obrigatório");
+        } else if (nome.length() < 2 || nome.length() > 100) {
+            resultado.adicionarErro("nome", "Nome deve ter entre 2 e 100 caracteres");
+        }
+
+        // Valida descrição
+        if (descricao == null || descricao.trim().isEmpty()) {
+            resultado.adicionarErro("descricao", "Descrição é obrigatória");
+        } else if (descricao.length() < 10 || descricao.length() > 500) {
+            resultado.adicionarErro("descricao", "Descrição deve ter entre 10 e 500 caracteres");
+        }
+
+        return resultado;
+    }
+
+    /**
+     * Valida VantagemPlano (IDs de FK)
+     */
+    public static ResultadoValidacao validarVantagemPlano(String idPlanoStr, String idVantagemStr) {
+        ResultadoValidacao resultado = new ResultadoValidacao();
+
+        // Valida ID do Plano
+        if (idPlanoStr == null || idPlanoStr.trim().isEmpty()) {
+            resultado.adicionarErro("id-plano", "ID do plano é obrigatório");
+        } else {
+            try {
+                long idPlano = Long.parseLong(idPlanoStr);
+                if (idPlano <= 0) {
+                    resultado.adicionarErro("id-plano", "ID do plano deve ser positivo");
+                }
+            } catch (NumberFormatException e) {
+                resultado.adicionarErro("id-plano", "ID do plano inválido");
+            }
+        }
+
+        // Valida ID da Vantagem
+        if (idVantagemStr == null || idVantagemStr.trim().isEmpty()) {
+            resultado.adicionarErro("id-vantagem", "ID da vantagem é obrigatório");
+        } else {
+            try {
+                long idVantagem = Long.parseLong(idVantagemStr);
+                if (idVantagem <= 0) {
+                    resultado.adicionarErro("id-vantagem", "ID da vantagem deve ser positivo");
+                }
+            } catch (NumberFormatException e) {
+                resultado.adicionarErro("id-vantagem", "ID da vantagem inválido");
+            }
+        }
+
+        return resultado;
     }
 }

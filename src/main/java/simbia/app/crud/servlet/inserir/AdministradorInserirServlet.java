@@ -6,7 +6,6 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import simbia.app.crud.dao.AdministradorDao;
 import simbia.app.crud.infra.dao.abstractclasses.DaoException;
-import simbia.app.crud.infra.dao.exception.errosDeOperacao.NaoHouveAlteracaoNoBancoDeDadosException;
 import simbia.app.crud.infra.dao.exception.errosDoBancoDeDados.*;
 import simbia.app.crud.infra.servlet.abstractclasses.InserirServlet;
 import simbia.app.crud.infra.servlet.abstractclasses.OperacoesException;
@@ -31,73 +30,53 @@ public class AdministradorInserirServlet extends InserirServlet<Administrador> {
      * Valida os dados, insere no banco e trata possíveis erros.
      */
     @Override
-    protected void doPost(HttpServletRequest requisicao, HttpServletResponse resposta) throws ServletException, IOException {
+    protected void doPost(HttpServletRequest requisicao, HttpServletResponse resposta)
+            throws ServletException, IOException {
         RequisicaoResposta requisicaoResposta = new RequisicaoResposta(requisicao, resposta);
 
-        try{
-            Administrador registro = recuperarNovoRegistroNaRequisicao(requisicaoResposta);
-            inserirRegistroNoBanco(registro);
+        try {
+            // Recupera dados do formulário
+            String nome = requisicaoResposta.recuperarParametroDaRequisicao("nome");
+            String email = requisicaoResposta.recuperarParametroDaRequisicao("email");
+            String senha = requisicaoResposta.recuperarParametroDaRequisicao("senha");
+            String repetirSenha = requisicaoResposta.recuperarParametroDaRequisicao("repetir-senha");
 
-            requisicaoResposta.redirecionarPara(enderecoDeRedirecionamento());
+            // VALIDAÇÃO UNIFICADA - UMA LINHA!
+            ValidacoesDeDados.ResultadoValidacao resultado =
+                    ValidacoesDeDados.validarAdministrador(nome, email, senha, repetirSenha);
 
-        } catch (PadraoNomeErradoException causa) {
-            requisicaoResposta.adicionarAtributoNaRequisicao("mensagem", "Nome deve conter apenas letras e espaços.");
-            requisicaoResposta.adicionarAtributoNaRequisicao("popupAdicionarAberto", true);
-            requisicaoResposta.adicionarAtributoNaRequisicao("dados", dados(requisicaoResposta));
+            // Se houver erros, retorna para o popup
+            if (resultado.temErros()) {
+                String errosJSON = resultado.toJSON();
+                requisicaoResposta.adicionarAtributoNaSessaoDaRequisicao("erros", errosJSON);
+                requisicaoResposta.adicionarAtributoNaSessaoDaRequisicao("dados",
+                        nome + ";" + email + ";" + senha + ";" + repetirSenha);
+                requisicaoResposta.adicionarAtributoNaSessaoDaRequisicao("popupAberto", "true");
+                requisicaoResposta.redirecionarPara("/administrador.jsp");
+                return;
+            }
 
-            requisicaoResposta.redirecionarPara(enderecoDeRedirecionamentoCasoErro());
+            // Se passou nas validações, insere no banco
+            Administrador admin = new Administrador(email, senha, nome);
+            AdministradorDao dao = new AdministradorDao();
+            dao.inserir(admin);
 
-        } catch (PadraoSenhaErradoException causa) {
-            requisicaoResposta.adicionarAtributoNaRequisicao("mensagem", "Senha deve conter ao menos um caractere minúsculo, maiúsculo, numérico e especial.");
-            requisicaoResposta.adicionarAtributoNaRequisicao("popupAdicionarAberto", true);
-            requisicaoResposta.adicionarAtributoNaRequisicao("dados", dados(requisicaoResposta));
-
-            requisicaoResposta.redirecionarPara(enderecoDeRedirecionamentoCasoErro());
-
-        } catch (PadraoEmailErradoException causa) {
-            requisicaoResposta.adicionarAtributoNaRequisicao("mensagem", "Insira um email válido.");
-            requisicaoResposta.adicionarAtributoNaRequisicao("popupAdicionarAberto", true);
-            requisicaoResposta.adicionarAtributoNaRequisicao("dados", dados(requisicaoResposta));
-
-            requisicaoResposta.redirecionarPara(enderecoDeRedirecionamentoCasoErro());
-
-        } catch (SenhasDiferentesException causa) {
-            requisicaoResposta.adicionarAtributoNaRequisicao("mensagem", "As suas senhas não correspondem.");
-            requisicaoResposta.adicionarAtributoNaRequisicao("popupAdicionarAberto", true);
-            requisicaoResposta.adicionarAtributoNaRequisicao("dados", dados(requisicaoResposta));
-
-            requisicaoResposta.redirecionarPara(enderecoDeRedirecionamentoCasoErro());
-
-        } catch (NaoHouveAlteracaoNoBancoDeDadosException causa) {
-            requisicaoResposta.adicionarAtributoNaRequisicao("mensagem", "Operação falhou! Tente novamente.");
-            requisicaoResposta.adicionarAtributoNaRequisicao("popupAdicionarAberto", false);
-
-            requisicaoResposta.redirecionarPara(enderecoDeRedirecionamentoCasoErro());
-
-        } catch (ViolacaoDeObrigatoriedadeException causa) {
-            requisicaoResposta.adicionarAtributoNaRequisicao("mensagem", "Campo obrigatório.");
-            requisicaoResposta.adicionarAtributoNaRequisicao("popupAdicionarAberto", true);
-            requisicaoResposta.adicionarAtributoNaRequisicao("dados", dados(requisicaoResposta));
-
-            requisicaoResposta.redirecionarPara(enderecoDeRedirecionamentoCasoErro());
+            requisicaoResposta.adicionarAtributoNaSessaoDaRequisicao("status", true);
+            requisicaoResposta.redirecionarPara("/administrador/atualizar");
 
         } catch (ViolacaoDeUnicidadeException causa) {
-            requisicaoResposta.adicionarAtributoNaRequisicao("mensagem", "Campo já possui registro com esse valor.");
-            requisicaoResposta.adicionarAtributoNaRequisicao("popupAdicionarAberto", true);
-            requisicaoResposta.adicionarAtributoNaRequisicao("dados", dados(requisicaoResposta));
+            // Trata erro de email duplicado
+            String errosJSON = "{\"email\":\"Este email já está cadastrado\"}";
+            requisicaoResposta.adicionarAtributoNaSessaoDaRequisicao("erros", errosJSON);
+            requisicaoResposta.adicionarAtributoNaSessaoDaRequisicao("popupAberto", "true");
+            requisicaoResposta.redirecionarPara("/administrador.jsp");
 
-            requisicaoResposta.redirecionarPara(enderecoDeRedirecionamentoCasoErro());
-
-        } catch (FalhaDeConexaoDriverInadequadoException | FalhaDeConexaoGeralException |
-                 FalhaDeConexaoBancoDeDadosInexistenteException | FalhaDeConexaoQuedaRepentina |
-                 FalhaDeConexaoSenhaIncorretaException causa) {
-            requisicaoResposta.adicionarAtributoNaRequisicao("mensagem", "Erro de conexão! Tente novamente.");
-            requisicaoResposta.adicionarAtributoNaRequisicao("popupAdicionarAberto", false);
-
-            requisicaoResposta.redirecionarPara(enderecoDeRedirecionamentoCasoErro());
+        } catch (DaoException causa) {
+            causa.printStackTrace();
+            requisicaoResposta.adicionarAtributoNaSessaoDaRequisicao("status", false);
+            requisicaoResposta.redirecionarPara("/administrador.jsp");
         }
     }
-
     /**
      * Insere o administrador no banco de dados usando o DAO.
      */
