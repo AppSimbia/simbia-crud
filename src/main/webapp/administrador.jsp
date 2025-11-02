@@ -243,5 +243,15 @@
   <%
   }
   %>
+
+  <%
+    Boolean status = (Boolean) session.getAttribute("status");
+    if (status != null) {
+        requisicaoResposta.removerAtributoNaSessao("status");
+%>
+  window.onload = function() {
+    mostrarStatus('<%= status ? "sucesso" : "erro" %>');
+  }
+  <% } %>
 </script>
 </html>

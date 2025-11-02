@@ -1,6 +1,6 @@
 async function chamarErro(mensagem){
     try{
-        const response = await fetch('/crud/assets/modals/erroPopUp.html')
+        const response = await fetch('./assets/modals/erroPopUp.html')
         const htmlRecuperado = await response.text()
 
         const containerErro = document.getElementById('container-erro')
@@ -155,7 +155,7 @@ async function chamarPopUpEditar(enderecoPopUpEditar, enderecoServletEditar, inf
 
 async function chamarPopUpDeletar(enderecoServletDeletar, info){
     try{
-        const response = await fetch('/crud/assets/modals/popup-confirmacao-deletar.html')
+        const response = await fetch('./assets/modals/popup-confirmacao-deletar.html')
         const htmlRecuperado = await response.text()
         const containerPopUp = document.getElementById('container-geral-popup')
 
@@ -185,4 +185,26 @@ async function chamarPopUpDeletar(enderecoServletDeletar, info){
 
 function fecharModal(containerErro){
     containerErro.style.display = 'none'
+}
+
+async function mostrarStatus(tipo) {
+    try {
+        const arquivo = tipo === 'sucesso' ? 'status-sucesso.html' : 'status-erro.html';
+        const response = await fetch(`./assets/modals/${arquivo}`);
+        const htmlRecuperado = await response.text();
+
+        const containerStatus = document.getElementById('container-status');
+        containerStatus.innerHTML = htmlRecuperado;
+        containerStatus.style.display = 'flex';
+
+        document.querySelector('#container-status [name="btnFechar"]')
+            .addEventListener('click', () => fecharModal(containerStatus));
+
+        setTimeout(() => {
+            fecharModal(containerStatus);
+        }, 5000);
+
+    } catch (error) {
+        console.log('Erro ao mostrar status:', error);
+    }
 }
