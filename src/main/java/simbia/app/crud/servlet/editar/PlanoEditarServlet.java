@@ -6,6 +6,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import simbia.app.crud.dao.PlanoDao;
 import simbia.app.crud.infra.dao.abstractclasses.DaoException;
+import simbia.app.crud.infra.dao.exception.errosDeOperacao.NaoHouveAlteracaoNoBancoDeDadosException;
 import simbia.app.crud.infra.dao.exception.errosDoBancoDeDados.*;
 import simbia.app.crud.infra.servlet.abstractclasses.EditarServlet;
 import simbia.app.crud.infra.servlet.abstractclasses.OperacoesException;
@@ -20,12 +21,8 @@ import java.math.BigDecimal;
 public class PlanoEditarServlet extends EditarServlet<Plano> {
 
     /**
-     * Processa a requisição POST para inserir um plano.
-     * Valida os dados, insere no banco e trata possíveis erros.
-     */
-    /**
-     * Processa a requisição POST para inserir um plano.
-     * Valida os dados, insere no banco e trata possíveis erros.
+     * Processa a requisição POST para atualizar um plano.
+     * Valida os dados, atualiza no banco e trata possíveis erros.
      */
     @Override
     protected void doPost(HttpServletRequest requisicao, HttpServletResponse resposta)
@@ -34,6 +31,7 @@ public class PlanoEditarServlet extends EditarServlet<Plano> {
 
         try {
             // 1. Recupera dados do formulário
+            String idStr = requisicaoResposta.recuperarParametroDaRequisicao("id");
             String nome = requisicaoResposta.recuperarParametroDaRequisicao("nome");
             String valorStr = requisicaoResposta.recuperarParametroDaRequisicao("valor");
             String status = requisicaoResposta.recuperarParametroDaRequisicao("status");
@@ -46,42 +44,68 @@ public class PlanoEditarServlet extends EditarServlet<Plano> {
             if (resultado.temErros()) {
                 String errosJSON = resultado.toJSON();
                 requisicaoResposta.adicionarAtributoNaSessaoDaRequisicao("erros", errosJSON);
-                requisicaoResposta.adicionarAtributoNaSessaoDaRequisicao("dados", nome + ";" + valorStr);
+                // Formato: id;nome;valor;status para preencherCamposFormulario
+                String statusFormatado = "ativo".equals(status) ? "true" : "false";
+                requisicaoResposta.adicionarAtributoNaSessaoDaRequisicao("dados",
+                        idStr + ";" + nome + ";" + valorStr + ";" + statusFormatado);
                 requisicaoResposta.adicionarAtributoNaSessaoDaRequisicao("popupAberto", "true");
                 requisicaoResposta.redirecionarPara("/plano.jsp");
                 return;
             }
 
-            // 4. Se passou nas validações, cria o objeto e insere no banco
+            // 4. Se passou nas validações, cria o objeto COM ID e atualiza no banco
+            long id = Long.parseLong(idStr);
             BigDecimal valor = new BigDecimal(valorStr);
             boolean ativo = "ativo".equals(status);
-            Plano plano = new Plano(valor, ativo, nome);
+            Plano plano = new Plano(id, valor, ativo, nome);
 
             PlanoDao dao = new PlanoDao();
-            dao.inserir(plano);
+            dao.atualizar(plano);
 
             // 5. Sucesso - redireciona com mensagem de sucesso
             requisicaoResposta.adicionarAtributoNaSessaoDaRequisicao("status", true);
             requisicaoResposta.redirecionarPara("/plano/atualizar");
 
+        } catch (NumberFormatException causa) {
+            tratarErro(requisicaoResposta, "{\"geral\":\"ID ou valor inválido\"}", "");
+
         } catch (ViolacaoDeUnicidadeException causa) {
-            // Tratamento específico para nome duplicado
-            String errosJSON = "{\"nome\":\"Já existe um plano com este nome\"}";
-            requisicaoResposta.adicionarAtributoNaSessaoDaRequisicao("erros", errosJSON);
-            requisicaoResposta.adicionarAtributoNaSessaoDaRequisicao("popupAberto", "true");
-            requisicaoResposta.redirecionarPara("/plano.jsp");
+            String idStr = requisicaoResposta.recuperarParametroDaRequisicao("id");
+            String nome = requisicaoResposta.recuperarParametroDaRequisicao("nome");
+            String valorStr = requisicaoResposta.recuperarParametroDaRequisicao("valor");
+            String status = requisicaoResposta.recuperarParametroDaRequisicao("status");
+            String statusFormatado = "ativo".equals(status) ? "true" : "false";
+
+            tratarErro(requisicaoResposta,
+                    "{\"nome\":\"Já existe um plano com este nome\"}",
+                    idStr + ";" + nome + ";" + valorStr + ";" + statusFormatado);
 
         } catch (ViolacaoDeObrigatoriedadeException causa) {
-            String errosJSON = "{\"geral\":\"Campo obrigatório não preenchido\"}";
-            requisicaoResposta.adicionarAtributoNaSessaoDaRequisicao("erros", errosJSON);
-            requisicaoResposta.adicionarAtributoNaSessaoDaRequisicao("popupAberto", "true");
-            requisicaoResposta.redirecionarPara("/plano.jsp");
+            String idStr = requisicaoResposta.recuperarParametroDaRequisicao("id");
+            String nome = requisicaoResposta.recuperarParametroDaRequisicao("nome");
+            String valorStr = requisicaoResposta.recuperarParametroDaRequisicao("valor");
+            String status = requisicaoResposta.recuperarParametroDaRequisicao("status");
+            String statusFormatado = "ativo".equals(status) ? "true" : "false";
+
+            tratarErro(requisicaoResposta,
+                    "{\"geral\":\"Campo obrigatório não preenchido\"}",
+                    idStr + ";" + nome + ";" + valorStr + ";" + statusFormatado);
 
         } catch (ViolacaoDeTamanhoException causa) {
-            String errosJSON = "{\"nome\":\"Nome muito longo para o banco de dados\"}";
-            requisicaoResposta.adicionarAtributoNaSessaoDaRequisicao("erros", errosJSON);
-            requisicaoResposta.adicionarAtributoNaSessaoDaRequisicao("popupAberto", "true");
-            requisicaoResposta.redirecionarPara("/plano.jsp");
+            String idStr = requisicaoResposta.recuperarParametroDaRequisicao("id");
+            String nome = requisicaoResposta.recuperarParametroDaRequisicao("nome");
+            String valorStr = requisicaoResposta.recuperarParametroDaRequisicao("valor");
+            String status = requisicaoResposta.recuperarParametroDaRequisicao("status");
+            String statusFormatado = "ativo".equals(status) ? "true" : "false";
+
+            tratarErro(requisicaoResposta,
+                    "{\"nome\":\"Nome muito longo para o banco de dados\"}",
+                    idStr + ";" + nome + ";" + valorStr + ";" + statusFormatado);
+
+        } catch (NaoHouveAlteracaoNoBancoDeDadosException causa) {
+            tratarErro(requisicaoResposta,
+                    "{\"geral\":\"Plano não encontrado ou nenhuma alteração foi feita\"}",
+                    "");
 
         } catch (FalhaDeConexaoDriverInadequadoException | FalhaDeConexaoGeralException |
                  FalhaDeConexaoBancoDeDadosInexistenteException | FalhaDeConexaoQuedaRepentina |
@@ -98,8 +122,23 @@ public class PlanoEditarServlet extends EditarServlet<Plano> {
             requisicaoResposta.redirecionarPara("/plano.jsp");
         }
     }
+
     /**
-     * Insere o plano no banco de dados usando o DAO.
+     * Método auxiliar para tratar erros de forma consistente
+     */
+    private void tratarErro(RequisicaoResposta requisicaoResposta, String errosJSON, String dados) {
+        try {
+            requisicaoResposta.adicionarAtributoNaSessaoDaRequisicao("erros", errosJSON);
+            requisicaoResposta.adicionarAtributoNaSessaoDaRequisicao("dados", dados);
+            requisicaoResposta.adicionarAtributoNaSessaoDaRequisicao("popupAberto", "true");
+            requisicaoResposta.redirecionarPara("/plano.jsp");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Atualiza o plano no banco de dados usando o DAO.
      */
     @Override
     public void editarRegistroNoBanco(Plano entidade) throws DaoException, OperacoesException {
@@ -108,18 +147,19 @@ public class PlanoEditarServlet extends EditarServlet<Plano> {
     }
 
     /**
-     * Recupera os dados do formulário de cadastro.
-     * Retorna um objeto Plano pronto para ser inserido.
+     * Recupera os dados do formulário de edição.
+     * Retorna um objeto Plano pronto para ser atualizado.
      */
     @Override
     public Plano recuperarRegistroEmEdicaoNaRequisicao(RequisicaoResposta requisicaoResposta)
             throws NumberFormatException {
 
+        String idStr = requisicaoResposta.recuperarParametroDaRequisicao("id");
         String nome = requisicaoResposta.recuperarParametroDaRequisicao("nome");
         String valorStr = requisicaoResposta.recuperarParametroDaRequisicao("valor");
         String statusStr = requisicaoResposta.recuperarParametroDaRequisicao("status");
 
-
+        long id = Long.parseLong(idStr);
         BigDecimal valor = null;
 
         if (valorStr != null && !valorStr.trim().isEmpty()) {
@@ -128,11 +168,11 @@ public class PlanoEditarServlet extends EditarServlet<Plano> {
 
         boolean ativo = "ativo".equals(statusStr);
 
-        return new Plano(valor, ativo, nome);
+        return new Plano(id, valor, ativo, nome);
     }
 
     /**
-     * Retorna o endereço para onde redirecionar após inserção bem-sucedida.
+     * Retorna o endereço para onde redirecionar após atualização bem-sucedida.
      */
     @Override
     public String enderecoDeRedirecionamento() {
