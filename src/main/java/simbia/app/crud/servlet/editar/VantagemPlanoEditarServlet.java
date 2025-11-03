@@ -6,9 +6,11 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import simbia.app.crud.dao.VantagemPlanoDao;
 import simbia.app.crud.infra.dao.abstractclasses.DaoException;
+import simbia.app.crud.infra.dao.exception.errosDeOperacao.NaoHouveAlteracaoNoBancoDeDadosException;
 import simbia.app.crud.infra.dao.exception.errosDoBancoDeDados.ViolacaoDeUnicidadeException;
 import simbia.app.crud.infra.servlet.abstractclasses.EditarServlet;
 import simbia.app.crud.infra.servlet.abstractclasses.OperacoesException;
+import simbia.app.crud.infra.servlet.abstractclasses.ValidacaoDeDadosException;
 import simbia.app.crud.model.dao.VantagemPlano;
 import simbia.app.crud.model.servlet.RequisicaoResposta;
 import simbia.app.crud.util.ValidacoesDeDados;
@@ -17,51 +19,47 @@ import java.io.IOException;
 
 @WebServlet("/vantagem-plano/alterar")
 public class VantagemPlanoEditarServlet extends EditarServlet<VantagemPlano> {
+
     @Override
     protected void doPost(HttpServletRequest requisicao, HttpServletResponse resposta)
             throws ServletException, IOException {
-
         RequisicaoResposta requisicaoResposta = new RequisicaoResposta(requisicao, resposta);
 
         try {
-            // Recupera dados do formulário
             String idPlano = requisicaoResposta.recuperarParametroDaRequisicao("idPlano");
             String idVantagem = requisicaoResposta.recuperarParametroDaRequisicao("idVantagem");
 
-            // VALIDAÇÃO UNIFICADA
             ValidacoesDeDados.ResultadoValidacao resultado =
                     ValidacoesDeDados.validarVantagemPlano(idPlano, idVantagem);
 
-            // Se houver erros, retorna para o popup
             if (resultado.temErros()) {
-                String errosJSON = resultado.toJSON();
-                requisicaoResposta.adicionarAtributoNaSessaoDaRequisicao("erros", errosJSON);
+                String id = requisicaoResposta.recuperarParametroDaRequisicao("id");
+                requisicaoResposta.adicionarAtributoNaSessaoDaRequisicao("erros", resultado.toJSON());
                 requisicaoResposta.adicionarAtributoNaSessaoDaRequisicao("dados",
-                        idPlano + ";" + idVantagem);
+                        idPlano + ";" + idVantagem + ";" + id);
                 requisicaoResposta.adicionarAtributoNaSessaoDaRequisicao("popupAberto", "true");
+
                 requisicaoResposta.redirecionarPara("/vantagem-plano.jsp");
                 return;
             }
 
-            // Se passou nas validações, insere no banco
-            VantagemPlano registro = new VantagemPlano(
-                    Long.parseLong(idVantagem),
-                    Long.parseLong(idPlano)
-            );
-            VantagemPlanoDao dao = new VantagemPlanoDao();
-            dao.inserir(registro);
+            VantagemPlano vantagemPlano = recuperarRegistroEmEdicaoNaRequisicao(requisicaoResposta);
+            editarRegistroNoBanco(vantagemPlano);
 
             requisicaoResposta.adicionarAtributoNaSessaoDaRequisicao("status", true);
             requisicaoResposta.redirecionarPara("/vantagem-plano/atualizar");
 
         } catch (ViolacaoDeUnicidadeException causa) {
-            // Trata erro de chave duplicada
             String errosJSON = "{\"combinação\":\"Esta combinação já existe\"}";
             requisicaoResposta.adicionarAtributoNaSessaoDaRequisicao("erros", errosJSON);
             requisicaoResposta.adicionarAtributoNaSessaoDaRequisicao("popupAberto", "true");
             requisicaoResposta.redirecionarPara("/vantagem-plano.jsp");
 
-        } catch (DaoException causa) {
+        } catch (NaoHouveAlteracaoNoBancoDeDadosException causa) {
+            requisicaoResposta.adicionarAtributoNaSessaoDaRequisicao("status", true);
+            requisicaoResposta.redirecionarPara("/vantagem-plano/atualizar");
+
+        } catch (DaoException | OperacoesException | ValidacaoDeDadosException causa) {
             causa.printStackTrace();
             requisicaoResposta.adicionarAtributoNaSessaoDaRequisicao("status", false);
             requisicaoResposta.redirecionarPara("/vantagem-plano.jsp");
@@ -71,19 +69,26 @@ public class VantagemPlanoEditarServlet extends EditarServlet<VantagemPlano> {
     @Override
     public void editarRegistroNoBanco(VantagemPlano entidade) throws DaoException, OperacoesException {
         VantagemPlanoDao dao = new VantagemPlanoDao();
-
         dao.atualizar(entidade);
     }
 
     @Override
-    public VantagemPlano recuperarRegistroEmEdicaoNaRequisicao(RequisicaoResposta requisicaoResposta) throws NumberFormatException{
-        String idPlano = requisicaoResposta.recuperarParametroDaRequisicao("id-plano");
-        String idVantagem = requisicaoResposta.recuperarParametroDaRequisicao("id-vantagem");
+    public VantagemPlano recuperarRegistroEmEdicaoNaRequisicao(RequisicaoResposta requisicaoResposta)
+            throws DaoException, OperacoesException, ValidacaoDeDadosException {
 
-        ValidacoesDeDados.validarId(idPlano);
-        ValidacoesDeDados.validarId(idVantagem);
+        String idStr = requisicaoResposta.recuperarParametroDaRequisicao("id");
+        String idPlano = requisicaoResposta.recuperarParametroDaRequisicao("idPlano");
+        String idVantagem = requisicaoResposta.recuperarParametroDaRequisicao("idVantagem");
 
-        return new VantagemPlano(Long.parseLong(idPlano), Long.parseLong(idVantagem));
+        long id = Long.parseLong(idStr);
+        long longIdPlano = Long.parseLong(idPlano);
+        long longIdVantagem = Long.parseLong(idVantagem);
+
+        VantagemPlano vantagemPlano = new VantagemPlano(longIdPlano, longIdVantagem);
+
+        vantagemPlano.setIdVantagemPlano(id);
+
+        return vantagemPlano;
     }
 
     @Override
