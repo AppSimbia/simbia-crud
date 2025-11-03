@@ -1,0 +1,28 @@
+<section id="container-geral-popup">
+    <div id="content-popup-geral">
+        <div id="vertical-line"></div>
+        <div>
+            <div id="display-fechar-add-admin">
+                <h2>Alterar Vantagem Plano</h2>
+                <p>Tabela: Vantagem plano</p>
+                <button name="btnFechar" id="close"><img src="assets/elements/btnFechar.svg" alt="fechar" ></button>
+            </div>
+            <form action="" method="post">
+                <input type="hidden" name="id" id="id-vantagem-plano">
+                <div>
+                    <label for="id-plano">Novo ID Plano</label>
+                    <input type="number" name="idPlano" placeholder="1" id="id-plano" min="0" step="1" required>
+                    <p name="erro-fk-plano" class="pErro"></p>
+                </div>
+
+                <div>
+                    <label for="id-vantagem">Novo ID Vantagem</label>
+                    <input type="number" name="idVantagem" id="id-vantagem" placeholder="2" min="0" step="1" required>
+                    <p name="erro-fk-vantagem" class="pErro"></p>
+                </div>
+
+                <button name="btnSalvar" id="btnAdd">Salvar</button>
+            </form>
+        </div>
+    </div>
+</section>

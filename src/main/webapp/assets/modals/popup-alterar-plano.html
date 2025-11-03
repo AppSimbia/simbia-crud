@@ -1,0 +1,47 @@
+<section id="container-geral-popup">
+    <div id="content-popup-geral">
+        <div id="vertical-line"></div>
+        <div>
+            <div id="display-fechar-add-admin">
+                <h2>Alterar [NOME PLANO]</h2>
+                <p>Tabela: Plano</p>
+                <button name="btnFechar" id="close"><img src="assets/elements/btnFechar.svg" alt="fechar" ></button>
+            </div>
+
+            <form action="" method="post">
+                <input type="hidden" name="id" id="id-plano">
+                <div class="display-input-input">
+                    <div>
+                        <label for="nome">Novo nome plano</label>
+                        <input type="text" name="nome" placeholder="Pro" id="nome" required>
+                        <p name="erro-nome-padrao" class="pErro"></p>
+                    </div>
+
+                    <div>
+                        <label for="valor">Novo valor</label>
+                        <input type="number" name="valor" placeholder="R$ 100,00" id="valor" min="0" step="0.01" required>
+                        <p name="erro-valor-padrao" class="pErro"></p>
+                    </div>
+                </div>
+
+                <div class="status-container">
+                    <label>Status</label>
+
+                    <div class="checkbox-group">
+                        <label>
+                            <input type="radio" name="status" value="ativo">
+                            Ativo
+                        </label>
+
+                        <label>
+                            <input type="radio" name="status" value="inativo">
+                            Inativo
+                        </label>
+                    </div>
+                </div>
+
+                <button name="btnSalvar" id="btnAdd">Salvar</button>
+            </form>
+        </div>
+    </div>
+</section>
