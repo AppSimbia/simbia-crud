@@ -89,10 +89,13 @@
                     <p>Categoria Produto</p>
                 </li>
             </a>
-            <li>
-                <i class="fa-solid fa-store"></i>
-                <p>Dados BI</p>
-            </li>
+            <a href="https://app.powerbi.com/view?r=eyJrIjoiODdjYWYwYWQtYTY5Mi00YjEyLWEzZDYtZTIwN2RkOTA2YjUwIiwidCI6ImIxNDhmMTRjLTIzOTctNDAyYy1hYjZhLTFiNDcxMTE3N2FjMCJ9 ">
+                <li>
+                    <i class="fa-solid fa-store"></i>
+                    <p>Dados BI</p>
+                </li>
+            </a>
+
         </ul>
     </nav>
 </aside>

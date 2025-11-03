@@ -49,7 +49,8 @@
       <a href="${pageContext.request.contextPath}/vantagem-plano.jsp"><li><i class="fa-solid fa-square-check"></i><p>Vantagem plano</p></li></a>
       <a href="${pageContext.request.contextPath}/tipo-industria.jsp"><li><i class="fa-solid fa-layer-group"></i><p>Tipo Indústria</p></li></a>
       <li class="ativo"><i class="fa-solid fa-box-archive"></i><p>Categoria Produto</p></li>
-      <li><i class="fa-solid fa-store"></i><p>Dados BI</p></li>
+      <a href="
+https://app.powerbi.com/view?r=eyJrIjoiODdjYWYwYWQtYTY5Mi00YjEyLWEzZDYtZTIwN2RkOTA2YjUwIiwidCI6ImIxNDhmMTRjLTIzOTctNDAyYy1hYjZhLTFiNDcxMTE3N2FjMCJ9 "><li><i class="fa-solid fa-store"></i><p>Dados BI</p></li></a>
     </ul>
   </nav>
 </aside>
